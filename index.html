@@ -2,14 +2,19 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uranusfazry SKYWAY Community</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Uranusfazry SKYWAY Community & Game</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 1. Link Google Font (pastikan ada di <head>) -->
+    
+    <!-- Fonts from both files -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 
-    <!-- 2. Kode CSS yang Diperbarui -->
+    <!-- CSS from Community Page -->
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -125,8 +130,8 @@
             border: 1px solid var(--border-color);
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(var(--glow-color), 0.15), 
-                        0 0 30px rgba(var(--glow-color), 0.1),
-                        inset 0 0 10px rgba(var(--glow-color), 0.1);
+                         0 0 30px rgba(var(--glow-color), 0.1),
+                         inset 0 0 10px rgba(var(--glow-color), 0.1);
             z-index: 9999;
             cursor: pointer;
             user-select: none;
@@ -140,8 +145,8 @@
             transform: translateY(-5px) scale(1.03);
             border-color: rgba(127, 255, 212, 0.8);
             box-shadow: 0 0 25px rgba(var(--glow-color), 0.4), 
-                        0 0 50px rgba(var(--glow-color), 0.25),
-                        inset 0 0 12px rgba(var(--glow-color), 0.2);
+                         0 0 50px rgba(var(--glow-color), 0.25),
+                         inset 0 0 12px rgba(var(--glow-color), 0.2);
         }
 
         /* Definisi Tema Terang */
@@ -224,9 +229,149 @@
             white-space: nowrap;
         }
     </style>
+    
+    <!-- CSS from Game -->
+    <style>
+        :root {
+            --bg-color: #0d0c1d;
+            --primary-glow: #6c5ce7;
+            --secondary-glow: #f72585;
+            --accent-glow: #4cc9f0;
+            --text-color: #f0f0f0;
+            --glass-bg: rgba(22, 21, 46, 0.6);
+        }
+
+        /* Overriding some base styles for the game part, can be scoped better if needed */
+        #game-container-wrapper {
+            margin: 0;
+            overflow: hidden;
+            background-color: var(--bg-color);
+            font-family: 'Orbitron', sans-serif;
+            color: var(--text-color);
+            touch-action: none; /* Mencegah zoom/scroll di mobile */
+            width: 100%;
+            height: 100vh; /* Full viewport height for game section */
+            position: relative;
+        }
+        
+        #game-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        #gameCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        .hud-element {
+            position: absolute;
+            z-index: 10;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5), inset 0 0 5px rgba(76, 201, 240, 0.3);
+            text-shadow: 0 0 5px var(--accent-glow);
+        }
+
+        .score-display { top: 20px; left: 20px; font-size: 20px; }
+        .health-bar-container { top: 70px; left: 20px; width: 250px; padding: 5px; }
+        .health-bar { width: 100%; height: 15px; background-color: rgba(0,0,0,0.3); border-radius: 5px; overflow: hidden; }
+        .health-fill { height: 100%; background: linear-gradient(90deg, var(--secondary-glow), var(--accent-glow)); width: 100%; transition: width 0.3s ease-out; border-radius: 5px; box-shadow: 0 0 10px var(--accent-glow); }
+        .weapon-display { top: 20px; right: 20px; font-size: 14px; display: flex; align-items: center; gap: 10px; }
+        .weapon-icon { font-size: 20px; color: var(--accent-glow); }
+
+        .modal-screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(13, 12, 29, 0.8); backdrop-filter: blur(10px);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            color: white; z-index: 100; text-align: center; opacity: 0;
+            animation: fadeIn 0.5s forwards;
+            padding: 10px; /* Padding untuk mobile */
+        }
+        
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        .modal-box {
+            background: var(--glass-bg); padding: 40px; border-radius: 20px;
+            border: 1px solid rgba(76, 201, 240, 0.5); box-shadow: 0 0 40px var(--primary-glow);
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        #gameOver { display: none; }
+        
+        .game-title {
+            font-size: clamp(2.5rem, 8vw, 5rem); /* Ukuran font responsif */
+            font-weight: 700; margin-bottom: 1rem; letter-spacing: 4px;
+            color: transparent; background: linear-gradient(90deg, var(--accent-glow), var(--text-color), var(--secondary-glow));
+            -webkit-background-clip: text; background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #fff, 0 0 20px var(--accent-glow), 0 0 30px var(--accent-glow); }
+            to { text-shadow: 0 0 20px #fff, 0 0 30px var(--secondary-glow), 0 0 40px var(--secondary-glow); }
+        }
+
+        .action-button {
+            margin-top: 20px; padding: 15px 40px; font-size: 20px;
+            background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow)); color: white;
+            border: none; border-radius: 50px; cursor: pointer; transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4), 0 0 15px var(--primary-glow);
+            font-family: 'Orbitron', sans-serif; letter-spacing: 1px; text-transform: uppercase;
+        }
+        
+        .action-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5), 0 0 25px var(--secondary-glow);
+        }
+        
+        .controls { margin-top: 40px; font-size: 14px; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 10px; max-width: 500px; }
+        .controls .font-bold { color: var(--accent-glow); }
+        .plane-selection { display: flex; flex-wrap: wrap; gap: 20px; margin: 30px 0; justify-content: center; }
+        .plane-option {
+            width: 120px; height: 120px; background: var(--glass-bg); border-radius: 15px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.3s ease; border: 2px solid transparent; position: relative; overflow: hidden;
+        }
+        .plane-option:hover { transform: scale(1.1); border-color: var(--accent-glow); }
+        .plane-option.selected { border-color: var(--accent-glow); box-shadow: 0 0 20px var(--accent-glow); }
+        .plane-icon { font-size: 40px; margin-bottom: 5px; transition: color 0.3s; }
+        .plane-option.selected .plane-icon, .plane-option:hover .plane-icon { color: var(--accent-glow); }
+        .plane-name { font-size: 14px; font-weight: bold; }
+        .plane-stats { font-size: 10px; color: #ccc; }
+
+        /* --- Media Queries for Responsiveness --- */
+        @media (max-width: 768px) {
+            .score-display { top: 10px; left: 10px; font-size: 16px; padding: 8px 12px;}
+            .health-bar-container { top: 55px; left: 10px; width: 180px; }
+            .weapon-display { top: 10px; right: 10px; font-size: 12px; padding: 8px 12px;}
+
+            .modal-box { padding: 25px; }
+            .action-button { font-size: 16px; padding: 12px 30px; }
+
+            .plane-selection { gap: 10px; }
+            .plane-option { width: 90px; height: 90px; }
+            .plane-icon { font-size: 32px; }
+            .plane-name { font-size: 12px; }
+            .plane-stats { font-size: 9px; }
+
+            .controls { padding: 15px; font-size: 12px; margin-top: 20px; }
+            .controls p { margin-top: 4px; }
+        }
+    </style>
 </head>
 <body class="min-h-screen">
-    <!-- Navigation -->
+    <!-- Community Page Content -->
     <nav class="bg-black py-4 px-6 sticky top-0 z-50 border-b border-gray-800">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center">
@@ -245,7 +390,7 @@
                 </svg>
             </button>
         </div>
-         <!-- Mobile Menu -->
+        <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden mt-4">
             <a href="#home" class="block py-2 px-4 text-sm nav-link">Beranda</a>
             <a href="#about" class="block py-2 px-4 text-sm nav-link">Tentang</a>
@@ -254,7 +399,6 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <section id="home" class="hero-gradient relative h-screen flex items-center">
         <div class="max-w-7xl mx-auto px-6 relative z-10">
             <div class="md:w-2/3">
@@ -271,7 +415,6 @@
         </div>
     </section>
 
-    <!-- About Section -->
     <section id="about" class="py-20 section-divider">
         <div class="max-w-7xl mx-auto px-6">
             <div class="flex flex-col md:flex-row items-center">
@@ -297,7 +440,6 @@
         </div>
     </section>
 
-    <!-- Gallery Section -->
     <section id="gallery" class="py-20 section-divider bg-black">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
@@ -640,15 +782,6 @@
                     </div>
                 </div>
                 <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/vLhT2766tVA.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Pengkhianatan</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
                     <img src="https://i.imghippo.com/files/uEQl1506E.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
                         <div class="absolute bottom-0 left-0 p-6 w-full">
@@ -747,7 +880,6 @@
         </div>
     </section>
 
-    <!-- Gaming Gallery Section -->
     <section id="gaming-gallery" class="py-20 section-divider bg-gray-900">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
@@ -814,8 +946,6 @@
         </div>
     </section>
 
-
-    <!-- Testimonials -->
     <section class="py-20 section-divider bg-black">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
@@ -824,7 +954,6 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Testimonial 1 -->
                 <div class="bg-gray-900 p-8 rounded-lg relative">
                     <p class="text-gray-300 mb-6 italic">"Bergabung dengan SKYWAY adalah kesalahan. Komunitas ini penuh drama dan tekanan. Komunitas tidak jelas hanya membuang buang waktu."</p>
                     <div class="flex items-center">
@@ -836,7 +965,6 @@
                     </div>
                 </div>
                 
-                <!-- Testimonial 2 -->
                 <div class="bg-gray-900 p-8 rounded-lg relative">
                     <p class="text-gray-300 mb-6 italic">"Saya pikir komunitas ini akan membantu. Nyatanya, saya malah kehilangan banyak proyek karena reputasi buruk SKYWAY. Mereka tidak membantu sama sekali, hanya menambah beban."</p>
                     <div class="flex items-center">
@@ -848,7 +976,6 @@
                     </div>
                 </div>
                 
-                <!-- Testimonial 3 -->
                 <div class="bg-gray-900 p-8 rounded-lg relative">
                     <p class="text-gray-300 mb-6 italic">"Ekspedisi bersama SKYWAY adalah mimpi buruk. Penuh konflik, tidak terorganisir, dan hasilnya jauh dari harapan. Saya tidak belajar apa-apa selain cara bertahan dalam lingkungan toxic."</p>
                     <div class="flex items-center">
@@ -863,7 +990,6 @@
         </div>
     </section>
     
-    <!-- Footer -->
     <footer id="contact" class="bg-black py-12 border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-6 text-center text-gray-400">
             <h2 class="text-2xl font-bold mb-4">HUBUNGI KAMI</h2>
@@ -877,9 +1003,70 @@
             <p class="text-sm">&copy; 2025 SKYWAY Community. All Rights Reserved.</p>
         </div>
     </footer>
-
+    
+    <!-- Game Content -->
+    <div id="game-container-wrapper">
+        <div id="game-container">
+            <div class="score-display hud-element">
+                <i class="fas fa-star" style="color: #f7b731;"></i> Skor: <span id="score">0</span>
+            </div>
+            <div class="weapon-display hud-element">
+                <i id="weaponIcon" class="fas fa-bolt weapon-icon"></i>
+                <span id="weaponType">Laser Standar</span>
+            </div>
+            <div class="health-bar-container hud-element">
+                <div class="health-bar">
+                    <div class="health-fill" id="healthBar"></div>
+                </div>
+            </div>
+            <canvas id="gameCanvas"></canvas>
+            <div id="gameOver" class="modal-screen">
+                <div class="modal-box">
+                    <h1 class="text-4xl font-bold text-red-500" style="text-shadow: 0 0 10px #f00;">MISI GAGAL</h1>
+                    <p class="text-xl mt-4">Skor Akhir: <span id="finalScore" class="font-bold text-yellow-400">0</span></p>
+                    <button class="action-button" onclick="restartGame()">
+                        <i class="fas fa-redo"></i> Coba Lagi
+                    </button>
+                </div>
+            </div>
+            <div id="startScreen" class="modal-screen">
+                <div class="modal-box">
+                    <h1 class="game-title">Pejuang Udara Elit</h1>
+                    <p class="text-lg mb-6">Pilih pesawat tempurmu, dominasi angkasa!</p>
+                    <div class="plane-selection">
+                        <div class="plane-option" data-plane="1" onclick="selectPlane(1)">
+                            <div class="plane-icon"><i class="fas fa-fighter-jet"></i></div>
+                            <div class="plane-name">Thor-X</div><div class="plane-stats">Cepat & Seimbang</div>
+                        </div>
+                        <div class="plane-option" data-plane="2" onclick="selectPlane(2)">
+                            <div class="plane-icon"><i class="fas fa-space-shuttle"></i></div>
+                            <div class="plane-name">Sayap Angkasa</div><div class="plane-stats">Tangguh & Kuat</div>
+                        </div>
+                        <div class="plane-option" data-plane="3" onclick="selectPlane(3)">
+                            <div class="plane-icon"><i class="fas fa-helicopter"></i></div>
+                            <div class="plane-name">Phoenix Baja</div><div class="plane-stats">Super Cepat</div>
+                        </div>
+                        <div class="plane-option" data-plane="4" onclick="selectPlane(4)">
+                            <div class="plane-icon"><i class="fas fa-jet-fighter-up"></i></div>
+                            <div class="plane-name">Hantu Malam</div><div class="plane-stats">Ahli Senjata</div>
+                        </div>
+                    </div>
+                    <button class="action-button" onclick="startGame()">
+                        <i class="fas fa-play"></i> Mulai Bertarung
+                    </button>
+                    <div class="controls">
+                        <p><span class="font-bold">WASD/Panah</span>: Bergerak | <span class="font-bold">Spasi</span>: Tembak</p>
+                        <p class="mt-2"><span class="font-bold">E</span>: Ganti Senjata | <span class="font-bold">Q</span>: Skill Khusus</p>
+                        <p class="mt-4 text-sm text-gray-400">Di perangkat seluler, sentuh & geser untuk bergerak & menembak otomatis.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- JavaScripts -->
     <script>
-        // JavaScript for mobile menu toggle
+        // JavaScript for mobile menu toggle (Community Page)
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
 
@@ -888,8 +1075,8 @@
         });
     </script>
     
-    <!-- 3. Kode JavaScript untuk Watermark -->
     <script>
+        // JavaScript for Watermark (Community Page)
       (function() {
         function initializeWatermark() {
             const watermarkHTML = `
@@ -1022,5 +1209,533 @@
         }
       })();
     </script>
+    
+    <script>
+        // Game variables
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreElement = document.getElementById('score');
+        const finalScoreElement = document.getElementById('finalScore');
+        const healthBar = document.getElementById('healthBar');
+        const gameOverScreen = document.getElementById('gameOver');
+        const startScreen = document.getElementById('startScreen');
+        const weaponTypeDisplay = document.getElementById('weaponType');
+        const weaponIcon = document.getElementById('weaponIcon');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        let gameRunning = false;
+        let score = 0;
+        let playerHealth = 100;
+        let playerMaxHealth = 100;
+        let hitFlash = 0;
+        let selectedPlane = 1;
+        let currentWeapon = 0;
+        
+        const weapons = [
+            { name: "Laser Standar", delay: 300, bulletSpeed: 10, bulletColor: '#4cc9f0', bulletSize: {w: 4, h: 20}, damage: 10, icon: 'fas fa-bolt' },
+            { name: "Senapan Ganda", delay: 100, bulletSpeed: 8, bulletColor: '#f72585', bulletSize: {w: 6, h: 12}, damage: 5, icon: 'fas fa-gun' },
+            { name: "Meriam Plasma", delay: 500, bulletSpeed: 15, bulletColor: '#70e000', bulletSize: {w: 12, h: 12}, damage: 25, icon: 'fas fa-atom' }
+        ];
+        
+        const planeConfigs = {
+            1: { name: "Thor-X", speed: 6, health: 100, color: '#4361ee', hitColor: '#4cc9f0', cockpitColor: '#f0f0f0', weapons: [0, 1], special: {cooldown: 0, maxCooldown: 5000} },
+            2: { name: "Sayap Angkasa", speed: 4, health: 150, color: '#7209b7', hitColor: '#f72585', cockpitColor: '#f0f0f0', weapons: [0, 2], special: {cooldown: 0, maxCooldown: 8000} },
+            3: { name: "Phoenix Baja", speed: 8, health: 80, color: '#f77f00', hitColor: '#fcbf49', cockpitColor: '#f0f0f0', weapons: [1, 0], special: {cooldown: 0, maxCooldown: 3000} },
+            4: { name: "Hantu Malam", speed: 5, health: 120, color: '#6c757d', hitColor: '#dee2e6', cockpitColor: '#f0f0f0', weapons: [0, 1, 2], special: {cooldown: 0, maxCooldown: 10000} }
+        };
+        
+        const player = { x: canvas.width / 2, y: canvas.height - 100, width: 50, height: 50, speed: 5, bullets: [], lastShot: 0, planeType: 1 };
+        
+        const enemyTypes = [
+            { speed: [1, 3], size: [35, 45], health: 30, color: '#f94144', score: 50, chance: 0.6 },
+            { speed: [4, 6], size: [30, 40], health: 20, color: '#f3722c', score: 75, chance: 0.2 },
+            { speed: [0.5, 2], size: [50, 65], health: 100, color: '#90be6d', score: 150, chance: 0.15 },
+            { speed: [3, 5], size: [40, 50], health: 80, color: '#577590', score: 200, chance: 0.05, canShoot: true, shootDelay: 1500 }
+        ];
+        
+        let enemies = [], explosions = [], enemyBullets = [], stars = [];
+        const keys = { w: false, a: false, s: false, d: false, ' ': false, e: false, q: false, ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false };
+
+        const enemyImages = [];
+        let allImagesLoaded = false;
+        // --- PERUBAHAN 1: Mengambil gambar dari galeri utama ---
+        const galleryImageNodes = document.querySelectorAll('#gallery .gallery-item img');
+
+        if (galleryImageNodes.length > 0) {
+            let imagesToLoad = galleryImageNodes.length;
+            let loadedCount = 0;
+
+            galleryImageNodes.forEach(imgNode => {
+                const img = new Image();
+                img.src = imgNode.src;
+                // --- PERUBAHAN 2: Menambahkan crossOrigin untuk kanvas ---
+                img.crossOrigin = "Anonymous"; 
+                img.onload = () => {
+                    loadedCount++;
+                    if (loadedCount === imagesToLoad) {
+                        allImagesLoaded = true;
+                        console.log('Semua gambar dari galeri berhasil dimuat!');
+                    }
+                };
+                img.onerror = () => {
+                    loadedCount++;
+                    console.error('Gagal memuat gambar:', imgNode.src);
+                    if (loadedCount === imagesToLoad) {
+                        allImagesLoaded = true;
+                        console.log('Proses memuat gambar selesai (dengan beberapa kegagalan).');
+                    }
+                };
+                enemyImages.push(img);
+            });
+        } else {
+            allImagesLoaded = true; // Tidak ada gambar untuk dimuat
+        }
+
+        function initStars() {
+            stars = [];
+            for (let i = 0; i < 300; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+                    size: Math.random() * 2 + 1, speed: Math.random() * 0.5 + 0.2,
+                    layer: Math.floor(Math.random() * 3)
+                });
+            }
+        }
+
+        function drawStars() {
+            const speedMultiplier = [0.5, 1, 1.5];
+            const opacity = [0.4, 0.7, 1];
+            stars.forEach(star => {
+                star.y += star.speed * speedMultiplier[star.layer];
+                if (star.y > canvas.height) {
+                    star.y = 0;
+                    star.x = Math.random() * canvas.width;
+                }
+                ctx.fillStyle = `rgba(255, 255, 255, ${opacity[star.layer]})`;
+                ctx.fillRect(star.x, star.y, star.size, star.size);
+            });
+        }
+        
+        function gameLoop() {
+            if (!gameRunning) return;
+            
+            ctx.fillStyle = 'rgba(13, 12, 29, 0.2)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            drawStars();
+            if (hitFlash > 0) hitFlash -= 0.5;
+            updatePlayer();
+            drawPlayer();
+            updateBullets(player.bullets, -1);
+            drawBullets(player.bullets);
+            updateBullets(enemyBullets, 1);
+            drawEnemyBullets();
+            if (Math.random() < 0.03 * (1 + score/5000)) spawnEnemy();
+            updateEnemies();
+            drawEnemies();
+            updateExplosions();
+            drawExplosions();
+            checkCollisions();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function updatePlayer() {
+            const config = planeConfigs[player.planeType];
+            player.speed = config.speed;
+
+            if ((keys.ArrowUp || keys.w) && player.y > 0) player.y -= player.speed;
+            if ((keys.ArrowDown || keys.s) && player.y < canvas.height - player.height) player.y += player.speed;
+            if ((keys.ArrowLeft || keys.a) && player.x > 0) player.x -= player.speed;
+            if ((keys.ArrowRight || keys.d) && player.x < canvas.width - player.width) player.x += player.speed;
+
+            if (keys.e && config.weapons.length > 1) {
+                keys.e = false;
+                currentWeapon = (currentWeapon + 1) % config.weapons.length;
+                const weaponIndex = config.weapons[currentWeapon];
+                weaponTypeDisplay.textContent = weapons[weaponIndex].name;
+                weaponIcon.className = `${weapons[weaponIndex].icon} weapon-icon`;
+            }
+            
+            const weapon = weapons[config.weapons[currentWeapon]];
+            const now = Date.now();
+            if (keys[' '] && now - player.lastShot > weapon.delay) {
+                shoot(weapon);
+                player.lastShot = now;
+            }
+
+            if (keys.q && config.special.cooldown <= 0) {
+                activateSpecial();
+                keys.q = false;
+            }
+            if (config.special.cooldown > 0) config.special.cooldown -= 16;
+        }
+
+        function shoot(weapon) {
+            player.bullets.push({
+                x: player.x + player.width / 2 - weapon.bulletSize.w / 2, y: player.y,
+                width: weapon.bulletSize.w, height: weapon.bulletSize.h,
+                speed: weapon.bulletSpeed, color: weapon.bulletColor, damage: weapon.damage
+            });
+            playSound('shoot');
+        }
+
+        function activateSpecial() {
+             const config = planeConfigs[player.planeType];
+               config.special.cooldown = config.special.maxCooldown;
+               switch(player.planeType) {
+                  case 1: player.speed *= 3; setTimeout(() => player.speed = config.speed, 500); break;
+                  case 2: for (let i = 0; i < 10; i++) { setTimeout(() => { player.bullets.push({ x: Math.random() * canvas.width, y: 0, width: 8, height: 25, speed: 15, color: '#f72585', damage: 30 }); }, i * 50); } break;
+                  case 3: hitFlash = 30; break;
+                  case 4: playerHealth = Math.min(playerMaxHealth, playerHealth + 50); healthBar.style.width = `${playerHealth / playerMaxHealth * 100}%`; break;
+               }
+               playSound('special');
+        }
+        
+        function drawPlayer() {
+            ctx.save();
+            if (hitFlash > 15) { ctx.globalAlpha = 0.5 + Math.sin(Date.now() / 50) * 0.5; } 
+            else if (hitFlash > 0) { ctx.filter = `brightness(${1 + hitFlash * 0.2})`; }
+
+            const config = planeConfigs[player.planeType];
+            ctx.fillStyle = config.color;
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = config.hitColor;
+            ctx.beginPath();
+            ctx.moveTo(player.x + player.width / 2, player.y);
+            ctx.lineTo(player.x + player.width, player.y + player.height);
+            ctx.lineTo(player.x, player.y + player.height);
+            ctx.closePath();
+            ctx.fill();
+            ctx.fillStyle = config.cockpitColor;
+            ctx.shadowBlur = 0;
+            ctx.beginPath();
+            ctx.arc(player.x + player.width / 2, player.y + player.height / 2.5, player.width / 8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = `rgba(76, 201, 240, ${0.5 + Math.random() * 0.5})`;
+            ctx.beginPath();
+            ctx.moveTo(player.x + player.width * 0.3, player.y + player.height);
+            ctx.lineTo(player.x + player.width * 0.7, player.y + player.height);
+            ctx.lineTo(player.x + player.width * 0.5, player.y + player.height + 15 + Math.random() * 10);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function updateBullets(bullets, direction) {
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                bullets[i].y += bullets[i].speed * direction;
+                if (bullets[i].y < -bullets[i].height || bullets[i].y > canvas.height) {
+                    bullets.splice(i, 1);
+                }
+            }
+        }
+        
+        function drawBullets(bullets) {
+            bullets.forEach(bullet => {
+                ctx.save();
+                ctx.fillStyle = bullet.color;
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = bullet.color;
+                if(bullet.width > bullet.height) {
+                    ctx.beginPath();
+                    ctx.arc(bullet.x + bullet.width/2, bullet.y + bullet.height/2, bullet.width/2, 0, Math.PI * 2);
+                    ctx.fill();
+                } else {
+                    ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+                }
+                ctx.restore();
+            });
+        }
+
+        function drawEnemyBullets() {
+            enemyBullets.forEach(bullet => {
+                ctx.save();
+                ctx.fillStyle = bullet.color;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = bullet.color;
+                ctx.beginPath();
+                ctx.arc(bullet.x + bullet.width/2, bullet.y + bullet.height/2, bullet.width/2, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            });
+        }
+        
+        function spawnEnemy() {
+            let rand = Math.random(), typeIndex = 0, sum = 0;
+            for (let i = 0; i < enemyTypes.length; i++) {
+                sum += enemyTypes[i].chance;
+                if (rand <= sum) { typeIndex = i; break; }
+            }
+            const type = enemyTypes[typeIndex];
+            const size = Math.random() * (type.size[1] - type.size[0]) + type.size[0];
+            const speed = Math.random() * (type.speed[1] - type.speed[0]) + type.speed[0];
+            
+            const newEnemy = {
+                x: Math.random() * (canvas.width - size), y: -size,
+                width: size, height: size, speed: speed, color: type.color,
+                health: type.health, maxHealth: type.health, typeIndex: typeIndex,
+                hit: 0, lastShot: 0, image: null
+            };
+
+            // --- PERUBAHAN 3: Menggunakan gambar dari galeri untuk musuh ---
+            if (allImagesLoaded && enemyImages.length > 0) {
+                // Filter gambar yang sudah berhasil dimuat
+                const validImages = enemyImages.filter(img => img.complete && img.naturalWidth !== 0);
+                if (validImages.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * validImages.length);
+                    newEnemy.image = validImages[randomIndex];
+                }
+            }
+            enemies.push(newEnemy);
+        }
+        
+        function updateEnemies() {
+            const now = Date.now();
+            for (let i = enemies.length - 1; i >= 0; i--) {
+                const e = enemies[i];
+                e.y += e.speed;
+                if (e.hit > 0) e.hit--;
+
+                const type = enemyTypes[e.typeIndex];
+                if (type.canShoot && now - e.lastShot > type.shootDelay) {
+                    e.lastShot = now;
+                    enemyBullets.push({
+                        x: e.x + e.width / 2 - 5, y: e.y + e.height,
+                        width: 10, height: 10, speed: 5, color: e.color, damage: 10
+                    });
+                    playSound('enemyShoot');
+                }
+                if (e.y > canvas.height) enemies.splice(i, 1);
+            }
+        }
+        
+        function drawEnemies() {
+            enemies.forEach(e => {
+                ctx.save();
+                if (e.hit > 0) ctx.filter = `brightness(${1 + e.hit * 0.2})`;
+
+                // --- PERUBAHAN 4: Menggambar musuh menggunakan gambar jika tersedia ---
+                if (e.image && e.image.complete && e.image.naturalWidth !== 0) {
+                    // Gambar akan disesuaikan dengan ukuran kotak musuh, menjaga proporsionalitas
+                    ctx.drawImage(e.image, e.x, e.y, e.width, e.height);
+                } else {
+                    // Fallback jika gambar tidak ada atau gagal dimuat
+                    ctx.fillStyle = e.color;
+                    ctx.shadowBlur = 10;
+                    ctx.shadowColor = e.color;
+                    ctx.beginPath();
+                    ctx.moveTo(e.x + e.width / 2, e.y + e.height);
+                    ctx.lineTo(e.x, e.y);
+                    ctx.lineTo(e.x + e.width, e.y);
+                    ctx.closePath();
+                    ctx.fill();
+                }
+
+                if(e.health < e.maxHealth) {
+                    ctx.fillStyle = '#333';
+                    ctx.fillRect(e.x, e.y - 10, e.width, 4);
+                    ctx.fillStyle = '#f94144';
+                    ctx.fillRect(e.x, e.y - 10, e.width * (e.health / e.maxHealth), 4);
+                }
+                ctx.restore();
+            });
+        }
+
+        function createExplosion(x, y, radius, color) {
+            for (let i = 0; i < radius * 1.5; i++) {
+                explosions.push({
+                    x, y, radius: Math.random() * 3 + 1, color: color,
+                    speed: Math.random() * 5 + 2, angle: Math.random() * Math.PI * 2,
+                    life: 100, decay: Math.random() * 2 + 1
+                });
+            }
+        }
+
+        function updateExplosions() {
+            for (let i = explosions.length - 1; i >= 0; i--) {
+                const ex = explosions[i];
+                ex.x += Math.cos(ex.angle) * ex.speed;
+                ex.y += Math.sin(ex.angle) * ex.speed;
+                ex.life -= ex.decay;
+                ex.speed *= 0.98;
+                if (ex.life <= 0) explosions.splice(i, 1);
+            }
+        }
+
+        function drawExplosions() {
+            explosions.forEach(ex => {
+                ctx.save();
+                ctx.globalAlpha = ex.life / 100;
+                ctx.fillStyle = ex.color;
+                ctx.shadowBlur = 5;
+                ctx.shadowColor = ex.color;
+                ctx.beginPath();
+                ctx.arc(ex.x, ex.y, ex.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            });
+        }
+        
+        function handlePlayerHit() {
+            healthBar.style.width = `${Math.max(0, playerHealth) / playerMaxHealth * 100}%`;
+            hitFlash = 10;
+            playSound('crash');
+        }
+
+        function checkCollisions() {
+            for (let i = player.bullets.length - 1; i >= 0; i--) {
+                for (let j = enemies.length - 1; j >= 0; j--) {
+                    if (player.bullets[i] && enemies[j] && isColliding(player.bullets[i], enemies[j])) {
+                        enemies[j].health -= player.bullets[i].damage;
+                        enemies[j].hit = 5;
+                        player.bullets.splice(i, 1);
+                        if (enemies[j].health <= 0) {
+                            score += enemyTypes[enemies[j].typeIndex].score;
+                            scoreElement.textContent = score;
+                            createExplosion(enemies[j].x + enemies[j].width / 2, enemies[j].y + enemies[j].height / 2, enemies[j].width / 2, enemies[j].color);
+                            enemies.splice(j, 1);
+                            playSound('explosion');
+                        } else { playSound('hit'); }
+                        break;
+                    }
+                }
+            }
+
+            if (hitFlash < 15) {
+                for (let i = enemies.length - 1; i >= 0; i--) {
+                    if (enemies[i] && isColliding(enemies[i], player)) {
+                        playerHealth -= 20;
+                        createExplosion(enemies[i].x + enemies[i].width / 2, enemies[i].y + enemies[i].height / 2, enemies[i].width / 2, enemies[i].color);
+                        enemies.splice(i, 1);
+                        handlePlayerHit();
+                        if (playerHealth <= 0) { gameOver(); return; }
+                        break;
+                    }
+                }
+                for (let i = enemyBullets.length - 1; i >= 0; i--) {
+                    if (enemyBullets[i] && isColliding(enemyBullets[i], player)) {
+                        playerHealth -= enemyBullets[i].damage;
+                        enemyBullets.splice(i, 1);
+                        handlePlayerHit();
+                        if (playerHealth <= 0) { gameOver(); return; }
+                        break;
+                    }
+                }
+            }
+        }
+        
+        function isColliding(a, b) {
+            return a && b && a.x < b.x + b.width && a.x + a.width > b.x && a.y < b.y + b.height && a.y + a.height > b.y;
+        }
+
+        function gameOver() {
+            gameRunning = false;
+            finalScoreElement.textContent = score;
+            gameOverScreen.style.display = 'flex';
+            playSound('gameover');
+        }
+        
+        function selectPlane(type) {
+            selectedPlane = type;
+            document.querySelectorAll('.plane-option').forEach(option => {
+                option.classList.toggle('selected', parseInt(option.dataset.plane) === type);
+            });
+        }
+        
+        function startGame() {
+            score = 0;
+            player.bullets = []; enemies = []; explosions = []; enemyBullets = [];
+            
+            player.planeType = selectedPlane;
+            const config = planeConfigs[player.planeType];
+            player.x = canvas.width / 2 - player.width / 2;
+            player.y = canvas.height - 100;
+            playerHealth = config.health; playerMaxHealth = config.health;
+            
+            currentWeapon = 0;
+            const weaponIndex = config.weapons[currentWeapon];
+            weaponTypeDisplay.textContent = weapons[weaponIndex].name;
+            weaponIcon.className = `${weapons[weaponIndex].icon} weapon-icon`;
+            
+            scoreElement.textContent = score;
+            healthBar.style.width = '100%';
+            
+            startScreen.style.display = 'none';
+            gameOverScreen.style.display = 'none';
+            
+            gameRunning = true;
+            gameLoop();
+            playSound('bgm', true);
+        }
+        
+        function restartGame() {
+            gameOverScreen.style.display = 'none';
+            startScreen.style.display = 'flex';
+        }
+
+        const sounds = {
+            bgm: new Audio('https://assets.mixkit.co/active_storage/sfx/1987/1987-preview.mp3'),
+            shoot: new Audio('https://assets.mixkit.co/active_storage/sfx/1037/1037-preview.mp3'),
+            hit: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-retro-arcade-casino-notification-267.mp3'),
+            explosion: new Audio('https://assets.mixkit.co/active_storage/sfx/2095/2095-preview.mp3'),
+            crash: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-metal-explosion-1680.mp3'),
+            gameover: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-sad-game-over-trombone-471.mp3'),
+            enemyShoot: new Audio('https://assets.mixkit.co/active_storage/sfx/2172/2172-preview.mp3'),
+            special: new Audio('https://assets.mixkit.co/active_storage/sfx/2232/2232-preview.mp3')
+        };
+
+        function playSound(name, loop = false) {
+            if (!sounds[name]) return;
+            try {
+                const sound = sounds[name];
+                sound.currentTime = 0;
+                sound.loop = loop;
+                sound.volume = loop ? 0.3 : 0.7;
+                sound.play().catch(e => {});
+            } catch (e) { console.log("Audio error:", e); }
+        }
+
+        window.addEventListener('keydown', (e) => { const key = e.key.toLowerCase(); if (keys.hasOwnProperty(key)) keys[key] = true; else if (keys.hasOwnProperty(e.key)) keys[e.key] = true; });
+        window.addEventListener('keyup', (e) => { const key = e.key.toLowerCase(); if (keys.hasOwnProperty(key)) keys[key] = false; else if (keys.hasOwnProperty(e.key)) keys[e.key] = false; });
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = document.getElementById('game-container-wrapper').clientHeight; initStars(); });
+
+        let touchX, touchY;
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault(); if(!gameRunning) return;
+            const touch = e.touches[0]; touchX = touch.clientX; touchY = touch.clientY;
+        }, { passive: false });
+
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault(); if(!gameRunning) return;
+            const touch = e.touches[0];
+            player.x += touch.clientX - touchX;
+            player.y += touch.clientY - touchY;
+            touchX = touch.clientX; touchY = touch.clientY;
+            
+            const weapon = weapons[planeConfigs[player.planeType].weapons[currentWeapon]];
+            if (Date.now() - player.lastShot > weapon.delay) {
+                shoot(weapon);
+                player.lastShot = Date.now();
+            }
+        }, { passive: false });
+        
+        selectPlane(1);
+        initStars();
+        
+        function renderInitialFrame() {
+            // Need to set canvas size again on init for game section
+            const gameWrapper = document.getElementById('game-container-wrapper');
+            if(gameWrapper) {
+                canvas.width = gameWrapper.clientWidth;
+                canvas.height = gameWrapper.clientHeight;
+            }
+            ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--bg-color');
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            drawStars();
+        }
+        renderInitialFrame();
+    </script>
 </body>
 </html>
+
