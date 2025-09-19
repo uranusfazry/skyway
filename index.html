@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>baru</title><style></style></head><body><!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -6,15 +6,16 @@
     <title>Uranusfazry SKYWAY Community & Game</title>
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Fonts from both files -->
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
-    <!-- CSS from Community Page -->
+    <!-- CSS from Community Page & Watermark -->
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -230,7 +231,7 @@
         }
     </style>
     
-    <!-- CSS from Game -->
+    <!-- CSS from Shooter Game -->
     <style>
         :root {
             --bg-color: #0d0c1d;
@@ -369,696 +370,928 @@
             .controls p { margin-top: 4px; }
         }
     </style>
+
+    <!-- CSS from Poker Game -->
+    <style id="poker-styles">
+        :root {
+            --felt-green: #104b28;
+            --table-border: #8B4513;
+            --text-light: #f0f0f0;
+        }
+
+        /* Scoped styles for the poker app wrapper */
+        #poker-app-wrapper {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--felt-green);
+            color: var(--text-light);
+            overflow: hidden;
+            user-select: none;
+            height: 100%;
+        }
+        
+        #poker-app-wrapper #poker-table {
+            background: radial-gradient(ellipse at center, #2a623d 50%, #1a4a2a 100%);
+            box-shadow: 0 0 20px rgba(0,0,0,0.5) inset;
+        }
+
+        #poker-app-wrapper .player.active {
+            border-color: #f0ad4e;
+            box-shadow: 0 0 15px #f0ad4e;
+            animation: pulse-poker 1.5s infinite;
+        }
+
+        @keyframes pulse-poker {
+            0% { box-shadow: 0 0 5px #f0ad4e; }
+            50% { box-shadow: 0 0 20px #f0ad4e; }
+            100% { box-shadow: 0 0 5px #f0ad4e; }
+        }
+
+        #poker-app-wrapper .card.back {
+            background-image:
+                linear-gradient(45deg, #4a5568 25%, transparent 25%),
+                linear-gradient(-45deg, #4a5568 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #4a5568 75%),
+                linear-gradient(-45deg, transparent 75%, #4a5568 75%);
+            background-color: #718096;
+            background-size: 10px 10px;
+        }
+        
+        #poker-app-wrapper .game-log::-webkit-scrollbar { width: 4px; }
+        #poker-app-wrapper .game-log::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+        #poker-app-wrapper .game-log::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 2px; }
+
+        /* Style for player avatar image to ensure it covers the area */
+        .player-avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Gallery picker modal styles */
+        #gallery-picker-modal .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 1rem;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        #gallery-picker-modal .gallery-thumb {
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.2s;
+        }
+        #gallery-picker-modal .gallery-thumb:hover {
+            border-color: #f0ad4e;
+        }
+    </style>
 </head>
 <body class="min-h-screen">
-    <!-- Community Page Content -->
-    <nav class="bg-black py-4 px-6 sticky top-0 z-50 border-b border-gray-800">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center">
-                <img src="https://i.imghippo.com/files/tLH2107BHs.png" alt="SKYWAY Community Logo" class="h-12 mr-4">
-                <h1 class="text-xl font-bold tracking-tight">SKYWAY<span class="text-red-600">  COMMUNITY</span></h1>
-            </div>
-            <div id="desktop-menu" class="hidden md:flex space-x-8">
-                <a href="#home" class="nav-link text-white hover:text-red-600 transition">Beranda</a>
-                <a href="#about" class="nav-link text-white hover:text-red-600 transition">Tentang</a>
-                <a href="#gallery" class="nav-link text-white hover:text-red-600 transition">Galeri</a>
-                <a href="#contact" class="nav-link text-white hover:text-red-600 transition">Kontak</a>
-            </div>
-            <button id="mobile-menu-button" class="md:hidden text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-            </button>
-        </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden mt-4">
-            <a href="#home" class="block py-2 px-4 text-sm nav-link">Beranda</a>
-            <a href="#about" class="block py-2 px-4 text-sm nav-link">Tentang</a>
-            <a href="#gallery" class="block py-2 px-4 text-sm nav-link">Galeri</a>
-            <a href="#contact" class="block py-2 px-4 text-sm nav-link">Kontak</a>
-        </div>
-    </nav>
 
-    <section id="home" class="hero-gradient relative h-screen flex items-center">
-        <div class="max-w-7xl mx-auto px-6 relative z-10">
-            <div class="md:w-2/3">
-                <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">BERSAMA KAMI MENJELAJAH <span class="text-red-600">DUNIA</span></h1>
-                <p class="text-lg text-gray-300 mb-8">Komunitas SKYWAY adalah sistem hitam yang lahir dari energi emosi, beban, dan drama, namun menyatukan semua itu menjadi solidaritas yang kuat.</p>
-                <div class="flex space-x-4">
-                    <button class="btn-primary px-6 py-3 rounded-lg font-medium">Gabung Sekarang</button>
-                    <button class="btn-outline px-6 py-3 rounded-lg font-medium">Explore Lebih</button>
+    <div id="main-app-content">
+        <!-- Community Page Content -->
+        <nav class="bg-black py-4 px-6 sticky top-0 z-50 border-b border-gray-800">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <div class="flex items-center">
+                    <img src="https://i.imghippo.com/files/tLH2107BHs.png" alt="SKYWAY Community Logo" class="h-12 mr-4">
+                    <h1 class="text-xl font-bold tracking-tight">SKYWAY<span class="text-red-600">  COMMUNITY</span></h1>
                 </div>
+                <div id="desktop-menu" class="hidden md:flex space-x-8">
+                    <a href="#home" class="nav-link text-white hover:text-red-600 transition">Beranda</a>
+                    <a href="#about" class="nav-link text-white hover:text-red-600 transition">Tentang</a>
+                    <a href="#gallery" class="nav-link text-white hover:text-red-600 transition">Galeri</a>
+                    <a href="#contact" class="nav-link text-white hover:text-red-600 transition">Kontak</a>
+                </div>
+                <button id="mobile-menu-button" class="md:hidden text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
             </div>
-        </div>
-        <div class="absolute inset-0 overflow-hidden -z-0">
-            <img src="https://i.imghippo.com/files/tLH2107BHs.png" alt="SKYWAY Community Gathering" class="w-full h-full object-cover opacity-50">
-        </div>
-    </section>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4">
+                <a href="#home" class="block py-2 px-4 text-sm nav-link">Beranda</a>
+                <a href="#about" class="block py-2 px-4 text-sm nav-link">Tentang</a>
+                <a href="#gallery" class="block py-2 px-4 text-sm nav-link">Galeri</a>
+                <a href="#contact" class="block py-2 px-4 text-sm nav-link">Kontak</a>
+            </div>
+        </nav>
 
-    <section id="about" class="py-20 section-divider">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 mb-10 md:mb-0 md:pr-10">
-                    <h2 class="text-3xl font-bold mb-6 relative inline-block">
-                        TENTANG KAMI
-                        <span class="absolute bottom-0 left-0 w-1/3 h-1 bg-red-600"></span>
-                    </h2>
-                    <p class="text-gray-400 mb-6">SKYWAY adalah sebuah sistem kehitaman, tempat di mana setiap anggota ditempa oleh suasana keras, penuh emosi, dan terkadang melelahkan. Di dalamnya, orang seringkali harus menghadapi beban yang berat, menghadapi drama yang muncul dari perbedaan pendapat, dan melewati pertengkaran kecil yang bisa menguji kesabaran. Namun justru itulah yang membuat SKYWAY unik—ia bukan sekadar komunitas yang hanya menampilkan sisi indah, melainkan ruang nyata tempat manusia dengan segala sisi gelap dan terang berkumpul.</p>
-                    <p class="text-gray-400 mb-6">Di balik setiap konflik, selalu ada pelajaran yang memperkuat hubungan. Di balik setiap drama, lahir cerita yang menumbuhkan kedewasaan bersama. Dan meskipun emosi kerap meledak, anggota SKYWAY tetap saling mengulurkan tangan, menunjukkan bahwa solidaritas mereka lebih besar daripada perbedaan.</p>
-                    <p class="text-gray-400">SKYWAY mungkin terlihat keras, gelap, dan penuh ujian, namun di dalamnya ada semangat kebersamaan yang tidak bisa digoyahkan. Di sinilah orang belajar bukan hanya untuk menjadi kuat sendiri, tetapi juga untuk menjadi bagian dari solidaritas yang kokoh—sistem kehitaman yang mampu mengubah beban dan drama menjadi fondasi persaudaraan yang tak tergoyahkan.</p>
+        <section id="home" class="hero-gradient relative h-screen flex items-center">
+            <div class="max-w-7xl mx-auto px-6 relative z-10">
+                <div class="md:w-2/3">
+                    <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">BERSAMA KAMI MENJELAJAH <span class="text-red-600">DUNIA</span></h1>
+                    <p class="text-lg text-gray-300 mb-8">Komunitas SKYWAY adalah sistem hitam yang lahir dari energi emosi, beban, dan drama, namun menyatukan semua itu menjadi solidaritas yang kuat.</p>
+                    <div class="flex space-x-4">
+                        <button class="btn-primary px-6 py-3 rounded-lg font-medium">Gabung Sekarang</button>
+                        <button class="btn-outline px-6 py-3 rounded-lg font-medium">Explore Lebih</button>
+                    </div>
                 </div>
-                <div class="md:w-1/2 relative">
-                    <div class="grid grid-cols-2 gap-4">
-                        <img src="https://i.imghippo.com/files/mjCg8355shs.jpg" alt="Anggota SKYWAY Community berkumpul" class="gallery-item rounded-lg shadow-lg h-full w-full object-cover">
-                        <div class="flex flex-col space-y-4">
-                            <img src="https://i.imghippo.com/files/nYoT4144n.jpg" alt="Seorang anggota menerbangkan drone" class="gallery-item rounded-lg shadow-lg">
-                            <img src="https://i.imghippo.com/files/aTP8104zw.jpg" alt="Diskusi antar anggota SKYWAY" class="gallery-item rounded-lg shadow-lg">
+            </div>
+            <div class="absolute inset-0 overflow-hidden -z-0">
+                <img src="https://i.imghippo.com/files/tLH2107BHs.png" alt="SKYWAY Community Gathering" class="w-full h-full object-cover opacity-50">
+            </div>
+        </section>
+
+        <section id="about" class="py-20 section-divider">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/2 mb-10 md:mb-0 md:pr-10">
+                        <h2 class="text-3xl font-bold mb-6 relative inline-block">
+                            TENTANG KAMI
+                            <span class="absolute bottom-0 left-0 w-1/3 h-1 bg-red-600"></span>
+                        </h2>
+                        <p class="text-gray-400 mb-6">SKYWAY adalah sebuah sistem kehitaman, tempat di mana setiap anggota ditempa oleh suasana keras, penuh emosi, dan terkadang melelahkan. Di dalamnya, orang seringkali harus menghadapi beban yang berat, menghadapi drama yang muncul dari perbedaan pendapat, dan melewati pertengkaran kecil yang bisa menguji kesabaran. Namun justru itulah yang membuat SKYWAY unik—ia bukan sekadar komunitas yang hanya menampilkan sisi indah, melainkan ruang nyata tempat manusia dengan segala sisi gelap dan terang berkumpul.</p>
+                        <p class="text-gray-400 mb-6">Di balik setiap konflik, selalu ada pelajaran yang memperkuat hubungan. Di balik setiap drama, lahir cerita yang menumbuhkan kedewasaan bersama. Dan meskipun emosi kerap meledak, anggota SKYWAY tetap saling mengulurkan tangan, menunjukkan bahwa solidaritas mereka lebih besar daripada perbedaan.</p>
+                        <p class="text-gray-400">SKYWAY mungkin terlihat keras, gelap, dan penuh ujian, namun di dalamnya ada semangat kebersamaan yang tidak bisa digoyahkan. Di sinilah orang belajar bukan hanya untuk menjadi kuat sendiri, tetapi juga untuk menjadi bagian dari solidaritas yang kokoh—sistem kehitaman yang mampu mengubah beban dan drama menjadi fondasi persaudaraan yang tak tergoyahkan.</p>
+                    </div>
+                    <div class="md:w-1/2 relative">
+                        <div class="grid grid-cols-2 gap-4">
+                            <img src="https://i.imghippo.com/files/mjCg8355shs.jpg" alt="Anggota SKYWAY Community berkumpul" class="gallery-item rounded-lg shadow-lg h-full w-full object-cover">
+                            <div class="flex flex-col space-y-4">
+                                <img src="https://i.imghippo.com/files/nYoT4144n.jpg" alt="Seorang anggota menerbangkan drone" class="gallery-item rounded-lg shadow-lg">
+                                <img src="https://i.imghippo.com/files/aTP8104zw.jpg" alt="Diskusi antar anggota SKYWAY" class="gallery-item rounded-lg shadow-lg">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery" class="py-20 section-divider bg-black">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold mb-4">GALERI KARYA</h2>
+                    <p class="text-gray-400 max-w-2xl mx-auto">Menyusuri sisi gelap dari setiap sudut pandang. Inilah karya yang lahir dari beban dan drama.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Gallery Items -->
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/itY3839VmE.jpg" alt="Foto udara perkotaan" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Parasit Kota</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/rE8520K.jpg" alt="Foto udara pemandangan alam" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Jiwa Busuk</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/whQA2787ss.jpg" alt="Foto udara jembatan" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Pengkhianat</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/IXqg8693GPE.jpg" alt="Foto udara pantai" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Neraka Dunia</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/d1186ts.jpg" alt="Foto udara malam hari" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Luka Bernanah</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/ZYGr5317Q.jpg" alt="Foto udara pegunungan" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Kepalsuan Total</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/WdE3379vxg.jpg" alt="Foto udara dari atas" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Hancur Lebur</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/rMNa1061wr.jpg" alt="Foto udara gedung" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Mimpi Buruk Abadi</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/MSsF7599OPg.jpg" alt="Foto udara jalanan" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Ditusuk dari Belakang</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/bpx4735NY.jpg" alt="Foto udara pelabuhan" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Racun Mematikan</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/QKVQ1958FTM.jpg" alt="Foto udara perumahan" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Tak Punya Hati</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/gizI5398lg.jpg" alt="Foto udara hutan" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Iblis Berwujud</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/tZu9494SQY.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Bangkai Bernyawa</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/TXOa8332DU.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Siksa Batin</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/iLXp6578Ecg.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Aib Keluarga</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/jbTr1400NW.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Munafik</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/pkSg2842g.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Penjilat</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/FZK7837dk.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Otak Udang</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/JOOY8764mLU.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Sampah</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/OJ2566aLk.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Kegagalan Total</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/cVDT8186Bj.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Dibuang</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/SV9591FKw.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Tak Dianggap</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/Ljl6385SX.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Pecundang</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/ORU2573eI.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Penghancur</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/KLJR9327Slo.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Biang Kerok</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/Xyv6084grQ.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Siksaan Tanpa Akhir</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/Ea1317emM.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Kebencian Murni</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/wFkx9457AU.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Topeng Iblis</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/sG7778R.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Akhir yang Tragis</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/hpz4069aPo.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Lubang Hitam</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/rdWn1863yU.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Kehancuran</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/NWS1679bDA.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Keputusasaan</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/oXqe5442RvM.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Tangisan Darah</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/kUIp5761ec.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Tulang Rusuk Patah</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/RM6564Kro.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Hati yang Mati</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/zX7874Nts.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Senyum Palsu</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/cNQg5667lVg.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Kebusukan</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/uEQl1506E.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Penderitaan</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/agNV2328Zdw.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Kepedihan</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/VMRf2525kqY.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Jiwa Terkutuk</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/GF8658SjE.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Manusia Sampah</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/UVK3456bBg.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Beban Hidup</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/pUF6486Q.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Tak Berharga</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/Esf7263Ak.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Makhluk Hina</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- NEW IMAGES START HERE -->
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/QNXW6553wYE.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Mati Rasa</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/Dw1649IhU.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Siksaan Abadi</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/IPS6373xo.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Darah Pengkhianat</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- NEW IMAGES END HERE -->
+                </div>
+                <div class="text-center mt-12">
+                    <button class="btn-outline px-8 py-3 rounded-lg font-medium">Lihat Lebih Banyak</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="gaming-gallery" class="py-20 section-divider bg-gray-900">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold mb-4">GALERI GAMING</h2>
+                    <p class="text-gray-400 max-w-2xl mx-auto">Momen dari medan perang virtual, tempat strategi dan ketegangan bertemu.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Gaming Gallery Items -->
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/Xfrb6268Pp.jpg" alt="Gaming Setup" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Medan Perang Virtual</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/YUNx4334PhY.jpg" alt="Gaming Moment" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Strategi Dimulai</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/zUy4766p.jpg" alt="Gaming Victory" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Kemenangan Epik</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/VnRl8519o.jpg" alt="Digital World" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Dunia Digital</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden gallery-item rounded-lg">
+                        <img src="https://i.imghippo.com/files/ikmh4215AKo.jpg" alt="Gamer Focus" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Fokus Penuh</h3>
+                                <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- POKER GAME LAUNCHER -->
+                    <div id="launch-poker-btn" class="group relative overflow-hidden gallery-item rounded-lg cursor-pointer">
+                        <img src="https://i.imghippo.com/files/ZzOO6729dXI.png" alt="Texas Hold'em Poker Game" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <h3 class="text-xl font-semibold">Texas Hold'em Poker</h3>
+                                <p class="text-gray-300">Mainkan Sekarang!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 section-divider bg-black">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold mb-4">APA KATA MEREKA</h2>
+                    <p class="text-gray-400 max-w-2xl mx-auto">Dengar langsung dari mereka yang telah merasakan sisi gelap SKYWAY.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-gray-900 p-8 rounded-lg relative">
+                        <p class="text-gray-300 mb-6 italic">"Bergabung dengan SKYWAY adalah kesalahan. Komunitas ini penuh drama dan tekanan. Komunitas tidak jelas hanya membuang buang waktu."</p>
+                        <div class="flex items-center">
+                            <img src="https://i.imghippo.com/files/GRC2727muU.jpg" alt="Portrait of Dito Pratama" class="w-12 h-12 rounded-full mr-4 object-cover">
+                            <div>
+                                <h4 class="font-semibold">Koros Dark Sistem</h4>
+                                <p class="text-sm text-gray-400">Anggota sejak 2025</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-8 rounded-lg relative">
+                        <p class="text-gray-300 mb-6 italic">"Saya pikir komunitas ini akan membantu. Nyatanya, saya malah kehilangan banyak proyek karena reputasi buruk SKYWAY. Mereka tidak membantu sama sekali, hanya menambah beban."</p>
+                        <div class="flex items-center">
+                            <img src="https://i.imghippo.com/files/UoOf5841WUo.jpg" alt="Portrait of Laras Setia" class="w-12 h-12 rounded-full mr-4 object-cover">
+                            <div>
+                                <h4 class="font-semibold">Jull Beban Tim</h4>
+                                <p class="text-sm text-gray-400">Anggota sejak 2025</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-8 rounded-lg relative">
+                        <p class="text-gray-300 mb-6 italic">"Ekspedisi bersama SKYWAY adalah mimpi buruk. Penuh konflik, tidak terorganisir, dan hasilnya jauh dari harapan. Saya tidak belajar apa-apa selain cara bertahan dalam lingkungan toxic."</p>
+                        <div class="flex items-center">
+                            <img src="https://i.imghippo.com/files/kFAE8232GIM.jpg" alt="Portrait of Hafiz Wijaya" class="w-12 h-12 rounded-full mr-4 object-cover">
+                            <div>
+                                <h4 class="font-semibold">Zura Kalah Bewan</h4>
+                                <p class="text-sm text-gray-400">Anggota sejak 2025</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <footer id="contact" class="bg-black py-12 border-t border-gray-800">
+            <div class="max-w-7xl mx-auto px-6 text-center text-gray-400">
+                <h2 class="text-2xl font-bold mb-4">HUBUNGI KAMI</h2>
+                <p class="mb-6">Punya pertanyaan atau ingin berkolaborasi? Jangan ragu untuk menghubungi kami.</p>
+                <a href="mailto:info@skywaycommunity.com" class="text-red-500 hover:text-red-400 text-lg">info@skywaycommunity.com</a>
+                <div class="flex justify-center space-x-6 my-8">
+                    <a href="#" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.012-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218 1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.06-1.004.048-1.625.211-2.126.41-1.054.425-1.838 1.21-2.262 2.262-.2.501-.362 1.122-.41 2.126-.048 1.023-.06 1.351-.06 3.807s.012 2.784.06 3.807c.048 1.004.211 1.625.41 2.126.425 1.054 1.208 1.838 2.262 2.262.501.2 1.122.362 2.126.41 1.023.048 1.351.06 3.807.06h.468c2.456 0 2.784-.011 3.807-.06 1.004-.048 1.625-.211 2.126-.41 1.054-.425 1.838-1.21 2.262-2.262.2-.501.362-1.122-.41-2.126.048-1.023.06-1.351-.06-3.807s-.012-2.784-.06-3.807c-.048-1.004-.211-1.625-.41-2.126-.425-1.054-1.208-1.838-2.262-2.262-.501-.2-1.122-.362-2.126-.41-1.023-.048-1.351-.06-3.807-.06zM12 6.865a5.135 5.135 0 100 10.27 5.135 5.135 0 000-10.27zm0 1.802a3.333 3.333 0 110 6.666 3.333 3.333 0 010-6.666zm5.338-3.205a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z" clip-rule="evenodd" /></svg></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg></a>
+                </div>
+                <p class="text-sm">&copy; 2025 SKYWAY Community. All Rights Reserved.</p>
+            </div>
+        </footer>
+        
+        <!-- Shooter Game Content -->
+        <div id="game-container-wrapper">
+            <div id="game-container">
+                <div class="score-display hud-element">
+                    <i class="fas fa-star" style="color: #f7b731;"></i> Skor: <span id="score">0</span>
+                </div>
+                <div class="weapon-display hud-element">
+                    <i id="weaponIcon" class="fas fa-bolt weapon-icon"></i>
+                    <span id="weaponType">Laser Standar</span>
+                </div>
+                <div class="health-bar-container hud-element">
+                    <div class="health-bar">
+                        <div class="health-fill" id="healthBar"></div>
+                    </div>
+                </div>
+                <canvas id="gameCanvas"></canvas>
+                <div id="gameOver" class="modal-screen">
+                    <div class="modal-box">
+                        <h1 class="text-4xl font-bold text-red-500" style="text-shadow: 0 0 10px #f00;">MISI GAGAL</h1>
+                        <p class="text-xl mt-4">Skor Akhir: <span id="finalScore" class="font-bold text-yellow-400">0</span></p>
+                        <button class="action-button" onclick="restartGame()">
+                            <i class="fas fa-redo"></i> Coba Lagi
+                        </button>
+                    </div>
+                </div>
+                <div id="startScreen" class="modal-screen">
+                    <div class="modal-box">
+                        <h1 class="game-title">Pejuang Udara Elit</h1>
+                        <p class="text-lg mb-6">Pilih pesawat tempurmu, dominasi angkasa!</p>
+                        <div class="plane-selection">
+                            <div class="plane-option" data-plane="1" onclick="selectPlane(1)">
+                                <div class="plane-icon"><i class="fas fa-fighter-jet"></i></div>
+                                <div class="plane-name">Thor-X</div><div class="plane-stats">Cepat & Seimbang</div>
+                            </div>
+                            <div class="plane-option" data-plane="2" onclick="selectPlane(2)">
+                                <div class="plane-icon"><i class="fas fa-space-shuttle"></i></div>
+                                <div class="plane-name">Sayap Angkasa</div><div class="plane-stats">Tangguh & Kuat</div>
+                            </div>
+                            <div class="plane-option" data-plane="3" onclick="selectPlane(3)">
+                                <div class="plane-icon"><i class="fas fa-helicopter"></i></div>
+                                <div class="plane-name">Phoenix Baja</div><div class="plane-stats">Super Cepat</div>
+                            </div>
+                            <div class="plane-option" data-plane="4" onclick="selectPlane(4)">
+                                <div class="plane-icon"><i class="fas fa-jet-fighter-up"></i></div>
+                                <div class="plane-name">Hantu Malam</div><div class="plane-stats">Ahli Senjata</div>
+                            </div>
+                        </div>
+                        <button class="action-button" onclick="startGame()">
+                            <i class="fas fa-play"></i> Mulai Bertarung
+                        </button>
+                        <div class="controls">
+                            <p><span class="font-bold">WASD/Panah</span>: Bergerak | <span class="font-bold">Spasi</span>: Tembak</p>
+                            <p class="mt-2"><span class="font-bold">E</span>: Ganti Senjata | <span class="font-bold">Q</span>: Skill Khusus</p>
+                            <p class="mt-4 text-sm text-gray-400">Di perangkat seluler, sentuh & geser untuk bergerak & menembak otomatis.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <section id="gallery" class="py-20 section-divider bg-black">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold mb-4">GALERI KARYA</h2>
-                <p class="text-gray-400 max-w-2xl mx-auto">Menyusuri sisi gelap dari setiap sudut pandang. Inilah karya yang lahir dari beban dan drama.</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Gallery Items -->
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/itY3839VmE.jpg" alt="Foto udara perkotaan" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Parasit Kota</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/rE8520K.jpg" alt="Foto udara pemandangan alam" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Jiwa Busuk</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/whQA2787ss.jpg" alt="Foto udara jembatan" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Pengkhianat</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/IXqg8693GPE.jpg" alt="Foto udara pantai" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Neraka Dunia</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/d1186ts.jpg" alt="Foto udara malam hari" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Luka Bernanah</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/ZYGr5317Q.jpg" alt="Foto udara pegunungan" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Kepalsuan Total</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                 <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/WdE3379vxg.jpg" alt="Foto udara dari atas" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Hancur Lebur</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                 <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/rMNa1061wr.jpg" alt="Foto udara gedung" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Mimpi Buruk Abadi</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                 <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/MSsF7599OPg.jpg" alt="Foto udara jalanan" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Ditusuk dari Belakang</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                 <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/bpx4735NY.jpg" alt="Foto udara pelabuhan" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Racun Mematikan</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                 <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/QKVQ1958FTM.jpg" alt="Foto udara perumahan" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Tak Punya Hati</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                 <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/gizI5398lg.jpg" alt="Foto udara hutan" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Iblis Berwujud</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/tZu9494SQY.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Bangkai Bernyawa</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/TXOa8332DU.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Siksa Batin</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/iLXp6578Ecg.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Aib Keluarga</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/jbTr1400NW.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Munafik</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/pkSg2842g.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Penjilat</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/FZK7837dk.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Otak Udang</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/JOOY8764mLU.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Sampah</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/OJ2566aLk.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Kegagalan Total</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/cVDT8186Bj.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Dibuang</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/SV9591FKw.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Tak Dianggap</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/Ljl6385SX.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Pecundang</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/ORU2573eI.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Penghancur</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/KLJR9327Slo.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Biang Kerok</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/Xyv6084grQ.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Siksaan Tanpa Akhir</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/Ea1317emM.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Kebencian Murni</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/wFkx9457AU.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Topeng Iblis</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/sG7778R.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Akhir yang Tragis</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/hpz4069aPo.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Lubang Hitam</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/rdWn1863yU.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Kehancuran</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/NWS1679bDA.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Keputusasaan</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/oXqe5442RvM.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Tangisan Darah</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/kUIp5761ec.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Tulang Rusuk Patah</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/RM6564Kro.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Hati yang Mati</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/zX7874Nts.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Senyum Palsu</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/cNQg5667lVg.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Kebusukan</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/uEQl1506E.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Penderitaan</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/agNV2328Zdw.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Kepedihan</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/VMRf2525kqY.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Jiwa Terkutuk</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/GF8658SjE.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Manusia Sampah</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/UVK3456bBg.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Beban Hidup</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/pUF6486Q.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Tak Berharga</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/Esf7263Ak.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Makhluk Hina</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- NEW IMAGES START HERE -->
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/QNXW6553wYE.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Mati Rasa</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/Dw1649IhU.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Siksaan Abadi</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/IPS6373xo.jpg" alt="Gallery Image" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Darah Pengkhianat</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- NEW IMAGES END HERE -->
-            </div>
-            <div class="text-center mt-12">
-                <button class="btn-outline px-8 py-3 rounded-lg font-medium">Lihat Lebih Banyak</button>
+    <!-- POKER GAME WRAPPER (Initially Hidden) -->
+    <div id="poker-app-wrapper" class="hidden fixed inset-0 z-[100] antialiased">
+        <!-- Start Screen Overlay -->
+        <div id="start-screen-poker" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/70 backdrop-blur-sm transition-opacity duration-300">
+            <div class="text-center">
+                <h1 class="text-5xl md:text-7xl font-bold text-white mb-2" style="font-family: 'Playfair Display', serif;">Texas Hold'em</h1>
+                <p class="text-xl text-amber-300 mb-8">Edisi Turnamen</p>
+                <button id="start-game-btn-poker" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 px-10 rounded-lg text-2xl shadow-lg transform hover:scale-105 transition-transform duration-200">
+                    Mulai Turnamen
+                </button>
             </div>
         </div>
-    </section>
 
-    <section id="gaming-gallery" class="py-20 section-divider bg-gray-900">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold mb-4">GALERI GAMING</h2>
-                <p class="text-gray-400 max-w-2xl mx-auto">Momen dari medan perang virtual, tempat strategi dan ketegangan bertemu.</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Gaming Gallery Items -->
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/Xfrb6268Pp.jpg" alt="Gaming Setup" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Medan Perang Virtual</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
+        <!-- Main Game Container -->
+        <div class="game-container flex flex-col h-screen w-screen">
+            <!-- Top Bar -->
+            <div class="top-bar flex justify-between items-center p-2 md:p-3 bg-black/30 text-sm flex-shrink-0 z-20">
+                <h1 class="text-lg md:text-xl font-bold" style="font-family: 'Playfair Display', serif;">Texas Hold'em</h1>
+                <div id="player-info" class="font-semibold">
+                    Saldo Anda: <span id="human-player-chips" class="text-amber-300">Rp 1.000.000</span>
                 </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/YUNx4334PhY.jpg" alt="Gaming Moment" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Strategi Dimulai</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/zUy4766p.jpg" alt="Gaming Victory" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Kemenangan Epik</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/VnRl8519o.jpg" alt="Digital World" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Dunia Digital</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/ikmh4215AKo.jpg" alt="Gamer Focus" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Fokus Penuh</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="group relative overflow-hidden gallery-item rounded-lg">
-                    <img src="https://i.imghippo.com/files/T5200LU.jpg" alt="Battle Arena" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
-                        <div class="absolute bottom-0 left-0 p-6 w-full">
-                            <h3 class="text-xl font-semibold">Arena Pertarungan</h3>
-                            <p class="text-gray-300">Oleh: Anggota SKYWAY</p>
-                        </div>
-                    </div>
+                <div class="flex items-center gap-2">
+                    <button id="settings-btn" class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-md shadow-md transition-colors">
+                        Pengaturan
+                    </button>
+                    <button id="close-poker-btn" class="bg-red-700 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-md shadow-md transition-colors">
+                        Keluar
+                    </button>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <section class="py-20 section-divider bg-black">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold mb-4">APA KATA MEREKA</h2>
-                <p class="text-gray-400 max-w-2xl mx-auto">Dengar langsung dari mereka yang telah merasakan sisi gelap SKYWAY.</p>
-            </div>
+            <!-- Main Game Area (Table + Controls) -->
+            <main class="flex-grow flex flex-col items-center justify-center p-2 md:p-4 min-h-0 relative">
+                <div id="game-log" class="game-log fixed top-[60px] left-2 w-48 h-36 bg-black/40 backdrop-blur-sm rounded-lg p-2 overflow-y-auto text-xs z-20 md:relative md:top-auto md:left-auto md:w-80 md:h-28 md:bg-black/30 md:text-sm md:backdrop-blur-none"></div>
+                <div id="poker-table" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95vw] md:w-full max-w-7xl mx-auto border-[10px] md:border-[15px] border-yellow-900/80 rounded-[60px] md:rounded-[100px]" style="aspect-ratio: 2 / 1;">
+                    <!-- Players will be injected here by JS -->
+                    <div class="community-cards absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex gap-1 md:gap-2">
+                        <!-- Community cards will be injected here -->
+                    </div>
+                    <div class="pot-container absolute bottom-[25%] md:bottom-[20%] left-1/2 -translate-x-1/2 text-center bg-black/40 p-2 rounded-lg shadow-lg">
+                        <div id="pot-total" class="font-bold text-sm md:text-lg whitespace-nowrap">Pot: Rp 0</div>
+                        <div id="side-pots-info" class="text-xs opacity-80"></div>
+                    </div>
+                    <div id="winner-display" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/80 p-5 md:p-8 rounded-lg text-center z-[100] hidden shadow-2xl backdrop-blur-sm">
+                        <h2 id="winner-name" class="text-2xl md:text-3xl font-bold text-amber-300 mb-2"></h2>
+                        <p id="winner-hand" class="text-lg"></p>
+                    </div>
+                </div>
+                
+                <!-- Desktop Controls Area -->
+                <div class="hidden md:flex w-full max-w-7xl mx-auto flex-row justify-between items-end gap-4 absolute bottom-4">
+                    <div class="w-80 h-28 flex-shrink-0"></div> <!-- Spacer to align with the log on the left -->
+                    <div class="controls flex flex-col items-center gap-2 flex-grow w-full">
+                        <!-- Desktop slider and buttons will be here -->
+                    </div>
+                </div>
+            </main>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-gray-900 p-8 rounded-lg relative">
-                    <p class="text-gray-300 mb-6 italic">"Bergabung dengan SKYWAY adalah kesalahan. Komunitas ini penuh drama dan tekanan. Komunitas tidak jelas hanya membuang buang waktu."</p>
-                    <div class="flex items-center">
-                        <img src="https://i.imghippo.com/files/GRC2727muU.jpg" alt="Portrait of Dito Pratama" class="w-12 h-12 rounded-full mr-4 object-cover">
-                        <div>
-                            <h4 class="font-semibold">Koros Dark Sistem</h4>
-                            <p class="text-sm text-gray-400">Anggota sejak 2025</p>
-                        </div>
-                    </div>
+            <!-- Mobile Controls Wrapper -->
+            <div id="mobile-controls-wrapper" class="md:hidden z-30">
+                <div id="bet-slider-container" class="bet-slider fixed bottom-[72px] left-0 right-0 p-3 bg-black/80 backdrop-blur-sm invisible opacity-0 transition-all duration-300">
+                    <!-- Mobile slider content -->
                 </div>
-                
-                <div class="bg-gray-900 p-8 rounded-lg relative">
-                    <p class="text-gray-300 mb-6 italic">"Saya pikir komunitas ini akan membantu. Nyatanya, saya malah kehilangan banyak proyek karena reputasi buruk SKYWAY. Mereka tidak membantu sama sekali, hanya menambah beban."</p>
-                    <div class="flex items-center">
-                        <img src="https://i.imghippo.com/files/UoOf5841WUo.jpg" alt="Portrait of Laras Setia" class="w-12 h-12 rounded-full mr-4 object-cover">
-                        <div>
-                            <h4 class="font-semibold">Jull Beban Tim</h4>
-                            <p class="text-sm text-gray-400">Anggota sejak 2025</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-gray-900 p-8 rounded-lg relative">
-                    <p class="text-gray-300 mb-6 italic">"Ekspedisi bersama SKYWAY adalah mimpi buruk. Penuh konflik, tidak terorganisir, dan hasilnya jauh dari harapan. Saya tidak belajar apa-apa selain cara bertahan dalam lingkungan toxic."</p>
-                    <div class="flex items-center">
-                        <img src="https://i.imghippo.com/files/kFAE8232GIM.jpg" alt="Portrait of Hafiz Wijaya" class="w-12 h-12 rounded-full mr-4 object-cover">
-                        <div>
-                            <h4 class="font-semibold">Zura Kalah Bewan</h4>
-                            <p class="text-sm text-gray-400">Anggota sejak 2025</p>
-                        </div>
-                    </div>
+                <div id="action-buttons" class="fixed bottom-0 left-0 right-0 p-2 bg-black/50 backdrop-blur-sm flex justify-around gap-2">
+                    <!-- Mobile action buttons -->
                 </div>
             </div>
         </div>
-    </section>
-    
-    <footer id="contact" class="bg-black py-12 border-t border-gray-800">
-        <div class="max-w-7xl mx-auto px-6 text-center text-gray-400">
-            <h2 class="text-2xl font-bold mb-4">HUBUNGI KAMI</h2>
-            <p class="mb-6">Punya pertanyaan atau ingin berkolaborasi? Jangan ragu untuk menghubungi kami.</p>
-            <a href="mailto:info@skywaycommunity.com" class="text-red-500 hover:text-red-400 text-lg">info@skywaycommunity.com</a>
-            <div class="flex justify-center space-x-6 my-8">
-                <a href="#" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg></a>
-                <a href="#" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.012-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218 1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.06-1.004.048-1.625.211-2.126.41-1.054.425-1.838 1.21-2.262 2.262-.2.501-.362 1.122-.41 2.126-.048 1.023-.06 1.351-.06 3.807s.012 2.784.06 3.807c.048 1.004.211 1.625.41 2.126.425 1.054 1.208 1.838 2.262 2.262.501.2 1.122.362 2.126.41 1.023.048 1.351.06 3.807.06h.468c2.456 0 2.784-.011 3.807-.06 1.004-.048 1.625-.211 2.126-.41 1.054-.425 1.838-1.21 2.262-2.262.2-.501.362-1.122-.41-2.126.048-1.023.06-1.351-.06-3.807s-.012-2.784-.06-3.807c-.048-1.004-.211-1.625-.41-2.126-.425-1.054-1.208-1.838-2.262-2.262-.501-.2-1.122-.362-2.126-.41-1.023-.048-1.351-.06-3.807-.06zM12 6.865a5.135 5.135 0 100 10.27 5.135 5.135 0 000-10.27zm0 1.802a3.333 3.333 0 110 6.666 3.333 3.333 0 010-6.666zm5.338-3.205a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z" clip-rule="evenodd" /></svg></a>
-                <a href="#" class="text-gray-400 hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg></a>
+        
+        <!-- Settings Modal (REVISED) -->
+        <div id="settings-modal" class="fixed inset-0 z-40 hidden items-center justify-center bg-gray-900/80 backdrop-blur-md">
+            <div class="modal-content bg-gray-800 text-gray-100 p-6 md:p-8 rounded-2xl shadow-2xl w-11/12 max-w-lg border border-gray-700 transform transition-all duration-300 scale-95 opacity-0">
+                <div class="flex justify-between items-center pb-4 border-b border-gray-700">
+                    <h2 class="text-3xl font-bold text-white">Pengaturan Permainan</h2>
+                    <button id="close-modal-btn" class="text-gray-400 hover:text-white text-4xl leading-none transition-transform duration-200 hover:rotate-90">&times;</button>
+                </div>
+
+                <div class="space-y-6 mt-6">
+                      <!-- Profile Picture Section -->
+                      <div class="form-group">
+                           <label class="block mb-3 text-base font-semibold text-gray-300">Foto Profil Anda</label>
+                           <div class="flex items-center gap-6">
+                               <img id="profile-preview" src="" alt="Profile Preview" class="w-24 h-24 rounded-full object-cover bg-gray-700 border-2 border-gray-600">
+                               <div class="flex flex-col gap-3">
+                                   <button id="pick-from-gallery-btn" class="flex items-center justify-center gap-2 bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm">
+                                       <i class="fas fa-images"></i> Pilih dari Galeri
+                                   </button>
+                                   <button id="upload-avatar-btn" class="flex items-center justify-center gap-2 bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm">
+                                       <i class="fas fa-upload"></i> Unggah Gambar
+                                   </button>
+                                   <input type="file" id="avatar-file-input" class="hidden" accept="image/*">
+                               </div>
+                           </div>
+                       </div>
+
+                    <div class="space-y-5 pt-6 border-t border-gray-700">
+                        <div class="form-group">
+                            <label for="player-name-input" class="block mb-2 text-base font-semibold text-gray-300">Nama Anda</label>
+                            <input type="text" id="player-name-input" class="modal-input" placeholder="Masukkan nama Anda...">
+                        </div>
+                        <div class="form-group">
+                            <label for="num-players-select" class="block mb-2 text-base font-semibold text-gray-300">Jumlah Pemain</label>
+                            <select id="num-players-select" class="modal-input">
+                                <option value="2">2</option><option value="3">3</option><option value="4">4</option>
+                                <option value="5">5</option><option value="6" selected>6</option><option value="7">7</option>
+                                <option value="8">8</option><option value="9">9</option><option value="10">10</option>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label for="small-blind-input" class="block mb-2 text-base font-semibold text-gray-300">Small Blind</label>
+                                <input type="number" id="small-blind-input" class="modal-input" value="10000" min="1000">
+                            </div>
+                            <div class="form-group">
+                                <label for="big-blind-input" class="block mb-2 text-base font-semibold text-gray-300">Big Blind</label>
+                                <input type="number" id="big-blind-input" class="modal-input" value="20000" min="2000">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-4 mt-8">
+                    <button id="save-settings-btn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg shadow-blue-500/20">Simpan & Mulai Ulang</button>
+                    <button id="reset-data-btn" class="w-full bg-red-800 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg shadow-red-500/20">Atur Ulang Data</button>
+                </div>
             </div>
-            <p class="text-sm">&copy; 2025 SKYWAY Community. All Rights Reserved.</p>
         </div>
-    </footer>
-    
-    <!-- Game Content -->
-    <div id="game-container-wrapper">
-        <div id="game-container">
-            <div class="score-display hud-element">
-                <i class="fas fa-star" style="color: #f7b731;"></i> Skor: <span id="score">0</span>
-            </div>
-            <div class="weapon-display hud-element">
-                <i id="weaponIcon" class="fas fa-bolt weapon-icon"></i>
-                <span id="weaponType">Laser Standar</span>
-            </div>
-            <div class="health-bar-container hud-element">
-                <div class="health-bar">
-                    <div class="health-fill" id="healthBar"></div>
-                </div>
-            </div>
-            <canvas id="gameCanvas"></canvas>
-            <div id="gameOver" class="modal-screen">
-                <div class="modal-box">
-                    <h1 class="text-4xl font-bold text-red-500" style="text-shadow: 0 0 10px #f00;">MISI GAGAL</h1>
-                    <p class="text-xl mt-4">Skor Akhir: <span id="finalScore" class="font-bold text-yellow-400">0</span></p>
-                    <button class="action-button" onclick="restartGame()">
-                        <i class="fas fa-redo"></i> Coba Lagi
-                    </button>
-                </div>
-            </div>
-            <div id="startScreen" class="modal-screen">
-                <div class="modal-box">
-                    <h1 class="game-title">Pejuang Udara Elit</h1>
-                    <p class="text-lg mb-6">Pilih pesawat tempurmu, dominasi angkasa!</p>
-                    <div class="plane-selection">
-                        <div class="plane-option" data-plane="1" onclick="selectPlane(1)">
-                            <div class="plane-icon"><i class="fas fa-fighter-jet"></i></div>
-                            <div class="plane-name">Thor-X</div><div class="plane-stats">Cepat & Seimbang</div>
-                        </div>
-                        <div class="plane-option" data-plane="2" onclick="selectPlane(2)">
-                            <div class="plane-icon"><i class="fas fa-space-shuttle"></i></div>
-                            <div class="plane-name">Sayap Angkasa</div><div class="plane-stats">Tangguh & Kuat</div>
-                        </div>
-                        <div class="plane-option" data-plane="3" onclick="selectPlane(3)">
-                            <div class="plane-icon"><i class="fas fa-helicopter"></i></div>
-                            <div class="plane-name">Phoenix Baja</div><div class="plane-stats">Super Cepat</div>
-                        </div>
-                        <div class="plane-option" data-plane="4" onclick="selectPlane(4)">
-                            <div class="plane-icon"><i class="fas fa-jet-fighter-up"></i></div>
-                            <div class="plane-name">Hantu Malam</div><div class="plane-stats">Ahli Senjata</div>
-                        </div>
-                    </div>
-                    <button class="action-button" onclick="startGame()">
-                        <i class="fas fa-play"></i> Mulai Bertarung
-                    </button>
-                    <div class="controls">
-                        <p><span class="font-bold">WASD/Panah</span>: Bergerak | <span class="font-bold">Spasi</span>: Tembak</p>
-                        <p class="mt-2"><span class="font-bold">E</span>: Ganti Senjata | <span class="font-bold">Q</span>: Skill Khusus</p>
-                        <p class="mt-4 text-sm text-gray-400">Di perangkat seluler, sentuh & geser untuk bergerak & menembak otomatis.</p>
-                    </div>
+
+
+        <!-- Gallery Picker Modal -->
+        <div id="gallery-picker-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-gray-900/80 backdrop-blur-md">
+             <div class="bg-gray-800 text-gray-100 p-6 md:p-8 rounded-xl shadow-2xl w-11/12 max-w-4xl border border-gray-700 transform transition-all duration-300 scale-95 opacity-0">
+                  <div class="flex justify-between items-center mb-6 pb-4 border-b border-gray-700">
+                      <h2 class="text-3xl font-bold text-white">Pilih Foto Profil dari Galeri</h2>
+                      <button id="close-gallery-picker-btn" class="text-gray-400 hover:text-white text-4xl leading-none transition-transform duration-200 hover:rotate-90">&times;</button>
+                  </div>
+                  <div id="gallery-picker-grid" class="gallery-grid p-2">
+                      <!-- Gallery images will be injected here -->
+                  </div>
+             </div>
+        </div>
+
+        <!-- Generic Confirmation Modal -->
+        <div id="confirm-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm">
+            <div class="bg-[#2c2c2c] p-6 rounded-lg shadow-2xl w-11/12 max-w-sm text-center">
+                <h3 id="confirm-title" class="text-xl font-bold mb-4"></h3>
+                <p id="confirm-message" class="mb-6"></p>
+                <div class="flex justify-center gap-4">
+                    <button id="confirm-ok-btn" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-6 rounded-md">OK</button>
+                    <button id="confirm-cancel-btn" class="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-6 rounded-md">Batal</button>
                 </div>
             </div>
         </div>
@@ -1210,6 +1443,7 @@
       })();
     </script>
     
+    <!-- Shooter Game Script -->
     <script>
         // Game variables
         const canvas = document.getElementById('gameCanvas');
@@ -1260,7 +1494,7 @@
 
         const enemyImages = [];
         let allImagesLoaded = false;
-        // --- PERUBAHAN 1: Mengambil gambar dari galeri utama ---
+        // --- Mengambil gambar dari galeri utama ---
         const galleryImageNodes = document.querySelectorAll('#gallery .gallery-item img');
 
         if (galleryImageNodes.length > 0) {
@@ -1270,7 +1504,7 @@
             galleryImageNodes.forEach(imgNode => {
                 const img = new Image();
                 img.src = imgNode.src;
-                // --- PERUBAHAN 2: Menambahkan crossOrigin untuk kanvas ---
+                // --- Menambahkan crossOrigin untuk kanvas ---
                 img.crossOrigin = "Anonymous"; 
                 img.onload = () => {
                     loadedCount++;
@@ -1384,10 +1618,10 @@
              const config = planeConfigs[player.planeType];
                config.special.cooldown = config.special.maxCooldown;
                switch(player.planeType) {
-                  case 1: player.speed *= 3; setTimeout(() => player.speed = config.speed, 500); break;
-                  case 2: for (let i = 0; i < 10; i++) { setTimeout(() => { player.bullets.push({ x: Math.random() * canvas.width, y: 0, width: 8, height: 25, speed: 15, color: '#f72585', damage: 30 }); }, i * 50); } break;
-                  case 3: hitFlash = 30; break;
-                  case 4: playerHealth = Math.min(playerMaxHealth, playerHealth + 50); healthBar.style.width = `${playerHealth / playerMaxHealth * 100}%`; break;
+                 case 1: player.speed *= 3; setTimeout(() => player.speed = config.speed, 500); break;
+                 case 2: for (let i = 0; i < 10; i++) { setTimeout(() => { player.bullets.push({ x: Math.random() * canvas.width, y: 0, width: 8, height: 25, speed: 15, color: '#f72585', damage: 30 }); }, i * 50); } break;
+                 case 3: hitFlash = 30; break;
+                 case 4: playerHealth = Math.min(playerMaxHealth, playerHealth + 50); healthBar.style.width = `${playerHealth / playerMaxHealth * 100}%`; break;
                }
                playSound('special');
         }
@@ -1478,7 +1712,7 @@
                 hit: 0, lastShot: 0, image: null
             };
 
-            // --- PERUBAHAN 3: Menggunakan gambar dari galeri untuk musuh ---
+            // --- Menggunakan gambar dari galeri untuk musuh ---
             if (allImagesLoaded && enemyImages.length > 0) {
                 // Filter gambar yang sudah berhasil dimuat
                 const validImages = enemyImages.filter(img => img.complete && img.naturalWidth !== 0);
@@ -1515,9 +1749,8 @@
                 ctx.save();
                 if (e.hit > 0) ctx.filter = `brightness(${1 + e.hit * 0.2})`;
 
-                // --- PERUBAHAN 4: Menggambar musuh menggunakan gambar jika tersedia ---
+                // --- Menggambar musuh menggunakan gambar jika tersedia ---
                 if (e.image && e.image.complete && e.image.naturalWidth !== 0) {
-                    // Gambar akan disesuaikan dengan ukuran kotak musuh, menjaga proporsionalitas
                     ctx.drawImage(e.image, e.x, e.y, e.width, e.height);
                 } else {
                     // Fallback jika gambar tidak ada atau gagal dimuat
@@ -1736,6 +1969,775 @@
         }
         renderInitialFrame();
     </script>
+
+    <!-- Poker Game Script -->
+    <script id="poker-script">
+     document.addEventListener('DOMContentLoaded', () => {
+        const pokerWrapper = document.getElementById('poker-app-wrapper');
+
+        // Kumpulkan URL gambar dari galeri utama sekali saja
+        const galleryImageUrls = Array.from(document.querySelectorAll('#gallery .gallery-item img')).map(img => img.src);
+
+        // Tailwind CSS class definitions for dynamic elements
+        const tailwindClasses = {
+            player: 'player absolute w-[80px] md:w-[150px] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center bg-black/30 rounded-lg border-2 border-transparent transition-all duration-300 p-1 md:p-2',
+            playerMain: 'player-main flex items-center gap-1 md:gap-2 w-full',
+            playerAvatar: 'player-avatar flex-shrink-0',
+            playerAvatarImg: 'w-7 h-7 md:w-12 md:h-12 rounded-full md:rounded-md bg-gray-700 object-cover', // Rounded-full for circle avatar
+            playerDetails: 'player-details flex-grow min-w-0',
+            playerName: 'player-name font-bold text-[10px] md:text-sm truncate',
+            playerChips: 'player-chips text-[10px] md:text-base text-amber-300 font-semibold truncate',
+            hand: 'hand flex justify-center gap-1 mt-1',
+            card: 'card relative w-4 h-6 md:w-[25px] md:h-[35px] rounded-sm bg-white border border-gray-300 text-black flex flex-col justify-center items-center font-bold shadow-sm',
+            cardRank: 'card-rank text-[8px] md:text-sm',
+            cardSuit: 'card-suit text-[6px] md:text-xs',
+            communityCard: 'card relative w-8 h-11 md:w-14 md:h-20 rounded md:rounded-md bg-white border border-gray-300 text-black flex flex-col justify-center items-center font-bold shadow-md',
+            communityCardRank: 'card-rank text-lg md:text-2xl',
+            communityCardSuit: 'card-suit text-base md:text-xl',
+            playerBet: 'player-bet absolute bottom-[-22px] bg-black/50 px-2 py-0.5 rounded-md text-[10px] font-bold text-white whitespace-nowrap',
+            playerStatus: 'player-status absolute top-[-18px] text-[10px] font-bold bg-black/60 px-2 py-0.5 rounded-md uppercase tracking-wider',
+            dealerButton: 'dealer-button absolute top-[-8px] right-[-8px] w-4 h-4 md:w-5 md:h-5 bg-white text-black rounded-full text-[10px] md:text-xs font-bold flex justify-center items-center border border-black z-10',
+            actionBtn: 'action-btn text-white font-bold py-2 rounded-lg shadow-md text-base flex-1 text-center transition-transform transform hover:scale-105 md:py-3 md:px-8 md:w-40',
+            modalInput: 'modal-input w-full p-3 box-border rounded-lg border-2 border-gray-600 bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition'
+        };
+
+        // ========================================================================
+        // CONSTANTS & CONFIG
+        // ========================================================================
+        const SUITS = ['♠', '♥', '♦', '♣'];
+        const RANKS = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+        const RANK_VALUES = { '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14 };
+        const HAND_RANKS = {
+            ROYAL_FLUSH: 10, STRAIGHT_FLUSH: 9, FOUR_OF_A_KIND: 8, FULL_HOUSE: 7, FLUSH: 6,
+            STRAIGHT: 5, THREE_OF_A_KIND: 4, TWO_PAIR: 3, ONE_PAIR: 2, HIGH_CARD: 1
+        };
+        const GAME_STAGES = { PRE_DEAL: 0, PRE_FLOP: 1, FLOP: 2, TURN: 3, RIVER: 4, SHOWDOWN: 5, HAND_OVER: 6 };
+        const AI_DELAY = 800;
+        const STARTING_CHIPS = 1000000;
+        const END_OF_HAND_DELAY = 4000; // Delay before starting the next hand automatically
+
+        let config = { numPlayers: 6, smallBlind: 10000, bigBlind: 20000, playerName: "Pemain" };
+        let tournamentOver = false;
+        
+        // ========================================================================
+        // DOM ELEMENTS
+        // ========================================================================
+        const startScreen = pokerWrapper.querySelector('#start-screen-poker');
+        const startGameBtn = pokerWrapper.querySelector('#start-game-btn-poker');
+        const table = pokerWrapper.querySelector('#poker-table');
+        const communityContainer = pokerWrapper.querySelector('.community-cards');
+        const potTotalEl = pokerWrapper.querySelector('#pot-total');
+        
+        const desktopControlsContainer = pokerWrapper.querySelector('.hidden.md\\:flex .controls');
+        const mobileControlsContainer = pokerWrapper.querySelector('#mobile-controls-wrapper');
+        const mobileActionButtonsContainer = mobileControlsContainer.querySelector('#action-buttons');
+        let betSliderContainer, foldBtn, callBtn, raiseBtn, dealBtn, nextHandBtn, betSlider, betDisplay;
+
+        const gameLog = pokerWrapper.querySelector('#game-log');
+        const winnerDisplay = pokerWrapper.querySelector('#winner-display');
+        const humanChipsEl = pokerWrapper.querySelector('#human-player-chips');
+
+        // Modal Elements
+        const settingsBtn = pokerWrapper.querySelector('#settings-btn');
+        const settingsModal = pokerWrapper.querySelector('#settings-modal');
+        const settingsModalContent = settingsModal.querySelector('.modal-content');
+        const closeModalBtn = pokerWrapper.querySelector('#close-modal-btn');
+        const saveSettingsBtn = pokerWrapper.querySelector('#save-settings-btn');
+        const resetDataBtn = pokerWrapper.querySelector('#reset-data-btn');
+        const playerNameInput = pokerWrapper.querySelector('#player-name-input');
+        const numPlayersSelect = pokerWrapper.querySelector('#num-players-select');
+        const sbInput = pokerWrapper.querySelector('#small-blind-input');
+        const bbInput = pokerWrapper.querySelector('#big-blind-input');
+        const confirmModal = pokerWrapper.querySelector('#confirm-modal');
+        const confirmTitle = pokerWrapper.querySelector('#confirm-title');
+        const confirmMessage = pokerWrapper.querySelector('#confirm-message');
+        const confirmOkBtn = pokerWrapper.querySelector('#confirm-ok-btn');
+        const confirmCancelBtn = pokerWrapper.querySelector('#confirm-cancel-btn');
+        // Avatar elements
+        const profilePreview = pokerWrapper.querySelector('#profile-preview');
+        const pickFromGalleryBtn = pokerWrapper.querySelector('#pick-from-gallery-btn');
+        const uploadAvatarBtn = pokerWrapper.querySelector('#upload-avatar-btn');
+        const avatarFileInput = pokerWrapper.querySelector('#avatar-file-input');
+        const galleryPickerModal = pokerWrapper.querySelector('#gallery-picker-modal');
+        const galleryPickerModalContent = galleryPickerModal.querySelector('.bg-gray-800');
+        const galleryPickerGrid = pokerWrapper.querySelector('#gallery-picker-grid');
+        const closeGalleryPickerBtn = pokerWrapper.querySelector('#close-gallery-picker-btn');
+
+        
+        // ========================================================================
+        // UI & CONTROL SETUP
+        // ========================================================================
+        function setupControls() {
+            const controlsHTML = `
+                <div id="bet-slider-container-content" class="w-full max-w-sm">
+                    <label id="bet-amount-display" for="bet-amount-slider" class="text-center font-semibold mb-1 block">Bet: Rp 10.000</label>
+                    <input type="range" id="bet-amount-slider" min="10000" max="1000000" step="10000" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                    <div class="bet-shortcuts flex justify-center gap-2 mt-2">
+                        <button data-value="min" class="px-3 py-1 text-xs font-semibold rounded-md border border-gray-400 hover:bg-gray-600">Min</button>
+                        <button data-value="1/2" class="px-3 py-1 text-xs font-semibold rounded-md border border-gray-400 hover:bg-gray-600">1/2 Pot</button>
+                        <button data-value="pot" class="px-3 py-1 text-xs font-semibold rounded-md border border-gray-400 hover:bg-gray-600">Pot</button>
+                        <button data-value="max" class="px-3 py-1 text-xs font-semibold rounded-md border border-gray-400 hover:bg-gray-600">All-In</button>
+                    </div>
+                </div>
+                <div id="action-buttons-content" class="flex gap-2 md:gap-4 w-full justify-center">
+                    <button id="fold-btn" class="${tailwindClasses.actionBtn} bg-red-600 hover:bg-red-500">Fold</button>
+                    <button id="call-btn" class="${tailwindClasses.actionBtn} bg-sky-600 hover:bg-sky-500">Check</button>
+                    <button id="raise-btn" class="${tailwindClasses.actionBtn} bg-amber-500 hover:bg-amber-400">Bet</button>
+                    <button id="deal-btn" class="${tailwindClasses.actionBtn} bg-emerald-600 hover:bg-emerald-500">Mulai</button>
+                </div>
+            `;
+            
+            desktopControlsContainer.innerHTML = controlsHTML;
+            
+            const mobileSlider = mobileControlsContainer.querySelector('#bet-slider-container');
+            mobileSlider.innerHTML = desktopControlsContainer.querySelector('#bet-slider-container-content').outerHTML;
+            mobileActionButtonsContainer.innerHTML = desktopControlsContainer.querySelector('#action-buttons-content').outerHTML;
+            
+            // Assign element vars now that they exist in the DOM
+            betSliderContainer = pokerWrapper.querySelector('#bet-slider-container');
+            foldBtn = pokerWrapper.querySelectorAll('#fold-btn');
+            callBtn = pokerWrapper.querySelectorAll('#call-btn');
+            raiseBtn = pokerWrapper.querySelectorAll('#raise-btn');
+            dealBtn = pokerWrapper.querySelectorAll('#deal-btn');
+            betSlider = pokerWrapper.querySelectorAll('#bet-amount-slider');
+            betDisplay = pokerWrapper.querySelectorAll('#bet-amount-display');
+
+            // Attach event listeners to all copies of the buttons/sliders
+            foldBtn.forEach(btn => btn.addEventListener('click', () => game.handlePlayerAction('fold')));
+            callBtn.forEach(btn => btn.addEventListener('click', () => {
+                const player = game.players[game.currentPlayerIndex];
+                const callAmount = game.currentBet - player.betThisRound;
+                game.handlePlayerAction(callAmount > 0 ? 'call' : 'check');
+            }));
+            raiseBtn.forEach(btn => btn.addEventListener('click', () => {
+                game.handlePlayerAction('raise', parseInt(pokerWrapper.querySelector('#bet-amount-slider:not([style*="display: none"])').value));
+            }));
+            dealBtn.forEach(btn => btn.addEventListener('click', () => {
+                pokerWrapper.querySelectorAll('#deal-btn').forEach(b => b.classList.add('hidden'));
+                game.startNewHand();
+            }));
+
+            betSlider.forEach(slider => slider.addEventListener('input', (e) => {
+                const val = e.target.value;
+                const actionText = game.currentBet > 0 ? 'Raise' : 'Bet';
+                betDisplay.forEach(d => d.textContent = `${actionText}: ${formatChips(parseInt(val))}`);
+                betSlider.forEach(s => s.value = val);
+            }));
+            
+            pokerWrapper.querySelectorAll('.bet-shortcuts').forEach(sc => sc.addEventListener('click', e => {
+                if(e.target.tagName !== 'BUTTON') return;
+                const pot = game.pot;
+                let targetAmount = 0;
+                
+                const visibleSlider = pokerWrapper.querySelector('#bet-amount-slider:not([style*="display: none"])');
+                const minBet = parseInt(visibleSlider.min);
+                const maxBet = parseInt(visibleSlider.max);
+                
+                switch(e.target.dataset.value) {
+                    case 'min': targetAmount = minBet; break;
+                    case '1/2': targetAmount = Math.floor(pot / 2); break;
+                    case 'pot': targetAmount = pot; break;
+                    case 'max': targetAmount = maxBet; break;
+                }
+                
+                const finalAmount = Math.max(minBet, Math.min(maxBet, targetAmount));
+                betSlider.forEach(s => s.value = finalAmount);
+                betSlider[0].dispatchEvent(new Event('input'));
+            }));
+        }
+
+
+        // ========================================================================
+        // UTILITY & MODAL FUNCTIONS
+        // ========================================================================
+        const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+        const formatChips = (amount) => 'Rp ' + amount.toLocaleString('id-ID');
+
+        let confirmCallback = null;
+        function showConfirmation(title, message, onConfirm, showCancel = true) {
+            confirmTitle.textContent = title;
+            confirmMessage.textContent = message;
+            confirmCallback = onConfirm;
+            confirmCancelBtn.style.display = showCancel ? 'inline-block' : 'none';
+            confirmModal.classList.remove('hidden');
+            confirmModal.classList.add('flex');
+        }
+
+        confirmOkBtn.addEventListener('click', () => {
+            if (confirmCallback) confirmCallback();
+            confirmModal.classList.add('hidden');
+            confirmModal.classList.remove('flex');
+        });
+
+        confirmCancelBtn.addEventListener('click', () => {
+            confirmModal.classList.add('hidden');
+            confirmModal.classList.remove('flex');
+        });
+
+        function generateAvatarSvg() {
+            const colors = ['#d9534f', '#5cb85c', '#428bca', '#f0ad4e', '#5bc0de', '#7a6a9b', '#a94442', '#3c763d'];
+            const bgColor = colors[Math.floor(Math.random() * colors.length)];
+            const eyeY = 18, eyeX1 = 15, eyeX2 = 30, eyeRadius = 2 + Math.random() * 2;
+            const mouthY = 32;
+            const mouthPath = Math.random() > 0.5
+                ? `M 15 ${mouthY} Q 22.5 ${mouthY + 5 + (Math.random() * 3)} 30 ${mouthY}`
+                : `M 15 ${mouthY} L 30 ${mouthY}`;
+            const svg = `<svg width="45" height="45" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg"><rect width="45" height="45" rx="8" ry="8" fill="${bgColor}" /><circle cx="${eyeX1}" cy="${eyeY}" r="${eyeRadius}" fill="#212121"/><circle cx="${eyeX2}" cy="${eyeY}" r="${eyeRadius}" fill="#212121"/><path d="${mouthPath}" stroke="#212121" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>`;
+            return svg.replace(/\s{2,}/g, ' ').trim();
+        }
+        
+        function logMessage(message) {
+            const msgEl = document.createElement('div');
+            msgEl.textContent = message;
+            gameLog.prepend(msgEl);
+            if(gameLog.children.length > 20) {
+                gameLog.lastChild.remove();
+            }
+        }
+        
+        // ========================================================================
+        // DATA PERSISTENCE
+        // ========================================================================
+        function saveGameData(players) {
+            try {
+                const dataToSave = {
+                    config,
+                    playerData: players.map(p => ({
+                        id: p.id, 
+                        name: p.name, 
+                        chips: p.chips,
+                        avatarUri: p.avatarUri // Save avatar
+                    }))
+                };
+                localStorage.setItem('pokerGameData', JSON.stringify(dataToSave));
+            } catch (e) { console.error("Tidak dapat menyimpan data game.", e); }
+        }
+
+        function loadGameData() {
+            try {
+                const data = localStorage.getItem('pokerGameData');
+                if (data) {
+                    const parsed = JSON.parse(data);
+                    config = parsed.config || config;
+                    return parsed.playerData || null;
+                }
+            } catch (e) { console.error("Tidak dapat memuat data game.", e); }
+            return null;
+        }
+        
+        function resetGameData() {
+             showConfirmation("Atur Ulang Data?", "Anda yakin ingin mengatur ulang semua data? Ini akan menghapus jumlah saldo dan pengaturan Anda.", () => {
+                localStorage.removeItem('pokerGameData');
+                location.reload();
+            });
+        }
+        
+        function applyLoadedConfig() {
+            playerNameInput.value = config.playerName;
+            numPlayersSelect.value = config.numPlayers;
+            sbInput.value = config.smallBlind;
+            bbInput.value = config.bigBlind;
+        }
+
+        // ========================================================================
+        // CLASSES
+        // ========================================================================
+
+        class Card {
+            constructor(suit, rank) {
+                this.suit = suit;
+                this.rank = rank;
+                this.value = RANK_VALUES[rank];
+                this.color = (suit === '♥' || suit === '♦') ? 'text-red-600' : 'text-black';
+            }
+
+            toElement(isHoleCard = false, isRevealed = false, isCommunity = false) {
+                const cardEl = document.createElement('div');
+                cardEl.className = isCommunity ? tailwindClasses.communityCard : tailwindClasses.card;
+                if (!isRevealed && isHoleCard) cardEl.classList.add('back');
+                else {
+                    cardEl.classList.add(this.color);
+                    const rankClass = isCommunity ? tailwindClasses.communityCardRank : tailwindClasses.cardRank;
+                    const suitClass = isCommunity ? tailwindClasses.communityCardSuit : tailwindClasses.cardSuit;
+                    cardEl.innerHTML = `<span class="${rankClass}">${this.rank}</span><span class="${suitClass}">${this.suit}</span>`;
+                }
+                return cardEl;
+            }
+        }
+
+        class Deck {
+            constructor() { this.cards = []; this.reset(); this.shuffle(); }
+            reset() { this.cards = SUITS.flatMap(suit => RANKS.map(rank => new Card(suit, rank))); }
+            shuffle() {
+                for (let i = this.cards.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
+                }
+            }
+            draw(n = 1) { return n === 1 ? this.cards.pop() : this.cards.splice(-n); }
+        }
+
+        class Player {
+            constructor(id, name, chips, isHuman = false, avatarUri = null) {
+                this.id = id; this.name = name; this.chips = chips; this.isHuman = isHuman;
+                
+                if (avatarUri) {
+                    this.avatarUri = avatarUri;
+                } else if (!isHuman && galleryImageUrls.length > 0) {
+                     this.avatarUri = galleryImageUrls[Math.floor(Math.random() * galleryImageUrls.length)];
+                } else {
+                    this.avatarUri = `data:image/svg+xml;base64,${btoa(generateAvatarSvg())}`;
+                }
+
+                if (!isHuman) {
+                    this.availableAvatars = [...galleryImageUrls].sort(() => 0.5 - Math.random());
+                    this.usedAvatars = [];
+                }
+                
+                this.hand = []; this.resetForHand();
+                this.element = this.createElement(); table.appendChild(this.element);
+            }
+            resetForHand() { this.hand = []; this.isFolded = false; this.isAllIn = false; this.betThisRound = 0; this.totalBetInHand = 0; this.status = ''; }
+            bet(amount) {
+                const betAmount = Math.min(amount, this.chips);
+                this.chips -= betAmount; this.betThisRound += betAmount; this.totalBetInHand += betAmount;
+                if(this.chips === 0) this.isAllIn = true;
+                return betAmount;
+            }
+            createElement() {
+                const el = document.createElement('div'); el.className = tailwindClasses.player; el.id = `player-${this.id}`;
+                el.innerHTML = `
+                    <div class="${tailwindClasses.playerMain}">
+                        <div class="${tailwindClasses.playerAvatar}"><img src="${this.avatarUri}" alt="Avatar" class="${tailwindClasses.playerAvatarImg}"></div>
+                        <div class="${tailwindClasses.playerDetails}">
+                            <div class="${tailwindClasses.playerName}">${this.name}</div>
+                            <div class="${tailwindClasses.playerChips}">${formatChips(this.chips)}</div>
+                        </div>
+                    </div>
+                    <div class="${tailwindClasses.hand}"></div>
+                    <div class="${tailwindClasses.playerBet}" style="display: none;"></div>
+                    <div class="${tailwindClasses.playerStatus}"></div>`;
+                return el;
+            }
+            updateUI(revealCards = false) {
+                this.element.querySelector('.player-chips').textContent = formatChips(this.chips);
+                const handContainer = this.element.querySelector('.hand'); handContainer.innerHTML = '';
+                this.hand.forEach(card => handContainer.appendChild(card.toElement(true, this.isHuman || revealCards)));
+                const statusEl = this.element.querySelector('.player-status');
+                if (this.isFolded) { this.element.classList.add('opacity-50'); statusEl.textContent = 'Fold'; }
+                else { this.element.classList.remove('opacity-50'); statusEl.textContent = this.isAllIn ? 'All-In' : this.status; }
+                const betEl = this.element.querySelector('.player-bet');
+                if(this.betThisRound > 0) { betEl.textContent = formatChips(this.betThisRound); betEl.style.display = 'block'; }
+                else { betEl.style.display = 'none'; }
+            }
+            setActive(isActive) { this.element.classList.toggle('active', isActive); }
+            setAvatar(url) {
+                this.avatarUri = url;
+                this.element.querySelector(`.${tailwindClasses.playerAvatarImg}`).src = url;
+            }
+            changeBotAvatar() {
+                if (this.isHuman || galleryImageUrls.length === 0) return;
+                
+                if (this.availableAvatars.length === 0) {
+                    this.availableAvatars = [...this.usedAvatars].sort(() => 0.5 - Math.random());
+                    this.usedAvatars = [];
+                }
+                
+                const newAvatarUrl = this.availableAvatars.pop();
+                if (newAvatarUrl) {
+                    this.usedAvatars.push(newAvatarUrl);
+                    this.setAvatar(newAvatarUrl);
+                }
+            }
+        }
+
+        class HandEvaluator {
+            static evaluate(sevenCards) {
+                const combinations = this._getCombinations(sevenCards, 5); let bestHand = null;
+                for (const combo of combinations) { const evaluated = this._evaluateFive(combo); if (!bestHand || this.compareHands(evaluated, bestHand) > 0) bestHand = evaluated; }
+                return bestHand;
+            }
+            static compareHands(a, b) { if (a.rankValue !== b.rankValue) return a.rankValue - b.rankValue; for(let i=0; i<5; i++) if (a.kickers[i] !== b.kickers[i]) return a.kickers[i] - b.kickers[i]; return 0; }
+            static _evaluateFive(hand) {
+                hand.sort((a, b) => b.value - a.value); const values = hand.map(c => c.value); const isFlush = hand.every(c => c.suit === hand[0].suit);
+                const isStraightResult = this._isStraight(values); const isStraight = isStraightResult.isStraight; const straightValues = isStraightResult.values;
+                if (isStraight && isFlush) { if (straightValues[0] === 14) return { rankName: 'Royal Flush', rankValue: HAND_RANKS.ROYAL_FLUSH, kickers: straightValues }; return { rankName: 'Straight Flush', rankValue: HAND_RANKS.STRAIGHT_FLUSH, kickers: straightValues }; }
+                const valueCounts = this._getValueCounts(values); const counts = Object.values(valueCounts).sort((a,b) => b-a); const keys = Object.keys(valueCounts).map(Number).sort((a, b) => (valueCounts[b] - valueCounts[a]) || (b-a));
+                if (counts[0] === 4) return { rankName: 'Four of a Kind', rankValue: HAND_RANKS.FOUR_OF_A_KIND, kickers: keys }; if (counts[0] === 3 && counts[1] === 2) return { rankName: 'Full House', rankValue: HAND_RANKS.FULL_HOUSE, kickers: keys };
+                if (isFlush) return { rankName: 'Flush', rankValue: HAND_RANKS.FLUSH, kickers: values }; if (isStraight) return { rankName: 'Straight', rankValue: HAND_RANKS.STRAIGHT, kickers: straightValues };
+                if (counts[0] === 3) return { rankName: 'Three of a Kind', rankValue: HAND_RANKS.THREE_OF_A_KIND, kickers: keys }; if (counts[0] === 2 && counts[1] === 2) return { rankName: 'Two Pair', rankValue: HAND_RANKS.TWO_PAIR, kickers: keys };
+                if (counts[0] === 2) return { rankName: 'One Pair', rankValue: HAND_RANKS.ONE_PAIR, kickers: keys }; return { rankName: 'High Card', rankValue: HAND_RANKS.HIGH_CARD, kickers: values };
+            }
+            static _isStraight(values) {
+                const uniqueValues = [...new Set(values)].sort((a, b) => b - a); if (uniqueValues.length < 5) return {isStraight: false, values: uniqueValues};
+                if (JSON.stringify(uniqueValues.slice(0,5)) === JSON.stringify([14, 5, 4, 3, 2])) return { isStraight: true, values: [5, 4, 3, 2, 14] };
+                for (let i = 0; i <= uniqueValues.length - 5; i++) { const slice = uniqueValues.slice(i, i + 5); if (slice[0] - slice[4] === 4) return { isStraight: true, values: slice }; }
+                return { isStraight: false, values: uniqueValues };
+            }
+            static _getValueCounts(values) { return values.reduce((acc, v) => ({...acc, [v]: (acc[v] || 0) + 1 }), {}); }
+            static _getCombinations(arr, k) { const r = []; function bt(c, s) { if (c.length === k) { r.push([...c]); return; } for (let i = s; i < arr.length; i++) { c.push(arr[i]); bt(c, i + 1); c.pop(); } } bt([], 0); return r; }
+        }
+
+        class AI {
+            static getAction(player, gameState) {
+                const { communityCards, currentBet, pot, bigBlind } = gameState; const callAmount = currentBet - player.betThisRound;
+                if (communityCards.length === 0) return AI.getPreFlopAction(player, callAmount, gameState);
+                const evaluation = HandEvaluator.evaluate([...player.hand, ...communityCards]); const handStrength = evaluation.rankValue; const potOdds = callAmount > 0 ? callAmount / (pot + callAmount) : 0;
+                if (handStrength >= HAND_RANKS.TWO_PAIR) { const raiseAmount = Math.min(player.chips, bigBlind * 3 + Math.floor(Math.random() * pot * 0.5)); if (raiseAmount > callAmount) return { action: 'raise', amount: raiseAmount }; return (callAmount > 0) ? { action: 'call' } : { action: 'check' }; }
+                if (handStrength >= HAND_RANKS.ONE_PAIR) { if (Math.random() > 0.3) return (callAmount > 0) ? { action: 'call' } : { action: 'check' }; else { const raiseAmount = Math.min(player.chips, bigBlind * 2); if (raiseAmount > callAmount) return { action: 'raise', amount: raiseAmount }; return (callAmount > 0) ? { action: 'call' } : { action: 'check' }; } }
+                if (callAmount === 0) return { action: 'check' }; if (callAmount > player.chips * 0.3 && handStrength < HAND_RANKS.ONE_PAIR) return { action: 'fold' };
+                if (potOdds < 0.35 && callAmount > 0) return { action: 'call' }; return { action: 'fold' };
+            }
+            static getPreFlopAction(player, callAmount, gameState) {
+                const [c1, c2] = player.hand; const isPair = c1.rank === c2.rank; const isSuited = c1.suit === c2.suit; const highCard = Math.max(c1.value, c2.value); const lowCard = Math.min(c1.value, c2.value);
+                if ((isPair && highCard >= 10) || (highCard >= 13 && lowCard >= 12)) return { action: 'raise', amount: Math.min(player.chips, gameState.bigBlind * 3) };
+                if (isPair || (isSuited && highCard >= 11) || (highCard >= 12 && lowCard >= 10)) return (callAmount > 0) ? { action: 'call' } : { action: 'check' };
+                if(isSuited && Math.abs(c1.value - c2.value) === 1) if(callAmount <= gameState.bigBlind * 2) return { action: 'call' };
+                if (callAmount === 0) return { action: 'check' }; if (callAmount <= gameState.bigBlind) return { action: 'call' }; return { action: 'fold' };
+            }
+        }
+
+        class Game {
+            constructor() {
+                this.loadAndApplyConfig(); setupControls();
+                this.deck = new Deck(); this.players = []; this.allPlayers = []; this.communityCards = []; this.dealerButton = null;
+                this.initPlayers(loadGameData()); this.dealerButton = Math.floor(Math.random() * this.allPlayers.length);
+                this.resetGameState(); this.updateUI();
+                pokerWrapper.querySelectorAll('#deal-btn').forEach(b => b.classList.remove('hidden'));
+                pokerWrapper.querySelectorAll('#fold-btn, #call-btn, #raise-btn').forEach(b => b.classList.add('hidden'));
+            }
+            loadAndApplyConfig() { loadGameData(); applyLoadedConfig(); }
+            initPlayers(savedData) {
+                this.allPlayers = []; table.querySelectorAll('.player').forEach(p => p.remove());
+                const savedPlayerMap = new Map((savedData || []).map(p => [p.name, p]));
+                
+                const humanName = config.playerName;
+                const humanSavedData = savedPlayerMap.get(humanName);
+                const humanPlayer = new Player(0, humanName, humanSavedData?.chips || STARTING_CHIPS, true, humanSavedData?.avatarUri);
+                this.allPlayers.push(humanPlayer);
+                profilePreview.src = humanPlayer.avatarUri;
+
+                for (let i = 1; i < config.numPlayers; i++) {
+                    const botName = `Bot ${i}`;
+                    const botSavedData = savedPlayerMap.get(botName);
+                    this.allPlayers.push(new Player(i, botName, botSavedData?.chips || STARTING_CHIPS, false, botSavedData?.avatarUri));
+                }
+                this.positionPlayersUI();
+            }
+            positionPlayersUI() {
+                const activePlayers = this.allPlayers.filter(p => p.chips > 0 && !p.isEliminated);
+                const numPlayers = activePlayers.length; const isMobile = window.innerWidth < 768;
+                const radiusX = table.offsetWidth / 2 - (isMobile ? 50 : 90);
+                const radiusY = table.offsetHeight / 2 - (isMobile ? 45 : 70);
+                const centerX = table.offsetWidth / 2; const centerY = table.offsetHeight / 2;
+                activePlayers.forEach((player, i) => {
+                    player.element.style.display = 'flex';
+                    const angle = (i / numPlayers) * 2 * Math.PI - (Math.PI / 2);
+                    player.element.style.left = `${centerX + radiusX * Math.cos(angle)}px`;
+                    player.element.style.top = `${centerY + radiusY * Math.sin(angle)}px`;
+                });
+                this.allPlayers.forEach(p => {
+                    if (p.isEliminated) p.element.style.display = 'none';
+                });
+            }
+            resetGameState() { this.pot = 0; this.sidePots = []; this.communityCards = []; this.stage = GAME_STAGES.PRE_DEAL; this.currentPlayerIndex = -1; this.currentBet = 0; this.minRaise = config.bigBlind; this.lastRaiser = null; }
+            async startNewHand() {
+                if(tournamentOver) return;
+
+                this.players = this.allPlayers.filter(p => p.chips > 0 && !p.isEliminated);
+                
+                if (this.players.length <= 1) {
+                    const winner = this.players[0] || this.allPlayers.find(p => !p.isEliminated);
+                    if (winner) {
+                        this.showWinner(winner, { rankName: 'Juara Turnamen!' }, `🎉 ${winner.name} 🎉`);
+                        logMessage(`${winner.name} adalah juara turnamen!`);
+                    }
+                    tournamentOver = true;
+                    this.disablePlayerControls();
+                    pokerWrapper.querySelectorAll('#deal-btn').forEach(b => b.classList.add('hidden'));
+                    return;
+                }
+
+                this.positionPlayersUI(); this.resetGameState(); this.deck.reset(); this.deck.shuffle(); this.players.forEach(p => p.resetForHand());
+                this.dealerButton = this.getNextPlayerIndex(this.dealerButton, true, false);
+                const sbPlayerIndex = this.getNextPlayerIndex(this.dealerButton, false, false); const bbPlayerIndex = this.getNextPlayerIndex(sbPlayerIndex, false, false);
+                const sbPlayer = this.players[sbPlayerIndex]; const bbPlayer = this.players[bbPlayerIndex];
+                sbPlayer.status = 'SB'; bbPlayer.status = 'BB'; this.players[this.dealerButton].status = 'D';
+                const sbAmount = sbPlayer.bet(config.smallBlind); this.pot += sbAmount; logMessage(`${sbPlayer.name} pasang small blind ${formatChips(sbAmount)}`);
+                const bbAmount = bbPlayer.bet(config.bigBlind); this.pot += bbAmount; logMessage(`${bbPlayer.name} pasang big blind ${formatChips(bbAmount)}`);
+                this.currentBet = config.bigBlind;
+                for (let i = 0; i < 2; i++) for (const player of this.players) if(player.chips > 0 || player.totalBetInHand > 0) player.hand.push(this.deck.draw());
+                this.stage = GAME_STAGES.PRE_FLOP; this.currentPlayerIndex = this.getNextPlayerIndex(bbPlayerIndex); this.lastRaiser = bbPlayerIndex;
+                this.updateUI(); await this.startBettingRound();
+            }
+            getNextPlayerIndex(currentIndex, includeBusted = false, checkActive = true) {
+                let nextIndex = (currentIndex + 1) % this.players.length; let attempts = 0;
+                while(attempts < this.players.length * 2) {
+                    const player = this.players[nextIndex];
+                    if (player && (player.chips > 0 || includeBusted || player.totalBetInHand > 0)) {
+                        if (!checkActive || (!player.isFolded && !player.isAllIn)) return nextIndex;
+                    }
+                    nextIndex = (nextIndex + 1) % this.players.length; attempts++;
+                }
+                return -1;
+            }
+            async startBettingRound() {
+                if(this.players.filter(p => !p.isFolded && !p.isAllIn).length < 2) { while(this.stage < GAME_STAGES.SHOWDOWN) await this.proceedToNextStage(); return; }
+                if (this.stage !== GAME_STAGES.PRE_FLOP) {
+                     this.currentPlayerIndex = this.getNextPlayerIndex(this.dealerButton, false, false);
+                     if(this.players[this.currentPlayerIndex].isFolded || this.players[this.currentPlayerIndex].isAllIn) this.currentPlayerIndex = this.getNextPlayerIndex(this.currentPlayerIndex);
+                     this.lastRaiser = this.currentPlayerIndex;
+                }
+                this.updateUI(); this.handleTurn();
+            }
+            async handleTurn() {
+                const player = this.players[this.currentPlayerIndex]; if(!player || player.isFolded || player.isAllIn || player.chips === 0) { this.nextTurn(); return; }
+                this.updateUI();
+                if (player.isHuman) this.enablePlayerControls();
+                else {
+                    await sleep(AI_DELAY);
+                    const action = AI.getAction(player, { pot: this.pot, currentBet: this.currentBet, communityCards: this.communityCards, bigBlind: config.bigBlind });
+                    this.handlePlayerAction(action.action, action.amount);
+                }
+            }
+            handlePlayerAction(action, amount = 0) {
+                const player = this.players[this.currentPlayerIndex]; const callAmount = this.currentBet - player.betThisRound;
+                switch(action) {
+                    case 'fold': player.isFolded = true; logMessage(`${player.name} folds.`); break;
+                    case 'call': const actualCallAmount = player.bet(callAmount); this.pot += actualCallAmount; logMessage(`${player.name} calls ${formatChips(actualCallAmount)}.`); break;
+                    case 'check': logMessage(`${player.name} checks.`); break;
+                    case 'raise': const totalBetThisAction = Math.min(player.chips + player.betThisRound, callAmount + amount); const actualBet = player.bet(totalBetThisAction); this.pot += actualBet; this.minRaise = totalBetThisAction - callAmount; this.currentBet = player.betThisRound; this.lastRaiser = this.currentPlayerIndex; logMessage(`${player.name} raises to ${formatChips(this.currentBet)}.`); break;
+                }
+                this.updateUI(); this.nextTurn();
+            }
+            async nextTurn() {
+                this.disablePlayerControls();
+                const activePlayers = this.players.filter(p => !p.isFolded); if(activePlayers.length <= 1) { await this.doShowdown(); return; }
+                const nextPlayerIndex = this.getNextPlayerIndex(this.currentPlayerIndex);
+                if (nextPlayerIndex === -1) { this.endBettingRound(); await this.proceedToNextStage(); return; }
+                const playersYetToAct = this.players.filter(p => !p.isFolded && !p.isAllIn); const allBetsMatched = playersYetToAct.every(p => p.betThisRound === this.currentBet || p.chips === 0);
+                if (nextPlayerIndex === this.lastRaiser || (playersYetToAct.length > 0 && allBetsMatched && this.currentBet > 0)) { this.endBettingRound(); await this.proceedToNextStage(); }
+                else { this.currentPlayerIndex = nextPlayerIndex; this.handleTurn(); }
+            }
+            endBettingRound() { this.players.forEach(p => p.betThisRound = 0); this.currentBet = 0; this.minRaise = config.bigBlind; this.updateUI(); }
+            async proceedToNextStage() {
+                this.stage++; if(this.deck.cards.length > 0) this.deck.draw();
+                switch(this.stage) {
+                    case GAME_STAGES.FLOP: this.communityCards.push(...this.deck.draw(3)); logMessage("--- FLOP ---"); break;
+                    case GAME_STAGES.TURN: this.communityCards.push(this.deck.draw()); logMessage("--- TURN ---"); break;
+                    case GAME_STAGES.RIVER: this.communityCards.push(this.deck.draw()); logMessage("--- RIVER ---"); break;
+                    case GAME_STAGES.SHOWDOWN: await this.doShowdown(); return;
+                }
+                if(this.players.filter(p => !p.isFolded && !p.isAllIn).length > 1) await this.startBettingRound();
+                else { await sleep(AI_DELAY); await this.proceedToNextStage(); }
+            }
+            async doShowdown() {
+                this.stage = GAME_STAGES.SHOWDOWN; logMessage("--- SHOWDOWN ---"); this.updateUI(true);
+                const awardPot = (potAmount, eligiblePlayerIDs) => {
+                    const contenders = this.players.filter(p => !p.isFolded && eligiblePlayerIDs.includes(p.id)); if (contenders.length === 0) { this.pot += potAmount; return; }
+                    if(contenders.length === 1) { contenders[0].chips += potAmount; logMessage(`${contenders[0].name} memenangkan pot ${formatChips(potAmount)}`); this.showWinner(contenders[0], {rankName: ' uncontested'}); return; }
+                    contenders.forEach(p => { p.evaluatedHand = HandEvaluator.evaluate([...p.hand, ...this.communityCards]); });
+                    contenders.sort((a, b) => HandEvaluator.compareHands(b.evaluatedHand, a.evaluatedHand));
+                    const winners = contenders.filter(p => HandEvaluator.compareHands(p.evaluatedHand, contenders[0].evaluatedHand) === 0);
+                    const winAmount = Math.floor(potAmount / winners.length); winners.forEach(w => w.chips += winAmount);
+                    let remainder = potAmount % winners.length; if(remainder > 0) this.players[this.getNextPlayerIndex(this.dealerButton, true)].chips += remainder;
+                    const winnerNames = winners.map(w => w.name).join(', '); logMessage(`${winnerNames} menang pot ${formatChips(potAmount)} dengan ${winners[0].evaluatedHand.rankName}`);
+                    this.showWinner(winners[0], winners[0].evaluatedHand, winnerNames);
+                };
+                awardPot(this.pot, this.players.map(p => p.id)); this.pot = 0; saveGameData(this.allPlayers); this.updateUI(true);
+                
+                // --- Automatic Next Hand ---
+                this.allPlayers.forEach(p => {
+                    if (p.chips <= 0 && !p.isEliminated) {
+                        p.isEliminated = true;
+                        p.element.style.display = 'none';
+                        logMessage(`${p.name} telah tereliminasi!`);
+                    }
+                });
+
+                this.stage = GAME_STAGES.HAND_OVER;
+                await sleep(END_OF_HAND_DELAY);
+                winnerDisplay.classList.add('hidden');
+                this.startNewHand();
+            }
+            showWinner(winner, handInfo, names = winner.name) {
+                winnerDisplay.classList.remove('hidden'); winnerDisplay.querySelector('#winner-name').textContent = `${names} Menang!`;
+                winnerDisplay.querySelector('#winner-hand').textContent = handInfo.rankName;
+                if (!tournamentOver) { // Only auto-hide if it's not the final winner announcement
+                    setTimeout(() => { winnerDisplay.classList.add('hidden'); }, END_OF_HAND_DELAY - 500);
+                }
+            }
+            updateUI(revealAllCards = false) {
+                this.allPlayers.forEach((p, i) => { 
+                    p.setActive(this.players[this.currentPlayerIndex] && p.id === this.players[this.currentPlayerIndex].id && this.stage < GAME_STAGES.SHOWDOWN); 
+                    p.updateUI(revealAllCards); 
+                });
+                communityContainer.innerHTML = ''; this.communityCards.forEach(card => communityContainer.appendChild(card.toElement(false, true, true)));
+                potTotalEl.textContent = `Pot: ${formatChips(this.pot)}`;
+                const humanPlayer = this.allPlayers.find(p => p.isHuman); if(humanPlayer) humanChipsEl.textContent = formatChips(humanPlayer.chips);
+                table.querySelector('.dealer-button')?.remove();
+                if(this.players[this.dealerButton]) {
+                    const dealerPlayerEl = this.players[this.dealerButton].element;
+                    if(dealerPlayerEl) { const dealerBtnEl = document.createElement('div'); dealerBtnEl.className = tailwindClasses.dealerButton; dealerBtnEl.textContent = 'D'; dealerPlayerEl.appendChild(dealerBtnEl); }
+                }
+            }
+            enablePlayerControls() {
+                const player = this.players[this.currentPlayerIndex]; if (!player) return; const callAmount = this.currentBet - player.betThisRound;
+                foldBtn.forEach(b => b.classList.remove('hidden')); callBtn.forEach(b => b.classList.remove('hidden')); raiseBtn.forEach(b => b.classList.remove('hidden'));
+                callBtn.forEach(b => b.textContent = callAmount > 0 ? `Call ${formatChips(Math.min(callAmount, player.chips))}` : 'Check');
+                raiseBtn.forEach(b => b.textContent = this.currentBet > 0 ? 'Raise' : 'Bet');
+                const minRaiseAmount = this.minRaise; const maxBet = player.chips - callAmount;
+                if (maxBet >= minRaiseAmount) {
+                    betSliderContainer.classList.remove('invisible', 'opacity-0'); betSlider.forEach(s => { s.min = minRaiseAmount; s.max = maxBet; s.step = config.smallBlind; s.value = Math.min(minRaiseAmount, maxBet); });
+                    betDisplay.forEach(d => d.textContent = `${raiseBtn[0].textContent}: ${formatChips(parseInt(betSlider[0].value))}`); raiseBtn.forEach(b => b.disabled = false);
+                } else {
+                    betSlider.forEach(s => { s.min = maxBet; s.max = maxBet; s.value = maxBet; });
+                    betDisplay.forEach(d => d.textContent = `All-In: ${formatChips(maxBet)}`); betSliderContainer.classList.remove('invisible', 'opacity-0');
+                    raiseBtn.forEach(b => b.disabled = maxBet <= 0);
+                }
+            }
+            disablePlayerControls() {
+                foldBtn.forEach(b => b.classList.add('hidden')); callBtn.forEach(b => b.classList.add('hidden')); raiseBtn.forEach(b => b.classList.add('hidden')); raiseBtn.forEach(b => b.disabled = false);
+                betSliderContainer.classList.add('invisible', 'opacity-0');
+            }
+        }
+
+        // ========================================================================
+        // EVENT LISTENERS & GAME INITIALIZATION
+        // ========================================================================
+
+        let game;
+        
+        startGameBtn.addEventListener('click', () => {
+            startScreen.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => startScreen.classList.add('hidden'), 300);
+            pokerWrapper.querySelector('#deal-btn').click();
+        });
+
+        // Modal Listeners
+        function showModal(modal, content) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                content.classList.remove('scale-95', 'opacity-0');
+            }, 10);
+        }
+
+        function hideModal(modal, content) {
+            content.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
+        }
+
+        settingsBtn.addEventListener('click', () => showModal(settingsModal, settingsModalContent));
+        closeModalBtn.addEventListener('click', () => hideModal(settingsModal, settingsModalContent));
+        settingsModal.addEventListener('click', (event) => { if (event.target === settingsModal) hideModal(settingsModal, settingsModalContent); });
+        
+        saveSettingsBtn.addEventListener('click', () => {
+            config.playerName = playerNameInput.value || "Pemain"; config.numPlayers = parseInt(numPlayersSelect.value); config.smallBlind = parseInt(sbInput.value) || 10000; config.bigBlind = parseInt(bbInput.value) || 20000;
+            const humanPlayer = game.allPlayers.find(p => p.isHuman);
+            if (humanPlayer) {
+                humanPlayer.name = config.playerName;
+            }
+            
+            const currentData = JSON.parse(localStorage.getItem('pokerGameData') || '{}');
+            const playerData = currentData.playerData || [];
+            
+            const savedHuman = playerData.find(p => p.id === 0);
+            if (savedHuman) {
+                savedHuman.name = config.playerName;
+            }
+
+            saveGameData(game.allPlayers);
+
+            hideModal(settingsModal, settingsModalContent); 
+            showConfirmation("Pengaturan Disimpan", "Game akan dimulai ulang dengan pengaturan baru.", () => location.reload(), false);
+        });
+
+        resetDataBtn.addEventListener('click', resetGameData);
+
+        // Avatar Picker Logic
+        uploadAvatarBtn.addEventListener('click', () => avatarFileInput.click());
+        avatarFileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const dataUrl = event.target.result;
+                    const humanPlayer = game.allPlayers.find(p => p.isHuman);
+                    if (humanPlayer) {
+                        humanPlayer.setAvatar(dataUrl);
+                        profilePreview.src = dataUrl;
+                        saveGameData(game.allPlayers);
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        pickFromGalleryBtn.addEventListener('click', () => {
+             galleryPickerGrid.innerHTML = ''; // Clear previous
+             galleryImageUrls.forEach(url => {
+                 const imgContainer = document.createElement('div');
+                 imgContainer.className = "aspect-square rounded-lg overflow-hidden";
+                 const img = document.createElement('img');
+                 img.src = url;
+                 img.className = "w-full h-full object-cover gallery-thumb";
+                 img.addEventListener('click', () => {
+                     const humanPlayer = game.allPlayers.find(p => p.isHuman);
+                     if (humanPlayer) {
+                         humanPlayer.setAvatar(url);
+                         profilePreview.src = url;
+                         saveGameData(game.allPlayers);
+                     }
+                     hideModal(galleryPickerModal, galleryPickerModalContent);
+                 });
+                 imgContainer.appendChild(img);
+                 galleryPickerGrid.appendChild(imgContainer);
+             });
+            showModal(galleryPickerModal, galleryPickerModalContent);
+        });
+
+        closeGalleryPickerBtn.addEventListener('click', () => hideModal(galleryPickerModal, galleryPickerModalContent));
+        galleryPickerModal.addEventListener('click', (e) => { if(e.target === galleryPickerModal) hideModal(galleryPickerModal, galleryPickerModalContent) });
+
+        window.addEventListener('resize', () => {
+            if (game && !pokerWrapper.classList.contains('hidden')) {
+                game.positionPlayersUI();
+            }
+        });
+
+        game = new Game();
+      });
+    </script>
+    
+    <!-- Integration Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mainAppContent = document.getElementById('main-app-content');
+            const pokerWrapper = document.getElementById('poker-app-wrapper');
+            const launchPokerBtn = document.getElementById('launch-poker-btn');
+            const closePokerBtn = pokerWrapper.querySelector('#close-poker-btn');
+
+            if (launchPokerBtn) {
+                launchPokerBtn.addEventListener('click', () => {
+                    mainAppContent.classList.add('hidden');
+                    pokerWrapper.classList.remove('hidden');
+                    // Trigger a resize event to make sure the poker table dimensions are calculated correctly
+                    window.dispatchEvent(new Event('resize'));
+                });
+            }
+
+            if (closePokerBtn) {
+                closePokerBtn.addEventListener('click', () => {
+                    pokerWrapper.classList.add('hidden');
+                    mainAppContent.classList.remove('hidden');
+                });
+            }
+        });
+    </script>
+
 </body>
 </html>
-
