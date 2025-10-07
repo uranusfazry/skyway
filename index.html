@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>baru</title><style></style></head><body><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -444,6 +444,80 @@
             border-color: #f0ad4e;
         }
     </style>
+    
+    <!-- [NEW] Ad System CSS -->
+    <style>
+        @keyframes ad-fade-in {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes ad-scale-up {
+            from { transform: translate(-50%, -50%) scale(0.9); }
+            to { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        #interstitial-ad-overlay {
+            display: none; /* Initially hidden */
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            animation: ad-fade-in 0.3s ease-out forwards;
+        }
+
+        #interstitial-ad-overlay.visible {
+            display: block;
+        }
+        
+        #interstitial-ad-overlay.closing {
+            animation: ad-fade-in 0.3s ease-in reverse forwards;
+        }
+
+        #interstitial-ad-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            background-color: #1a1a1a;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: ad-scale-up 0.3s ease-out forwards;
+        }
+        
+        #interstitial-ad-overlay.closing #interstitial-ad-container {
+             animation: ad-scale-up 0.3s ease-in reverse forwards;
+        }
+
+        #interstitial-close-btn {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 40px;
+            height: 40px;
+            background-color: #fff;
+            color: #1a1a1a;
+            border-radius: 50%;
+            border: none;
+            font-size: 24px;
+            font-weight: bold;
+            line-height: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
+
+        #interstitial-close-btn:hover {
+            transform: scale(1.1) rotate(90deg);
+            background-color: #e10600;
+            color: #fff;
+        }
+    </style>
+
 </head>
 <body class="min-h-screen">
 
@@ -475,6 +549,37 @@
                 <a href="#contact" class="block py-2 px-4 text-sm nav-link">Kontak</a>
             </div>
         </nav>
+        
+        <!-- [AD] Banner 728x90 (Desktop) & 320x50 (Mobile) -->
+        <div class="w-full bg-black py-4 flex justify-center items-center">
+            <!-- Desktop Ad -->
+            <div class="hidden md:block">
+                <script type="text/javascript">
+                    atOptions = {
+                        'key' : '9fc1c6ea6b5ca929bf05551a650f47ef',
+                        'format' : 'iframe',
+                        'height' : 90,
+                        'width' : 728,
+                        'params' : {}
+                    };
+                </script>
+                <script type="text/javascript" src="//librarysituation.com/9fc1c6ea6b5ca929bf05551a650f47ef/invoke.js"></script>
+            </div>
+            <!-- Mobile Ad -->
+            <div class="md:hidden">
+                 <script type="text/javascript">
+                    atOptions = {
+                        'key' : 'b11f125d002a94dd68f39544ccab732a',
+                        'format' : 'iframe',
+                        'height' : 50,
+                        'width' : 320,
+                        'params' : {}
+                    };
+                </script>
+                <script type="text/javascript" src="//librarysituation.com/b11f125d002a94dd68f39544ccab732a/invoke.js"></script>
+            </div>
+        </div>
+
 
         <section id="home" class="hero-gradient relative h-screen flex items-center">
             <div class="max-w-7xl mx-auto px-6 relative z-10">
@@ -494,23 +599,68 @@
 
         <section id="about" class="py-20 section-divider">
             <div class="max-w-7xl mx-auto px-6">
-                <div class="flex flex-col md:flex-row items-center">
-                    <div class="md:w-1/2 mb-10 md:mb-0 md:pr-10">
+                <div class="flex flex-col md:flex-row items-start">
+                     <!-- Konten Kiri (Teks) -->
+                    <div class="md:w-2/3 mb-10 md:mb-0 md:pr-10">
                         <h2 class="text-3xl font-bold mb-6 relative inline-block">
                             TENTANG KAMI
                             <span class="absolute bottom-0 left-0 w-1/3 h-1 bg-red-600"></span>
                         </h2>
                         <p class="text-gray-400 mb-6">SKYWAY adalah sebuah sistem kehitaman, tempat di mana setiap anggota ditempa oleh suasana keras, penuh emosi, dan terkadang melelahkan. Di dalamnya, orang seringkali harus menghadapi beban yang berat, menghadapi drama yang muncul dari perbedaan pendapat, dan melewati pertengkaran kecil yang bisa menguji kesabaran. Namun justru itulah yang membuat SKYWAY unik—ia bukan sekadar komunitas yang hanya menampilkan sisi indah, melainkan ruang nyata tempat manusia dengan segala sisi gelap dan terang berkumpul.</p>
+                        
+                        <!-- [AD] Banner 300x250 -->
+                        <div class="my-6 mx-auto w-fit md:float-right md:ml-6">
+                             <script type="text/javascript">
+                                atOptions = {
+                                    'key' : '06033f47ad5ef097c541613da7bf9639',
+                                    'format' : 'iframe',
+                                    'height' : 250,
+                                    'width' : 300,
+                                    'params' : {}
+                                };
+                            </script>
+                            <script type="text/javascript" src="//librarysituation.com/06033f47ad5ef097c541613da7bf9639/invoke.js"></script>
+                        </div>
+
                         <p class="text-gray-400 mb-6">Di balik setiap konflik, selalu ada pelajaran yang memperkuat hubungan. Di balik setiap drama, lahir cerita yang menumbuhkan kedewasaan bersama. Dan meskipun emosi kerap meledak, anggota SKYWAY tetap saling mengulurkan tangan, menunjukkan bahwa solidaritas mereka lebih besar daripada perbedaan.</p>
                         <p class="text-gray-400">SKYWAY mungkin terlihat keras, gelap, dan penuh ujian, namun di dalamnya ada semangat kebersamaan yang tidak bisa digoyahkan. Di sinilah orang belajar bukan hanya untuk menjadi kuat sendiri, tetapi juga untuk menjadi bagian dari solidaritas yang kokoh—sistem kehitaman yang mampu mengubah beban dan drama menjadi fondasi persaudaraan yang tak tergoyahkan.</p>
                     </div>
-                    <div class="md:w-1/2 relative">
-                        <div class="grid grid-cols-2 gap-4">
-                            <img src="https://i.imghippo.com/files/mjCg8355shs.jpg" alt="Anggota SKYWAY Community berkumpul" class="gallery-item rounded-lg shadow-lg h-full w-full object-cover">
-                            <div class="flex flex-col space-y-4">
-                                <img src="https://i.imghippo.com/files/nYoT4144n.jpg" alt="Seorang anggota menerbangkan drone" class="gallery-item rounded-lg shadow-lg">
-                                <img src="https://i.imghippo.com/files/aTP8104zw.jpg" alt="Diskusi antar anggota SKYWAY" class="gallery-item rounded-lg shadow-lg">
+                     <!-- Konten Kanan (Gambar & Iklan) -->
+                    <div class="md:w-1/3 flex flex-col items-center gap-4">
+                        <div class="relative w-full">
+                            <div class="grid grid-cols-2 gap-4">
+                                <img src="https://i.imghippo.com/files/mjCg8355shs.jpg" alt="Anggota SKYWAY Community berkumpul" class="gallery-item rounded-lg shadow-lg h-full w-full object-cover">
+                                <div class="flex flex-col space-y-4">
+                                    <img src="https://i.imghippo.com/files/nYoT4144n.jpg" alt="Seorang anggota menerbangkan drone" class="gallery-item rounded-lg shadow-lg">
+                                    <img src="https://i.imghippo.com/files/aTP8104zw.jpg" alt="Diskusi antar anggota SKYWAY" class="gallery-item rounded-lg shadow-lg">
+                                </div>
                             </div>
+                        </div>
+                        <!-- [AD] Skyscraper 160x600 -->
+                        <div class="mt-8 mx-auto hidden lg:block">
+                            <script type="text/javascript">
+                                atOptions = {
+                                    'key' : '4eb72cd86a553b19e0dc805f18073f0f',
+                                    'format' : 'iframe',
+                                    'height' : 600,
+                                    'width' : 160,
+                                    'params' : {}
+                                };
+                            </script>
+                            <script type="text/javascript" src="//librarysituation.com/4eb72cd86a553b19e0dc805f18073f0f/invoke.js"></script>
+                        </div>
+                         <!-- [AD] Banner 160x300 -->
+                        <div class="mt-4 mx-auto lg:hidden">
+                             <script type="text/javascript">
+                                atOptions = {
+                                    'key' : '940b2eaf139dd648652796373d62b791',
+                                    'format' : 'iframe',
+                                    'height' : 300,
+                                    'width' : 160,
+                                    'params' : {}
+                                };
+                            </script>
+                            <script type="text/javascript" src="//librarysituation.com/940b2eaf139dd648652796373d62b791/invoke.js"></script>
                         </div>
                     </div>
                 </div>
@@ -552,6 +702,14 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- [AD] Native Banner -->
+                    <div class="md:col-span-2 lg:col-span-3 my-4 p-4 bg-gray-900 rounded-lg">
+                        <h3 class="text-center text-gray-500 text-sm mb-2 uppercase">Sponsored Content</h3>
+                        <script async="async" data-cfasync="false" src="//librarysituation.com/73e7df8f5a22175d80d2b684ae28eb88/invoke.js"></script>
+                        <div id="container-73e7df8f5a22175d80d2b684ae28eb88"></div>
+                    </div>
+
                     <div class="group relative overflow-hidden gallery-item rounded-lg">
                         <img src="https://i.imghippo.com/files/IXqg8693GPE.jpg" alt="Foto udara pantai" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110 grayscale group-hover:grayscale-0">
                         <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-90 transition">
@@ -1069,6 +1227,19 @@
         </section>
         
         <footer id="contact" class="bg-black py-12 border-t border-gray-800">
+             <!-- [AD] Banner 468x60 -->
+            <div class="w-full flex justify-center items-center mb-8">
+                 <script type="text/javascript">
+                    atOptions = {
+                        'key' : '7350354299de5856ef58b1a76ccd6016',
+                        'format' : 'iframe',
+                        'height' : 60,
+                        'width' : 468,
+                        'params' : {}
+                    };
+                </script>
+                <script type="text/javascript" src="//librarysituation.com/7350354299de5856ef58b1a76ccd6016/invoke.js"></script>
+            </div>
             <div class="max-w-7xl mx-auto px-6 text-center text-gray-400">
                 <h2 class="text-2xl font-bold mb-4">HUBUNGI KAMI</h2>
                 <p class="mb-6">Punya pertanyaan atau ingin berkolaborasi? Jangan ragu untuk menghubungi kami.</p>
@@ -1297,6 +1468,27 @@
         </div>
     </div>
     
+    <!-- [NEW] Interstitial Ad HTML -->
+    <div id="interstitial-ad-overlay">
+        <div id="interstitial-ad-container">
+            <div id="interstitial-ad-content" class="w-full h-full flex items-center justify-center p-2 md:p-4">
+                <!-- Iklan akan dimuat di sini oleh script. Anda bisa menempatkan iklan ukuran besar seperti 728x90 (dirotasi) atau 300x250 -->
+                <script type="text/javascript">
+                    atOptions = {
+                        'key' : '06033f47ad5ef097c541613da7bf9639',
+                        'format' : 'iframe',
+                        'height' : 250,
+                        'width' : 300,
+                        'params' : {}
+                    };
+                </script>
+                <script type="text/javascript" src="//librarysituation.com/06033f47ad5ef097c541613da7bf9639/invoke.js"></script>
+            </div>
+            <button id="interstitial-close-btn">&times;</button>
+        </div>
+    </div>
+
+
     <!-- JavaScripts -->
     <script>
         // JavaScript for mobile menu toggle (Community Page)
@@ -1973,744 +2165,744 @@
     <!-- Poker Game Script -->
     <script id="poker-script">
      document.addEventListener('DOMContentLoaded', () => {
-        const pokerWrapper = document.getElementById('poker-app-wrapper');
+       const pokerWrapper = document.getElementById('poker-app-wrapper');
 
-        // Kumpulkan URL gambar dari galeri utama sekali saja
-        const galleryImageUrls = Array.from(document.querySelectorAll('#gallery .gallery-item img')).map(img => img.src);
+       // Kumpulkan URL gambar dari galeri utama sekali saja
+       const galleryImageUrls = Array.from(document.querySelectorAll('#gallery .gallery-item img')).map(img => img.src);
 
-        // Tailwind CSS class definitions for dynamic elements
-        const tailwindClasses = {
-            player: 'player absolute w-[80px] md:w-[150px] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center bg-black/30 rounded-lg border-2 border-transparent transition-all duration-300 p-1 md:p-2',
-            playerMain: 'player-main flex items-center gap-1 md:gap-2 w-full',
-            playerAvatar: 'player-avatar flex-shrink-0',
-            playerAvatarImg: 'w-7 h-7 md:w-12 md:h-12 rounded-full md:rounded-md bg-gray-700 object-cover', // Rounded-full for circle avatar
-            playerDetails: 'player-details flex-grow min-w-0',
-            playerName: 'player-name font-bold text-[10px] md:text-sm truncate',
-            playerChips: 'player-chips text-[10px] md:text-base text-amber-300 font-semibold truncate',
-            hand: 'hand flex justify-center gap-1 mt-1',
-            card: 'card relative w-4 h-6 md:w-[25px] md:h-[35px] rounded-sm bg-white border border-gray-300 text-black flex flex-col justify-center items-center font-bold shadow-sm',
-            cardRank: 'card-rank text-[8px] md:text-sm',
-            cardSuit: 'card-suit text-[6px] md:text-xs',
-            communityCard: 'card relative w-8 h-11 md:w-14 md:h-20 rounded md:rounded-md bg-white border border-gray-300 text-black flex flex-col justify-center items-center font-bold shadow-md',
-            communityCardRank: 'card-rank text-lg md:text-2xl',
-            communityCardSuit: 'card-suit text-base md:text-xl',
-            playerBet: 'player-bet absolute bottom-[-22px] bg-black/50 px-2 py-0.5 rounded-md text-[10px] font-bold text-white whitespace-nowrap',
-            playerStatus: 'player-status absolute top-[-18px] text-[10px] font-bold bg-black/60 px-2 py-0.5 rounded-md uppercase tracking-wider',
-            dealerButton: 'dealer-button absolute top-[-8px] right-[-8px] w-4 h-4 md:w-5 md:h-5 bg-white text-black rounded-full text-[10px] md:text-xs font-bold flex justify-center items-center border border-black z-10',
-            actionBtn: 'action-btn text-white font-bold py-2 rounded-lg shadow-md text-base flex-1 text-center transition-transform transform hover:scale-105 md:py-3 md:px-8 md:w-40',
-            modalInput: 'modal-input w-full p-3 box-border rounded-lg border-2 border-gray-600 bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition'
-        };
+       // Tailwind CSS class definitions for dynamic elements
+       const tailwindClasses = {
+         player: 'player absolute w-[80px] md:w-[150px] transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center bg-black/30 rounded-lg border-2 border-transparent transition-all duration-300 p-1 md:p-2',
+         playerMain: 'player-main flex items-center gap-1 md:gap-2 w-full',
+         playerAvatar: 'player-avatar flex-shrink-0',
+         playerAvatarImg: 'w-7 h-7 md:w-12 md:h-12 rounded-full md:rounded-md bg-gray-700 object-cover', // Rounded-full for circle avatar
+         playerDetails: 'player-details flex-grow min-w-0',
+         playerName: 'player-name font-bold text-[10px] md:text-sm truncate',
+         playerChips: 'player-chips text-[10px] md:text-base text-amber-300 font-semibold truncate',
+         hand: 'hand flex justify-center gap-1 mt-1',
+         card: 'card relative w-4 h-6 md:w-[25px] md:h-[35px] rounded-sm bg-white border border-gray-300 text-black flex flex-col justify-center items-center font-bold shadow-sm',
+         cardRank: 'card-rank text-[8px] md:text-sm',
+         cardSuit: 'card-suit text-[6px] md:text-xs',
+         communityCard: 'card relative w-8 h-11 md:w-14 md:h-20 rounded md:rounded-md bg-white border border-gray-300 text-black flex flex-col justify-center items-center font-bold shadow-md',
+         communityCardRank: 'card-rank text-lg md:text-2xl',
+         communityCardSuit: 'card-suit text-base md:text-xl',
+         playerBet: 'player-bet absolute bottom-[-22px] bg-black/50 px-2 py-0.5 rounded-md text-[10px] font-bold text-white whitespace-nowrap',
+         playerStatus: 'player-status absolute top-[-18px] text-[10px] font-bold bg-black/60 px-2 py-0.5 rounded-md uppercase tracking-wider',
+         dealerButton: 'dealer-button absolute top-[-8px] right-[-8px] w-4 h-4 md:w-5 md:h-5 bg-white text-black rounded-full text-[10px] md:text-xs font-bold flex justify-center items-center border border-black z-10',
+         actionBtn: 'action-btn text-white font-bold py-2 rounded-lg shadow-md text-base flex-1 text-center transition-transform transform hover:scale-105 md:py-3 md:px-8 md:w-40',
+         modalInput: 'modal-input w-full p-3 box-border rounded-lg border-2 border-gray-600 bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition'
+       };
 
-        // ========================================================================
-        // CONSTANTS & CONFIG
-        // ========================================================================
-        const SUITS = ['♠', '♥', '♦', '♣'];
-        const RANKS = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
-        const RANK_VALUES = { '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14 };
-        const HAND_RANKS = {
-            ROYAL_FLUSH: 10, STRAIGHT_FLUSH: 9, FOUR_OF_A_KIND: 8, FULL_HOUSE: 7, FLUSH: 6,
-            STRAIGHT: 5, THREE_OF_A_KIND: 4, TWO_PAIR: 3, ONE_PAIR: 2, HIGH_CARD: 1
-        };
-        const GAME_STAGES = { PRE_DEAL: 0, PRE_FLOP: 1, FLOP: 2, TURN: 3, RIVER: 4, SHOWDOWN: 5, HAND_OVER: 6 };
-        const AI_DELAY = 800;
-        const STARTING_CHIPS = 1000000;
-        const END_OF_HAND_DELAY = 4000; // Delay before starting the next hand automatically
+       // ========================================================================
+       // CONSTANTS & CONFIG
+       // ========================================================================
+       const SUITS = ['♠', '♥', '♦', '♣'];
+       const RANKS = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+       const RANK_VALUES = { '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14 };
+       const HAND_RANKS = {
+         ROYAL_FLUSH: 10, STRAIGHT_FLUSH: 9, FOUR_OF_A_KIND: 8, FULL_HOUSE: 7, FLUSH: 6,
+         STRAIGHT: 5, THREE_OF_A_KIND: 4, TWO_PAIR: 3, ONE_PAIR: 2, HIGH_CARD: 1
+       };
+       const GAME_STAGES = { PRE_DEAL: 0, PRE_FLOP: 1, FLOP: 2, TURN: 3, RIVER: 4, SHOWDOWN: 5, HAND_OVER: 6 };
+       const AI_DELAY = 800;
+       const STARTING_CHIPS = 1000000;
+       const END_OF_HAND_DELAY = 4000; // Delay before starting the next hand automatically
 
-        let config = { numPlayers: 6, smallBlind: 10000, bigBlind: 20000, playerName: "Pemain" };
-        let tournamentOver = false;
-        
-        // ========================================================================
-        // DOM ELEMENTS
-        // ========================================================================
-        const startScreen = pokerWrapper.querySelector('#start-screen-poker');
-        const startGameBtn = pokerWrapper.querySelector('#start-game-btn-poker');
-        const table = pokerWrapper.querySelector('#poker-table');
-        const communityContainer = pokerWrapper.querySelector('.community-cards');
-        const potTotalEl = pokerWrapper.querySelector('#pot-total');
-        
-        const desktopControlsContainer = pokerWrapper.querySelector('.hidden.md\\:flex .controls');
-        const mobileControlsContainer = pokerWrapper.querySelector('#mobile-controls-wrapper');
-        const mobileActionButtonsContainer = mobileControlsContainer.querySelector('#action-buttons');
-        let betSliderContainer, foldBtn, callBtn, raiseBtn, dealBtn, nextHandBtn, betSlider, betDisplay;
+       let config = { numPlayers: 6, smallBlind: 10000, bigBlind: 20000, playerName: "Pemain" };
+       let tournamentOver = false;
+       
+       // ========================================================================
+       // DOM ELEMENTS
+       // ========================================================================
+       const startScreen = pokerWrapper.querySelector('#start-screen-poker');
+       const startGameBtn = pokerWrapper.querySelector('#start-game-btn-poker');
+       const table = pokerWrapper.querySelector('#poker-table');
+       const communityContainer = pokerWrapper.querySelector('.community-cards');
+       const potTotalEl = pokerWrapper.querySelector('#pot-total');
+       
+       const desktopControlsContainer = pokerWrapper.querySelector('.hidden.md\\:flex .controls');
+       const mobileControlsContainer = pokerWrapper.querySelector('#mobile-controls-wrapper');
+       const mobileActionButtonsContainer = mobileControlsContainer.querySelector('#action-buttons');
+       let betSliderContainer, foldBtn, callBtn, raiseBtn, dealBtn, nextHandBtn, betSlider, betDisplay;
 
-        const gameLog = pokerWrapper.querySelector('#game-log');
-        const winnerDisplay = pokerWrapper.querySelector('#winner-display');
-        const humanChipsEl = pokerWrapper.querySelector('#human-player-chips');
+       const gameLog = pokerWrapper.querySelector('#game-log');
+       const winnerDisplay = pokerWrapper.querySelector('#winner-display');
+       const humanChipsEl = pokerWrapper.querySelector('#human-player-chips');
 
-        // Modal Elements
-        const settingsBtn = pokerWrapper.querySelector('#settings-btn');
-        const settingsModal = pokerWrapper.querySelector('#settings-modal');
-        const settingsModalContent = settingsModal.querySelector('.modal-content');
-        const closeModalBtn = pokerWrapper.querySelector('#close-modal-btn');
-        const saveSettingsBtn = pokerWrapper.querySelector('#save-settings-btn');
-        const resetDataBtn = pokerWrapper.querySelector('#reset-data-btn');
-        const playerNameInput = pokerWrapper.querySelector('#player-name-input');
-        const numPlayersSelect = pokerWrapper.querySelector('#num-players-select');
-        const sbInput = pokerWrapper.querySelector('#small-blind-input');
-        const bbInput = pokerWrapper.querySelector('#big-blind-input');
-        const confirmModal = pokerWrapper.querySelector('#confirm-modal');
-        const confirmTitle = pokerWrapper.querySelector('#confirm-title');
-        const confirmMessage = pokerWrapper.querySelector('#confirm-message');
-        const confirmOkBtn = pokerWrapper.querySelector('#confirm-ok-btn');
-        const confirmCancelBtn = pokerWrapper.querySelector('#confirm-cancel-btn');
-        // Avatar elements
-        const profilePreview = pokerWrapper.querySelector('#profile-preview');
-        const pickFromGalleryBtn = pokerWrapper.querySelector('#pick-from-gallery-btn');
-        const uploadAvatarBtn = pokerWrapper.querySelector('#upload-avatar-btn');
-        const avatarFileInput = pokerWrapper.querySelector('#avatar-file-input');
-        const galleryPickerModal = pokerWrapper.querySelector('#gallery-picker-modal');
-        const galleryPickerModalContent = galleryPickerModal.querySelector('.bg-gray-800');
-        const galleryPickerGrid = pokerWrapper.querySelector('#gallery-picker-grid');
-        const closeGalleryPickerBtn = pokerWrapper.querySelector('#close-gallery-picker-btn');
+       // Modal Elements
+       const settingsBtn = pokerWrapper.querySelector('#settings-btn');
+       const settingsModal = pokerWrapper.querySelector('#settings-modal');
+       const settingsModalContent = settingsModal.querySelector('.modal-content');
+       const closeModalBtn = pokerWrapper.querySelector('#close-modal-btn');
+       const saveSettingsBtn = pokerWrapper.querySelector('#save-settings-btn');
+       const resetDataBtn = pokerWrapper.querySelector('#reset-data-btn');
+       const playerNameInput = pokerWrapper.querySelector('#player-name-input');
+       const numPlayersSelect = pokerWrapper.querySelector('#num-players-select');
+       const sbInput = pokerWrapper.querySelector('#small-blind-input');
+       const bbInput = pokerWrapper.querySelector('#big-blind-input');
+       const confirmModal = pokerWrapper.querySelector('#confirm-modal');
+       const confirmTitle = pokerWrapper.querySelector('#confirm-title');
+       const confirmMessage = pokerWrapper.querySelector('#confirm-message');
+       const confirmOkBtn = pokerWrapper.querySelector('#confirm-ok-btn');
+       const confirmCancelBtn = pokerWrapper.querySelector('#confirm-cancel-btn');
+       // Avatar elements
+       const profilePreview = pokerWrapper.querySelector('#profile-preview');
+       const pickFromGalleryBtn = pokerWrapper.querySelector('#pick-from-gallery-btn');
+       const uploadAvatarBtn = pokerWrapper.querySelector('#upload-avatar-btn');
+       const avatarFileInput = pokerWrapper.querySelector('#avatar-file-input');
+       const galleryPickerModal = pokerWrapper.querySelector('#gallery-picker-modal');
+       const galleryPickerModalContent = galleryPickerModal.querySelector('.bg-gray-800');
+       const galleryPickerGrid = pokerWrapper.querySelector('#gallery-picker-grid');
+       const closeGalleryPickerBtn = pokerWrapper.querySelector('#close-gallery-picker-btn');
 
-        
-        // ========================================================================
-        // UI & CONTROL SETUP
-        // ========================================================================
-        function setupControls() {
-            const controlsHTML = `
-                <div id="bet-slider-container-content" class="w-full max-w-sm">
-                    <label id="bet-amount-display" for="bet-amount-slider" class="text-center font-semibold mb-1 block">Bet: Rp 10.000</label>
-                    <input type="range" id="bet-amount-slider" min="10000" max="1000000" step="10000" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
-                    <div class="bet-shortcuts flex justify-center gap-2 mt-2">
-                        <button data-value="min" class="px-3 py-1 text-xs font-semibold rounded-md border border-gray-400 hover:bg-gray-600">Min</button>
-                        <button data-value="1/2" class="px-3 py-1 text-xs font-semibold rounded-md border border-gray-400 hover:bg-gray-600">1/2 Pot</button>
-                        <button data-value="pot" class="px-3 py-1 text-xs font-semibold rounded-md border border-gray-400 hover:bg-gray-600">Pot</button>
-                        <button data-value="max" class="px-3 py-1 text-xs font-semibold rounded-md border border-gray-400 hover:bg-gray-600">All-In</button>
-                    </div>
-                </div>
-                <div id="action-buttons-content" class="flex gap-2 md:gap-4 w-full justify-center">
-                    <button id="fold-btn" class="${tailwindClasses.actionBtn} bg-red-600 hover:bg-red-500">Fold</button>
-                    <button id="call-btn" class="${tailwindClasses.actionBtn} bg-sky-600 hover:bg-sky-500">Check</button>
-                    <button id="raise-btn" class="${tailwindClasses.actionBtn} bg-amber-500 hover:bg-amber-400">Bet</button>
-                    <button id="deal-btn" class="${tailwindClasses.actionBtn} bg-emerald-600 hover:bg-emerald-500">Mulai</button>
-                </div>
-            `;
-            
-            desktopControlsContainer.innerHTML = controlsHTML;
-            
-            const mobileSlider = mobileControlsContainer.querySelector('#bet-slider-container');
-            mobileSlider.innerHTML = desktopControlsContainer.querySelector('#bet-slider-container-content').outerHTML;
-            mobileActionButtonsContainer.innerHTML = desktopControlsContainer.querySelector('#action-buttons-content').outerHTML;
-            
-            // Assign element vars now that they exist in the DOM
-            betSliderContainer = pokerWrapper.querySelector('#bet-slider-container');
-            foldBtn = pokerWrapper.querySelectorAll('#fold-btn');
-            callBtn = pokerWrapper.querySelectorAll('#call-btn');
-            raiseBtn = pokerWrapper.querySelectorAll('#raise-btn');
-            dealBtn = pokerWrapper.querySelectorAll('#deal-btn');
-            betSlider = pokerWrapper.querySelectorAll('#bet-amount-slider');
-            betDisplay = pokerWrapper.querySelectorAll('#bet-amount-display');
+       
+       // ========================================================================
+       // UI & CONTROL SETUP
+       // ========================================================================
+       function setupControls() {
+         const controlsHTML = `
+             <div id="bet-slider-container-content" class="w-full max-w-sm">
+                 <label id="bet-amount-display" for="bet-amount-slider" class="text-center font-semibold mb-1 block">Bet: Rp 10.000</label>
+                 <input type="range" id="bet-amount-slider" min="10000" max="1000000" step="10000" class="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer">
+                 <div class="bet-shortcuts flex justify-center gap-2 mt-2">
+                     <button data-value="min" class="px-3 py-1 text-xs font-semibold rounded-md border border-gray-400 hover:bg-gray-600">Min</button>
+                     <button data-value="1/2" class="px-3 py-1 text-xs font-semibold rounded-md border border-gray-400 hover:bg-gray-600">1/2 Pot</button>
+                     <button data-value="pot" class="px-3 py-1 text-xs font-semibold rounded-md border border-gray-400 hover:bg-gray-600">Pot</button>
+                     <button data-value="max" class="px-3 py-1 text-xs font-semibold rounded-md border border-gray-400 hover:bg-gray-600">All-In</button>
+                 </div>
+             </div>
+             <div id="action-buttons-content" class="flex gap-2 md:gap-4 w-full justify-center">
+                 <button id="fold-btn" class="${tailwindClasses.actionBtn} bg-red-600 hover:bg-red-500">Fold</button>
+                 <button id="call-btn" class="${tailwindClasses.actionBtn} bg-sky-600 hover:bg-sky-500">Check</button>
+                 <button id="raise-btn" class="${tailwindClasses.actionBtn} bg-amber-500 hover:bg-amber-400">Bet</button>
+                 <button id="deal-btn" class="${tailwindClasses.actionBtn} bg-emerald-600 hover:bg-emerald-500">Mulai</button>
+             </div>
+         `;
+         
+         desktopControlsContainer.innerHTML = controlsHTML;
+         
+         const mobileSlider = mobileControlsContainer.querySelector('#bet-slider-container');
+         mobileSlider.innerHTML = desktopControlsContainer.querySelector('#bet-slider-container-content').outerHTML;
+         mobileActionButtonsContainer.innerHTML = desktopControlsContainer.querySelector('#action-buttons-content').outerHTML;
+         
+         // Assign element vars now that they exist in the DOM
+         betSliderContainer = pokerWrapper.querySelector('#bet-slider-container');
+         foldBtn = pokerWrapper.querySelectorAll('#fold-btn');
+         callBtn = pokerWrapper.querySelectorAll('#call-btn');
+         raiseBtn = pokerWrapper.querySelectorAll('#raise-btn');
+         dealBtn = pokerWrapper.querySelectorAll('#deal-btn');
+         betSlider = pokerWrapper.querySelectorAll('#bet-amount-slider');
+         betDisplay = pokerWrapper.querySelectorAll('#bet-amount-display');
 
-            // Attach event listeners to all copies of the buttons/sliders
-            foldBtn.forEach(btn => btn.addEventListener('click', () => game.handlePlayerAction('fold')));
-            callBtn.forEach(btn => btn.addEventListener('click', () => {
-                const player = game.players[game.currentPlayerIndex];
-                const callAmount = game.currentBet - player.betThisRound;
-                game.handlePlayerAction(callAmount > 0 ? 'call' : 'check');
-            }));
-            raiseBtn.forEach(btn => btn.addEventListener('click', () => {
-                game.handlePlayerAction('raise', parseInt(pokerWrapper.querySelector('#bet-amount-slider:not([style*="display: none"])').value));
-            }));
-            dealBtn.forEach(btn => btn.addEventListener('click', () => {
-                pokerWrapper.querySelectorAll('#deal-btn').forEach(b => b.classList.add('hidden'));
-                game.startNewHand();
-            }));
+         // Attach event listeners to all copies of the buttons/sliders
+         foldBtn.forEach(btn => btn.addEventListener('click', () => game.handlePlayerAction('fold')));
+         callBtn.forEach(btn => btn.addEventListener('click', () => {
+           const player = game.players[game.currentPlayerIndex];
+           const callAmount = game.currentBet - player.betThisRound;
+           game.handlePlayerAction(callAmount > 0 ? 'call' : 'check');
+         }));
+         raiseBtn.forEach(btn => btn.addEventListener('click', () => {
+           game.handlePlayerAction('raise', parseInt(pokerWrapper.querySelector('#bet-amount-slider:not([style*="display: none"])').value));
+         }));
+         dealBtn.forEach(btn => btn.addEventListener('click', () => {
+           pokerWrapper.querySelectorAll('#deal-btn').forEach(b => b.classList.add('hidden'));
+           game.startNewHand();
+         }));
 
-            betSlider.forEach(slider => slider.addEventListener('input', (e) => {
-                const val = e.target.value;
-                const actionText = game.currentBet > 0 ? 'Raise' : 'Bet';
-                betDisplay.forEach(d => d.textContent = `${actionText}: ${formatChips(parseInt(val))}`);
-                betSlider.forEach(s => s.value = val);
-            }));
-            
-            pokerWrapper.querySelectorAll('.bet-shortcuts').forEach(sc => sc.addEventListener('click', e => {
-                if(e.target.tagName !== 'BUTTON') return;
-                const pot = game.pot;
-                let targetAmount = 0;
-                
-                const visibleSlider = pokerWrapper.querySelector('#bet-amount-slider:not([style*="display: none"])');
-                const minBet = parseInt(visibleSlider.min);
-                const maxBet = parseInt(visibleSlider.max);
-                
-                switch(e.target.dataset.value) {
-                    case 'min': targetAmount = minBet; break;
-                    case '1/2': targetAmount = Math.floor(pot / 2); break;
-                    case 'pot': targetAmount = pot; break;
-                    case 'max': targetAmount = maxBet; break;
-                }
-                
-                const finalAmount = Math.max(minBet, Math.min(maxBet, targetAmount));
-                betSlider.forEach(s => s.value = finalAmount);
-                betSlider[0].dispatchEvent(new Event('input'));
-            }));
-        }
+         betSlider.forEach(slider => slider.addEventListener('input', (e) => {
+           const val = e.target.value;
+           const actionText = game.currentBet > 0 ? 'Raise' : 'Bet';
+           betDisplay.forEach(d => d.textContent = `${actionText}: ${formatChips(parseInt(val))}`);
+           betSlider.forEach(s => s.value = val);
+         }));
+         
+         pokerWrapper.querySelectorAll('.bet-shortcuts').forEach(sc => sc.addEventListener('click', e => {
+           if(e.target.tagName !== 'BUTTON') return;
+           const pot = game.pot;
+           let targetAmount = 0;
+           
+           const visibleSlider = pokerWrapper.querySelector('#bet-amount-slider:not([style*="display: none"])');
+           const minBet = parseInt(visibleSlider.min);
+           const maxBet = parseInt(visibleSlider.max);
+           
+           switch(e.target.dataset.value) {
+             case 'min': targetAmount = minBet; break;
+             case '1/2': targetAmount = Math.floor(pot / 2); break;
+             case 'pot': targetAmount = pot; break;
+             case 'max': targetAmount = maxBet; break;
+           }
+           
+           const finalAmount = Math.max(minBet, Math.min(maxBet, targetAmount));
+           betSlider.forEach(s => s.value = finalAmount);
+           betSlider[0].dispatchEvent(new Event('input'));
+         }));
+       }
 
 
-        // ========================================================================
-        // UTILITY & MODAL FUNCTIONS
-        // ========================================================================
-        const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-        const formatChips = (amount) => 'Rp ' + amount.toLocaleString('id-ID');
+       // ========================================================================
+       // UTILITY & MODAL FUNCTIONS
+       // ========================================================================
+       const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+       const formatChips = (amount) => 'Rp ' + amount.toLocaleString('id-ID');
 
-        let confirmCallback = null;
-        function showConfirmation(title, message, onConfirm, showCancel = true) {
-            confirmTitle.textContent = title;
-            confirmMessage.textContent = message;
-            confirmCallback = onConfirm;
-            confirmCancelBtn.style.display = showCancel ? 'inline-block' : 'none';
-            confirmModal.classList.remove('hidden');
-            confirmModal.classList.add('flex');
-        }
+       let confirmCallback = null;
+       function showConfirmation(title, message, onConfirm, showCancel = true) {
+         confirmTitle.textContent = title;
+         confirmMessage.textContent = message;
+         confirmCallback = onConfirm;
+         confirmCancelBtn.style.display = showCancel ? 'inline-block' : 'none';
+         confirmModal.classList.remove('hidden');
+         confirmModal.classList.add('flex');
+       }
 
-        confirmOkBtn.addEventListener('click', () => {
-            if (confirmCallback) confirmCallback();
-            confirmModal.classList.add('hidden');
-            confirmModal.classList.remove('flex');
-        });
+       confirmOkBtn.addEventListener('click', () => {
+         if (confirmCallback) confirmCallback();
+         confirmModal.classList.add('hidden');
+         confirmModal.classList.remove('flex');
+       });
 
-        confirmCancelBtn.addEventListener('click', () => {
-            confirmModal.classList.add('hidden');
-            confirmModal.classList.remove('flex');
-        });
+       confirmCancelBtn.addEventListener('click', () => {
+         confirmModal.classList.add('hidden');
+         confirmModal.classList.remove('flex');
+       });
 
-        function generateAvatarSvg() {
-            const colors = ['#d9534f', '#5cb85c', '#428bca', '#f0ad4e', '#5bc0de', '#7a6a9b', '#a94442', '#3c763d'];
-            const bgColor = colors[Math.floor(Math.random() * colors.length)];
-            const eyeY = 18, eyeX1 = 15, eyeX2 = 30, eyeRadius = 2 + Math.random() * 2;
-            const mouthY = 32;
-            const mouthPath = Math.random() > 0.5
-                ? `M 15 ${mouthY} Q 22.5 ${mouthY + 5 + (Math.random() * 3)} 30 ${mouthY}`
-                : `M 15 ${mouthY} L 30 ${mouthY}`;
-            const svg = `<svg width="45" height="45" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg"><rect width="45" height="45" rx="8" ry="8" fill="${bgColor}" /><circle cx="${eyeX1}" cy="${eyeY}" r="${eyeRadius}" fill="#212121"/><circle cx="${eyeX2}" cy="${eyeY}" r="${eyeRadius}" fill="#212121"/><path d="${mouthPath}" stroke="#212121" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>`;
-            return svg.replace(/\s{2,}/g, ' ').trim();
-        }
-        
-        function logMessage(message) {
-            const msgEl = document.createElement('div');
-            msgEl.textContent = message;
-            gameLog.prepend(msgEl);
-            if(gameLog.children.length > 20) {
-                gameLog.lastChild.remove();
-            }
-        }
-        
-        // ========================================================================
-        // DATA PERSISTENCE
-        // ========================================================================
-        function saveGameData(players) {
-            try {
-                const dataToSave = {
-                    config,
-                    playerData: players.map(p => ({
-                        id: p.id, 
-                        name: p.name, 
-                        chips: p.chips,
-                        avatarUri: p.avatarUri // Save avatar
-                    }))
-                };
-                localStorage.setItem('pokerGameData', JSON.stringify(dataToSave));
-            } catch (e) { console.error("Tidak dapat menyimpan data game.", e); }
-        }
+       function generateAvatarSvg() {
+         const colors = ['#d9534f', '#5cb85c', '#428bca', '#f0ad4e', '#5bc0de', '#7a6a9b', '#a94442', '#3c763d'];
+         const bgColor = colors[Math.floor(Math.random() * colors.length)];
+         const eyeY = 18, eyeX1 = 15, eyeX2 = 30, eyeRadius = 2 + Math.random() * 2;
+         const mouthY = 32;
+         const mouthPath = Math.random() > 0.5
+           ? `M 15 ${mouthY} Q 22.5 ${mouthY + 5 + (Math.random() * 3)} 30 ${mouthY}`
+           : `M 15 ${mouthY} L 30 ${mouthY}`;
+         const svg = `<svg width="45" height="45" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg"><rect width="45" height="45" rx="8" ry="8" fill="${bgColor}" /><circle cx="${eyeX1}" cy="${eyeY}" r="${eyeRadius}" fill="#212121"/><circle cx="${eyeX2}" cy="${eyeY}" r="${eyeRadius}" fill="#212121"/><path d="${mouthPath}" stroke="#212121" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>`;
+         return svg.replace(/\s{2,}/g, ' ').trim();
+       }
+       
+       function logMessage(message) {
+         const msgEl = document.createElement('div');
+         msgEl.textContent = message;
+         gameLog.prepend(msgEl);
+         if(gameLog.children.length > 20) {
+           gameLog.lastChild.remove();
+         }
+       }
+       
+       // ========================================================================
+       // DATA PERSISTENCE
+       // ========================================================================
+       function saveGameData(players) {
+         try {
+           const dataToSave = {
+             config,
+             playerData: players.map(p => ({
+               id: p.id, 
+               name: p.name, 
+               chips: p.chips,
+               avatarUri: p.avatarUri // Save avatar
+             }))
+           };
+           localStorage.setItem('pokerGameData', JSON.stringify(dataToSave));
+         } catch (e) { console.error("Tidak dapat menyimpan data game.", e); }
+       }
 
-        function loadGameData() {
-            try {
-                const data = localStorage.getItem('pokerGameData');
-                if (data) {
-                    const parsed = JSON.parse(data);
-                    config = parsed.config || config;
-                    return parsed.playerData || null;
-                }
-            } catch (e) { console.error("Tidak dapat memuat data game.", e); }
-            return null;
-        }
-        
-        function resetGameData() {
-             showConfirmation("Atur Ulang Data?", "Anda yakin ingin mengatur ulang semua data? Ini akan menghapus jumlah saldo dan pengaturan Anda.", () => {
-                localStorage.removeItem('pokerGameData');
-                location.reload();
-            });
-        }
-        
-        function applyLoadedConfig() {
-            playerNameInput.value = config.playerName;
-            numPlayersSelect.value = config.numPlayers;
-            sbInput.value = config.smallBlind;
-            bbInput.value = config.bigBlind;
-        }
+       function loadGameData() {
+         try {
+           const data = localStorage.getItem('pokerGameData');
+           if (data) {
+             const parsed = JSON.parse(data);
+             config = parsed.config || config;
+             return parsed.playerData || null;
+           }
+         } catch (e) { console.error("Tidak dapat memuat data game.", e); }
+         return null;
+       }
+       
+       function resetGameData() {
+           showConfirmation("Atur Ulang Data?", "Anda yakin ingin mengatur ulang semua data? Ini akan menghapus jumlah saldo dan pengaturan Anda.", () => {
+           localStorage.removeItem('pokerGameData');
+           location.reload();
+         });
+       }
+       
+       function applyLoadedConfig() {
+         playerNameInput.value = config.playerName;
+         numPlayersSelect.value = config.numPlayers;
+         sbInput.value = config.smallBlind;
+         bbInput.value = config.bigBlind;
+       }
 
-        // ========================================================================
-        // CLASSES
-        // ========================================================================
+       // ========================================================================
+       // CLASSES
+       // ========================================================================
 
-        class Card {
-            constructor(suit, rank) {
-                this.suit = suit;
-                this.rank = rank;
-                this.value = RANK_VALUES[rank];
-                this.color = (suit === '♥' || suit === '♦') ? 'text-red-600' : 'text-black';
-            }
+       class Card {
+         constructor(suit, rank) {
+           this.suit = suit;
+           this.rank = rank;
+           this.value = RANK_VALUES[rank];
+           this.color = (suit === '♥' || suit === '♦') ? 'text-red-600' : 'text-black';
+         }
 
-            toElement(isHoleCard = false, isRevealed = false, isCommunity = false) {
-                const cardEl = document.createElement('div');
-                cardEl.className = isCommunity ? tailwindClasses.communityCard : tailwindClasses.card;
-                if (!isRevealed && isHoleCard) cardEl.classList.add('back');
-                else {
-                    cardEl.classList.add(this.color);
-                    const rankClass = isCommunity ? tailwindClasses.communityCardRank : tailwindClasses.cardRank;
-                    const suitClass = isCommunity ? tailwindClasses.communityCardSuit : tailwindClasses.cardSuit;
-                    cardEl.innerHTML = `<span class="${rankClass}">${this.rank}</span><span class="${suitClass}">${this.suit}</span>`;
-                }
-                return cardEl;
-            }
-        }
+         toElement(isHoleCard = false, isRevealed = false, isCommunity = false) {
+           const cardEl = document.createElement('div');
+           cardEl.className = isCommunity ? tailwindClasses.communityCard : tailwindClasses.card;
+           if (!isRevealed && isHoleCard) cardEl.classList.add('back');
+           else {
+             cardEl.classList.add(this.color);
+             const rankClass = isCommunity ? tailwindClasses.communityCardRank : tailwindClasses.cardRank;
+             const suitClass = isCommunity ? tailwindClasses.communityCardSuit : tailwindClasses.cardSuit;
+             cardEl.innerHTML = `<span class="${rankClass}">${this.rank}</span><span class="${suitClass}">${this.suit}</span>`;
+           }
+           return cardEl;
+         }
+       }
 
-        class Deck {
-            constructor() { this.cards = []; this.reset(); this.shuffle(); }
-            reset() { this.cards = SUITS.flatMap(suit => RANKS.map(rank => new Card(suit, rank))); }
-            shuffle() {
-                for (let i = this.cards.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
-                }
-            }
-            draw(n = 1) { return n === 1 ? this.cards.pop() : this.cards.splice(-n); }
-        }
+       class Deck {
+         constructor() { this.cards = []; this.reset(); this.shuffle(); }
+         reset() { this.cards = SUITS.flatMap(suit => RANKS.map(rank => new Card(suit, rank))); }
+         shuffle() {
+           for (let i = this.cards.length - 1; i > 0; i--) {
+             const j = Math.floor(Math.random() * (i + 1));
+             [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
+           }
+         }
+         draw(n = 1) { return n === 1 ? this.cards.pop() : this.cards.splice(-n); }
+       }
 
-        class Player {
-            constructor(id, name, chips, isHuman = false, avatarUri = null) {
-                this.id = id; this.name = name; this.chips = chips; this.isHuman = isHuman;
-                
-                if (avatarUri) {
-                    this.avatarUri = avatarUri;
-                } else if (!isHuman && galleryImageUrls.length > 0) {
-                     this.avatarUri = galleryImageUrls[Math.floor(Math.random() * galleryImageUrls.length)];
-                } else {
-                    this.avatarUri = `data:image/svg+xml;base64,${btoa(generateAvatarSvg())}`;
-                }
+       class Player {
+         constructor(id, name, chips, isHuman = false, avatarUri = null) {
+           this.id = id; this.name = name; this.chips = chips; this.isHuman = isHuman;
+           
+           if (avatarUri) {
+             this.avatarUri = avatarUri;
+           } else if (!isHuman && galleryImageUrls.length > 0) {
+              this.avatarUri = galleryImageUrls[Math.floor(Math.random() * galleryImageUrls.length)];
+           } else {
+             this.avatarUri = `data:image/svg+xml;base64,${btoa(generateAvatarSvg())}`;
+           }
 
-                if (!isHuman) {
-                    this.availableAvatars = [...galleryImageUrls].sort(() => 0.5 - Math.random());
-                    this.usedAvatars = [];
-                }
-                
-                this.hand = []; this.resetForHand();
-                this.element = this.createElement(); table.appendChild(this.element);
-            }
-            resetForHand() { this.hand = []; this.isFolded = false; this.isAllIn = false; this.betThisRound = 0; this.totalBetInHand = 0; this.status = ''; }
-            bet(amount) {
-                const betAmount = Math.min(amount, this.chips);
-                this.chips -= betAmount; this.betThisRound += betAmount; this.totalBetInHand += betAmount;
-                if(this.chips === 0) this.isAllIn = true;
-                return betAmount;
-            }
-            createElement() {
-                const el = document.createElement('div'); el.className = tailwindClasses.player; el.id = `player-${this.id}`;
-                el.innerHTML = `
-                    <div class="${tailwindClasses.playerMain}">
-                        <div class="${tailwindClasses.playerAvatar}"><img src="${this.avatarUri}" alt="Avatar" class="${tailwindClasses.playerAvatarImg}"></div>
-                        <div class="${tailwindClasses.playerDetails}">
-                            <div class="${tailwindClasses.playerName}">${this.name}</div>
-                            <div class="${tailwindClasses.playerChips}">${formatChips(this.chips)}</div>
-                        </div>
-                    </div>
-                    <div class="${tailwindClasses.hand}"></div>
-                    <div class="${tailwindClasses.playerBet}" style="display: none;"></div>
-                    <div class="${tailwindClasses.playerStatus}"></div>`;
-                return el;
-            }
-            updateUI(revealCards = false) {
-                this.element.querySelector('.player-chips').textContent = formatChips(this.chips);
-                const handContainer = this.element.querySelector('.hand'); handContainer.innerHTML = '';
-                this.hand.forEach(card => handContainer.appendChild(card.toElement(true, this.isHuman || revealCards)));
-                const statusEl = this.element.querySelector('.player-status');
-                if (this.isFolded) { this.element.classList.add('opacity-50'); statusEl.textContent = 'Fold'; }
-                else { this.element.classList.remove('opacity-50'); statusEl.textContent = this.isAllIn ? 'All-In' : this.status; }
-                const betEl = this.element.querySelector('.player-bet');
-                if(this.betThisRound > 0) { betEl.textContent = formatChips(this.betThisRound); betEl.style.display = 'block'; }
-                else { betEl.style.display = 'none'; }
-            }
-            setActive(isActive) { this.element.classList.toggle('active', isActive); }
-            setAvatar(url) {
-                this.avatarUri = url;
-                this.element.querySelector(`.${tailwindClasses.playerAvatarImg}`).src = url;
-            }
-            changeBotAvatar() {
-                if (this.isHuman || galleryImageUrls.length === 0) return;
-                
-                if (this.availableAvatars.length === 0) {
-                    this.availableAvatars = [...this.usedAvatars].sort(() => 0.5 - Math.random());
-                    this.usedAvatars = [];
-                }
-                
-                const newAvatarUrl = this.availableAvatars.pop();
-                if (newAvatarUrl) {
-                    this.usedAvatars.push(newAvatarUrl);
-                    this.setAvatar(newAvatarUrl);
-                }
-            }
-        }
+           if (!isHuman) {
+             this.availableAvatars = [...galleryImageUrls].sort(() => 0.5 - Math.random());
+             this.usedAvatars = [];
+           }
+           
+           this.hand = []; this.resetForHand();
+           this.element = this.createElement(); table.appendChild(this.element);
+         }
+         resetForHand() { this.hand = []; this.isFolded = false; this.isAllIn = false; this.betThisRound = 0; this.totalBetInHand = 0; this.status = ''; }
+         bet(amount) {
+           const betAmount = Math.min(amount, this.chips);
+           this.chips -= betAmount; this.betThisRound += betAmount; this.totalBetInHand += betAmount;
+           if(this.chips === 0) this.isAllIn = true;
+           return betAmount;
+         }
+         createElement() {
+           const el = document.createElement('div'); el.className = tailwindClasses.player; el.id = `player-${this.id}`;
+           el.innerHTML = `
+               <div class="${tailwindClasses.playerMain}">
+                   <div class="${tailwindClasses.playerAvatar}"><img src="${this.avatarUri}" alt="Avatar" class="${tailwindClasses.playerAvatarImg}"></div>
+                   <div class="${tailwindClasses.playerDetails}">
+                       <div class="${tailwindClasses.playerName}">${this.name}</div>
+                       <div class="${tailwindClasses.playerChips}">${formatChips(this.chips)}</div>
+                   </div>
+               </div>
+               <div class="${tailwindClasses.hand}"></div>
+               <div class="${tailwindClasses.playerBet}" style="display: none;"></div>
+               <div class="${tailwindClasses.playerStatus}"></div>`;
+           return el;
+         }
+         updateUI(revealCards = false) {
+           this.element.querySelector('.player-chips').textContent = formatChips(this.chips);
+           const handContainer = this.element.querySelector('.hand'); handContainer.innerHTML = '';
+           this.hand.forEach(card => handContainer.appendChild(card.toElement(true, this.isHuman || revealCards)));
+           const statusEl = this.element.querySelector('.player-status');
+           if (this.isFolded) { this.element.classList.add('opacity-50'); statusEl.textContent = 'Fold'; }
+           else { this.element.classList.remove('opacity-50'); statusEl.textContent = this.isAllIn ? 'All-In' : this.status; }
+           const betEl = this.element.querySelector('.player-bet');
+           if(this.betThisRound > 0) { betEl.textContent = formatChips(this.betThisRound); betEl.style.display = 'block'; }
+           else { betEl.style.display = 'none'; }
+         }
+         setActive(isActive) { this.element.classList.toggle('active', isActive); }
+         setAvatar(url) {
+           this.avatarUri = url;
+           this.element.querySelector(`.${tailwindClasses.playerAvatarImg}`).src = url;
+         }
+         changeBotAvatar() {
+           if (this.isHuman || galleryImageUrls.length === 0) return;
+           
+           if (this.availableAvatars.length === 0) {
+             this.availableAvatars = [...this.usedAvatars].sort(() => 0.5 - Math.random());
+             this.usedAvatars = [];
+           }
+           
+           const newAvatarUrl = this.availableAvatars.pop();
+           if (newAvatarUrl) {
+             this.usedAvatars.push(newAvatarUrl);
+             this.setAvatar(newAvatarUrl);
+           }
+         }
+       }
 
-        class HandEvaluator {
-            static evaluate(sevenCards) {
-                const combinations = this._getCombinations(sevenCards, 5); let bestHand = null;
-                for (const combo of combinations) { const evaluated = this._evaluateFive(combo); if (!bestHand || this.compareHands(evaluated, bestHand) > 0) bestHand = evaluated; }
-                return bestHand;
-            }
-            static compareHands(a, b) { if (a.rankValue !== b.rankValue) return a.rankValue - b.rankValue; for(let i=0; i<5; i++) if (a.kickers[i] !== b.kickers[i]) return a.kickers[i] - b.kickers[i]; return 0; }
-            static _evaluateFive(hand) {
-                hand.sort((a, b) => b.value - a.value); const values = hand.map(c => c.value); const isFlush = hand.every(c => c.suit === hand[0].suit);
-                const isStraightResult = this._isStraight(values); const isStraight = isStraightResult.isStraight; const straightValues = isStraightResult.values;
-                if (isStraight && isFlush) { if (straightValues[0] === 14) return { rankName: 'Royal Flush', rankValue: HAND_RANKS.ROYAL_FLUSH, kickers: straightValues }; return { rankName: 'Straight Flush', rankValue: HAND_RANKS.STRAIGHT_FLUSH, kickers: straightValues }; }
-                const valueCounts = this._getValueCounts(values); const counts = Object.values(valueCounts).sort((a,b) => b-a); const keys = Object.keys(valueCounts).map(Number).sort((a, b) => (valueCounts[b] - valueCounts[a]) || (b-a));
-                if (counts[0] === 4) return { rankName: 'Four of a Kind', rankValue: HAND_RANKS.FOUR_OF_A_KIND, kickers: keys }; if (counts[0] === 3 && counts[1] === 2) return { rankName: 'Full House', rankValue: HAND_RANKS.FULL_HOUSE, kickers: keys };
-                if (isFlush) return { rankName: 'Flush', rankValue: HAND_RANKS.FLUSH, kickers: values }; if (isStraight) return { rankName: 'Straight', rankValue: HAND_RANKS.STRAIGHT, kickers: straightValues };
-                if (counts[0] === 3) return { rankName: 'Three of a Kind', rankValue: HAND_RANKS.THREE_OF_A_KIND, kickers: keys }; if (counts[0] === 2 && counts[1] === 2) return { rankName: 'Two Pair', rankValue: HAND_RANKS.TWO_PAIR, kickers: keys };
-                if (counts[0] === 2) return { rankName: 'One Pair', rankValue: HAND_RANKS.ONE_PAIR, kickers: keys }; return { rankName: 'High Card', rankValue: HAND_RANKS.HIGH_CARD, kickers: values };
-            }
-            static _isStraight(values) {
-                const uniqueValues = [...new Set(values)].sort((a, b) => b - a); if (uniqueValues.length < 5) return {isStraight: false, values: uniqueValues};
-                if (JSON.stringify(uniqueValues.slice(0,5)) === JSON.stringify([14, 5, 4, 3, 2])) return { isStraight: true, values: [5, 4, 3, 2, 14] };
-                for (let i = 0; i <= uniqueValues.length - 5; i++) { const slice = uniqueValues.slice(i, i + 5); if (slice[0] - slice[4] === 4) return { isStraight: true, values: slice }; }
-                return { isStraight: false, values: uniqueValues };
-            }
-            static _getValueCounts(values) { return values.reduce((acc, v) => ({...acc, [v]: (acc[v] || 0) + 1 }), {}); }
-            static _getCombinations(arr, k) { const r = []; function bt(c, s) { if (c.length === k) { r.push([...c]); return; } for (let i = s; i < arr.length; i++) { c.push(arr[i]); bt(c, i + 1); c.pop(); } } bt([], 0); return r; }
-        }
+       class HandEvaluator {
+         static evaluate(sevenCards) {
+           const combinations = this._getCombinations(sevenCards, 5); let bestHand = null;
+           for (const combo of combinations) { const evaluated = this._evaluateFive(combo); if (!bestHand || this.compareHands(evaluated, bestHand) > 0) bestHand = evaluated; }
+           return bestHand;
+         }
+         static compareHands(a, b) { if (a.rankValue !== b.rankValue) return a.rankValue - b.rankValue; for(let i=0; i<5; i++) if (a.kickers[i] !== b.kickers[i]) return a.kickers[i] - b.kickers[i]; return 0; }
+         static _evaluateFive(hand) {
+           hand.sort((a, b) => b.value - a.value); const values = hand.map(c => c.value); const isFlush = hand.every(c => c.suit === hand[0].suit);
+           const isStraightResult = this._isStraight(values); const isStraight = isStraightResult.isStraight; const straightValues = isStraightResult.values;
+           if (isStraight && isFlush) { if (straightValues[0] === 14) return { rankName: 'Royal Flush', rankValue: HAND_RANKS.ROYAL_FLUSH, kickers: straightValues }; return { rankName: 'Straight Flush', rankValue: HAND_RANKS.STRAIGHT_FLUSH, kickers: straightValues }; }
+           const valueCounts = this._getValueCounts(values); const counts = Object.values(valueCounts).sort((a,b) => b-a); const keys = Object.keys(valueCounts).map(Number).sort((a, b) => (valueCounts[b] - valueCounts[a]) || (b-a));
+           if (counts[0] === 4) return { rankName: 'Four of a Kind', rankValue: HAND_RANKS.FOUR_OF_A_KIND, kickers: keys }; if (counts[0] === 3 && counts[1] === 2) return { rankName: 'Full House', rankValue: HAND_RANKS.FULL_HOUSE, kickers: keys };
+           if (isFlush) return { rankName: 'Flush', rankValue: HAND_RANKS.FLUSH, kickers: values }; if (isStraight) return { rankName: 'Straight', rankValue: HAND_RANKS.STRAIGHT, kickers: straightValues };
+           if (counts[0] === 3) return { rankName: 'Three of a Kind', rankValue: HAND_RANKS.THREE_OF_A_KIND, kickers: keys }; if (counts[0] === 2 && counts[1] === 2) return { rankName: 'Two Pair', rankValue: HAND_RANKS.TWO_PAIR, kickers: keys };
+           if (counts[0] === 2) return { rankName: 'One Pair', rankValue: HAND_RANKS.ONE_PAIR, kickers: keys }; return { rankName: 'High Card', rankValue: HAND_RANKS.HIGH_CARD, kickers: values };
+         }
+         static _isStraight(values) {
+           const uniqueValues = [...new Set(values)].sort((a, b) => b - a); if (uniqueValues.length < 5) return {isStraight: false, values: uniqueValues};
+           if (JSON.stringify(uniqueValues.slice(0,5)) === JSON.stringify([14, 5, 4, 3, 2])) return { isStraight: true, values: [5, 4, 3, 2, 14] };
+           for (let i = 0; i <= uniqueValues.length - 5; i++) { const slice = uniqueValues.slice(i, i + 5); if (slice[0] - slice[4] === 4) return { isStraight: true, values: slice }; }
+           return { isStraight: false, values: uniqueValues };
+         }
+         static _getValueCounts(values) { return values.reduce((acc, v) => ({...acc, [v]: (acc[v] || 0) + 1 }), {}); }
+         static _getCombinations(arr, k) { const r = []; function bt(c, s) { if (c.length === k) { r.push([...c]); return; } for (let i = s; i < arr.length; i++) { c.push(arr[i]); bt(c, i + 1); c.pop(); } } bt([], 0); return r; }
+       }
 
-        class AI {
-            static getAction(player, gameState) {
-                const { communityCards, currentBet, pot, bigBlind } = gameState; const callAmount = currentBet - player.betThisRound;
-                if (communityCards.length === 0) return AI.getPreFlopAction(player, callAmount, gameState);
-                const evaluation = HandEvaluator.evaluate([...player.hand, ...communityCards]); const handStrength = evaluation.rankValue; const potOdds = callAmount > 0 ? callAmount / (pot + callAmount) : 0;
-                if (handStrength >= HAND_RANKS.TWO_PAIR) { const raiseAmount = Math.min(player.chips, bigBlind * 3 + Math.floor(Math.random() * pot * 0.5)); if (raiseAmount > callAmount) return { action: 'raise', amount: raiseAmount }; return (callAmount > 0) ? { action: 'call' } : { action: 'check' }; }
-                if (handStrength >= HAND_RANKS.ONE_PAIR) { if (Math.random() > 0.3) return (callAmount > 0) ? { action: 'call' } : { action: 'check' }; else { const raiseAmount = Math.min(player.chips, bigBlind * 2); if (raiseAmount > callAmount) return { action: 'raise', amount: raiseAmount }; return (callAmount > 0) ? { action: 'call' } : { action: 'check' }; } }
-                if (callAmount === 0) return { action: 'check' }; if (callAmount > player.chips * 0.3 && handStrength < HAND_RANKS.ONE_PAIR) return { action: 'fold' };
-                if (potOdds < 0.35 && callAmount > 0) return { action: 'call' }; return { action: 'fold' };
-            }
-            static getPreFlopAction(player, callAmount, gameState) {
-                const [c1, c2] = player.hand; const isPair = c1.rank === c2.rank; const isSuited = c1.suit === c2.suit; const highCard = Math.max(c1.value, c2.value); const lowCard = Math.min(c1.value, c2.value);
-                if ((isPair && highCard >= 10) || (highCard >= 13 && lowCard >= 12)) return { action: 'raise', amount: Math.min(player.chips, gameState.bigBlind * 3) };
-                if (isPair || (isSuited && highCard >= 11) || (highCard >= 12 && lowCard >= 10)) return (callAmount > 0) ? { action: 'call' } : { action: 'check' };
-                if(isSuited && Math.abs(c1.value - c2.value) === 1) if(callAmount <= gameState.bigBlind * 2) return { action: 'call' };
-                if (callAmount === 0) return { action: 'check' }; if (callAmount <= gameState.bigBlind) return { action: 'call' }; return { action: 'fold' };
-            }
-        }
+       class AI {
+         static getAction(player, gameState) {
+           const { communityCards, currentBet, pot, bigBlind } = gameState; const callAmount = currentBet - player.betThisRound;
+           if (communityCards.length === 0) return AI.getPreFlopAction(player, callAmount, gameState);
+           const evaluation = HandEvaluator.evaluate([...player.hand, ...communityCards]); const handStrength = evaluation.rankValue; const potOdds = callAmount > 0 ? callAmount / (pot + callAmount) : 0;
+           if (handStrength >= HAND_RANKS.TWO_PAIR) { const raiseAmount = Math.min(player.chips, bigBlind * 3 + Math.floor(Math.random() * pot * 0.5)); if (raiseAmount > callAmount) return { action: 'raise', amount: raiseAmount }; return (callAmount > 0) ? { action: 'call' } : { action: 'check' }; }
+           if (handStrength >= HAND_RANKS.ONE_PAIR) { if (Math.random() > 0.3) return (callAmount > 0) ? { action: 'call' } : { action: 'check' }; else { const raiseAmount = Math.min(player.chips, bigBlind * 2); if (raiseAmount > callAmount) return { action: 'raise', amount: raiseAmount }; return (callAmount > 0) ? { action: 'call' } : { action: 'check' }; } }
+           if (callAmount === 0) return { action: 'check' }; if (callAmount > player.chips * 0.3 && handStrength < HAND_RANKS.ONE_PAIR) return { action: 'fold' };
+           if (potOdds < 0.35 && callAmount > 0) return { action: 'call' }; return { action: 'fold' };
+         }
+         static getPreFlopAction(player, callAmount, gameState) {
+           const [c1, c2] = player.hand; const isPair = c1.rank === c2.rank; const isSuited = c1.suit === c2.suit; const highCard = Math.max(c1.value, c2.value); const lowCard = Math.min(c1.value, c2.value);
+           if ((isPair && highCard >= 10) || (highCard >= 13 && lowCard >= 12)) return { action: 'raise', amount: Math.min(player.chips, gameState.bigBlind * 3) };
+           if (isPair || (isSuited && highCard >= 11) || (highCard >= 12 && lowCard >= 10)) return (callAmount > 0) ? { action: 'call' } : { action: 'check' };
+           if(isSuited && Math.abs(c1.value - c2.value) === 1) if(callAmount <= gameState.bigBlind * 2) return { action: 'call' };
+           if (callAmount === 0) return { action: 'check' }; if (callAmount <= gameState.bigBlind) return { action: 'call' }; return { action: 'fold' };
+         }
+       }
 
-        class Game {
-            constructor() {
-                this.loadAndApplyConfig(); setupControls();
-                this.deck = new Deck(); this.players = []; this.allPlayers = []; this.communityCards = []; this.dealerButton = null;
-                this.initPlayers(loadGameData()); this.dealerButton = Math.floor(Math.random() * this.allPlayers.length);
-                this.resetGameState(); this.updateUI();
-                pokerWrapper.querySelectorAll('#deal-btn').forEach(b => b.classList.remove('hidden'));
-                pokerWrapper.querySelectorAll('#fold-btn, #call-btn, #raise-btn').forEach(b => b.classList.add('hidden'));
-            }
-            loadAndApplyConfig() { loadGameData(); applyLoadedConfig(); }
-            initPlayers(savedData) {
-                this.allPlayers = []; table.querySelectorAll('.player').forEach(p => p.remove());
-                const savedPlayerMap = new Map((savedData || []).map(p => [p.name, p]));
-                
-                const humanName = config.playerName;
-                const humanSavedData = savedPlayerMap.get(humanName);
-                const humanPlayer = new Player(0, humanName, humanSavedData?.chips || STARTING_CHIPS, true, humanSavedData?.avatarUri);
-                this.allPlayers.push(humanPlayer);
-                profilePreview.src = humanPlayer.avatarUri;
+       class Game {
+         constructor() {
+           this.loadAndApplyConfig(); setupControls();
+           this.deck = new Deck(); this.players = []; this.allPlayers = []; this.communityCards = []; this.dealerButton = null;
+           this.initPlayers(loadGameData()); this.dealerButton = Math.floor(Math.random() * this.allPlayers.length);
+           this.resetGameState(); this.updateUI();
+           pokerWrapper.querySelectorAll('#deal-btn').forEach(b => b.classList.remove('hidden'));
+           pokerWrapper.querySelectorAll('#fold-btn, #call-btn, #raise-btn').forEach(b => b.classList.add('hidden'));
+         }
+         loadAndApplyConfig() { loadGameData(); applyLoadedConfig(); }
+         initPlayers(savedData) {
+           this.allPlayers = []; table.querySelectorAll('.player').forEach(p => p.remove());
+           const savedPlayerMap = new Map((savedData || []).map(p => [p.name, p]));
+           
+           const humanName = config.playerName;
+           const humanSavedData = savedPlayerMap.get(humanName);
+           const humanPlayer = new Player(0, humanName, humanSavedData?.chips || STARTING_CHIPS, true, humanSavedData?.avatarUri);
+           this.allPlayers.push(humanPlayer);
+           profilePreview.src = humanPlayer.avatarUri;
 
-                for (let i = 1; i < config.numPlayers; i++) {
-                    const botName = `Bot ${i}`;
-                    const botSavedData = savedPlayerMap.get(botName);
-                    this.allPlayers.push(new Player(i, botName, botSavedData?.chips || STARTING_CHIPS, false, botSavedData?.avatarUri));
-                }
-                this.positionPlayersUI();
-            }
-            positionPlayersUI() {
-                const activePlayers = this.allPlayers.filter(p => p.chips > 0 && !p.isEliminated);
-                const numPlayers = activePlayers.length; const isMobile = window.innerWidth < 768;
-                const radiusX = table.offsetWidth / 2 - (isMobile ? 50 : 90);
-                const radiusY = table.offsetHeight / 2 - (isMobile ? 45 : 70);
-                const centerX = table.offsetWidth / 2; const centerY = table.offsetHeight / 2;
-                activePlayers.forEach((player, i) => {
-                    player.element.style.display = 'flex';
-                    const angle = (i / numPlayers) * 2 * Math.PI - (Math.PI / 2);
-                    player.element.style.left = `${centerX + radiusX * Math.cos(angle)}px`;
-                    player.element.style.top = `${centerY + radiusY * Math.sin(angle)}px`;
-                });
-                this.allPlayers.forEach(p => {
-                    if (p.isEliminated) p.element.style.display = 'none';
-                });
-            }
-            resetGameState() { this.pot = 0; this.sidePots = []; this.communityCards = []; this.stage = GAME_STAGES.PRE_DEAL; this.currentPlayerIndex = -1; this.currentBet = 0; this.minRaise = config.bigBlind; this.lastRaiser = null; }
-            async startNewHand() {
-                if(tournamentOver) return;
+           for (let i = 1; i < config.numPlayers; i++) {
+             const botName = `Bot ${i}`;
+             const botSavedData = savedPlayerMap.get(botName);
+             this.allPlayers.push(new Player(i, botName, botSavedData?.chips || STARTING_CHIPS, false, botSavedData?.avatarUri));
+           }
+           this.positionPlayersUI();
+         }
+         positionPlayersUI() {
+           const activePlayers = this.allPlayers.filter(p => p.chips > 0 && !p.isEliminated);
+           const numPlayers = activePlayers.length; const isMobile = window.innerWidth < 768;
+           const radiusX = table.offsetWidth / 2 - (isMobile ? 50 : 90);
+           const radiusY = table.offsetHeight / 2 - (isMobile ? 45 : 70);
+           const centerX = table.offsetWidth / 2; const centerY = table.offsetHeight / 2;
+           activePlayers.forEach((player, i) => {
+             player.element.style.display = 'flex';
+             const angle = (i / numPlayers) * 2 * Math.PI - (Math.PI / 2);
+             player.element.style.left = `${centerX + radiusX * Math.cos(angle)}px`;
+             player.element.style.top = `${centerY + radiusY * Math.sin(angle)}px`;
+           });
+           this.allPlayers.forEach(p => {
+             if (p.isEliminated) p.element.style.display = 'none';
+           });
+         }
+         resetGameState() { this.pot = 0; this.sidePots = []; this.communityCards = []; this.stage = GAME_STAGES.PRE_DEAL; this.currentPlayerIndex = -1; this.currentBet = 0; this.minRaise = config.bigBlind; this.lastRaiser = null; }
+         async startNewHand() {
+           if(tournamentOver) return;
 
-                this.players = this.allPlayers.filter(p => p.chips > 0 && !p.isEliminated);
-                
-                if (this.players.length <= 1) {
-                    const winner = this.players[0] || this.allPlayers.find(p => !p.isEliminated);
-                    if (winner) {
-                        this.showWinner(winner, { rankName: 'Juara Turnamen!' }, `🎉 ${winner.name} 🎉`);
-                        logMessage(`${winner.name} adalah juara turnamen!`);
-                    }
-                    tournamentOver = true;
-                    this.disablePlayerControls();
-                    pokerWrapper.querySelectorAll('#deal-btn').forEach(b => b.classList.add('hidden'));
-                    return;
-                }
+           this.players = this.allPlayers.filter(p => p.chips > 0 && !p.isEliminated);
+           
+           if (this.players.length <= 1) {
+             const winner = this.players[0] || this.allPlayers.find(p => !p.isEliminated);
+             if (winner) {
+               this.showWinner(winner, { rankName: 'Juara Turnamen!' }, `🎉 ${winner.name} 🎉`);
+               logMessage(`${winner.name} adalah juara turnamen!`);
+             }
+             tournamentOver = true;
+             this.disablePlayerControls();
+             pokerWrapper.querySelectorAll('#deal-btn').forEach(b => b.classList.add('hidden'));
+             return;
+           }
 
-                this.positionPlayersUI(); this.resetGameState(); this.deck.reset(); this.deck.shuffle(); this.players.forEach(p => p.resetForHand());
-                this.dealerButton = this.getNextPlayerIndex(this.dealerButton, true, false);
-                const sbPlayerIndex = this.getNextPlayerIndex(this.dealerButton, false, false); const bbPlayerIndex = this.getNextPlayerIndex(sbPlayerIndex, false, false);
-                const sbPlayer = this.players[sbPlayerIndex]; const bbPlayer = this.players[bbPlayerIndex];
-                sbPlayer.status = 'SB'; bbPlayer.status = 'BB'; this.players[this.dealerButton].status = 'D';
-                const sbAmount = sbPlayer.bet(config.smallBlind); this.pot += sbAmount; logMessage(`${sbPlayer.name} pasang small blind ${formatChips(sbAmount)}`);
-                const bbAmount = bbPlayer.bet(config.bigBlind); this.pot += bbAmount; logMessage(`${bbPlayer.name} pasang big blind ${formatChips(bbAmount)}`);
-                this.currentBet = config.bigBlind;
-                for (let i = 0; i < 2; i++) for (const player of this.players) if(player.chips > 0 || player.totalBetInHand > 0) player.hand.push(this.deck.draw());
-                this.stage = GAME_STAGES.PRE_FLOP; this.currentPlayerIndex = this.getNextPlayerIndex(bbPlayerIndex); this.lastRaiser = bbPlayerIndex;
-                this.updateUI(); await this.startBettingRound();
-            }
-            getNextPlayerIndex(currentIndex, includeBusted = false, checkActive = true) {
-                let nextIndex = (currentIndex + 1) % this.players.length; let attempts = 0;
-                while(attempts < this.players.length * 2) {
-                    const player = this.players[nextIndex];
-                    if (player && (player.chips > 0 || includeBusted || player.totalBetInHand > 0)) {
-                        if (!checkActive || (!player.isFolded && !player.isAllIn)) return nextIndex;
-                    }
-                    nextIndex = (nextIndex + 1) % this.players.length; attempts++;
-                }
-                return -1;
-            }
-            async startBettingRound() {
-                if(this.players.filter(p => !p.isFolded && !p.isAllIn).length < 2) { while(this.stage < GAME_STAGES.SHOWDOWN) await this.proceedToNextStage(); return; }
-                if (this.stage !== GAME_STAGES.PRE_FLOP) {
-                     this.currentPlayerIndex = this.getNextPlayerIndex(this.dealerButton, false, false);
-                     if(this.players[this.currentPlayerIndex].isFolded || this.players[this.currentPlayerIndex].isAllIn) this.currentPlayerIndex = this.getNextPlayerIndex(this.currentPlayerIndex);
-                     this.lastRaiser = this.currentPlayerIndex;
-                }
-                this.updateUI(); this.handleTurn();
-            }
-            async handleTurn() {
-                const player = this.players[this.currentPlayerIndex]; if(!player || player.isFolded || player.isAllIn || player.chips === 0) { this.nextTurn(); return; }
-                this.updateUI();
-                if (player.isHuman) this.enablePlayerControls();
-                else {
-                    await sleep(AI_DELAY);
-                    const action = AI.getAction(player, { pot: this.pot, currentBet: this.currentBet, communityCards: this.communityCards, bigBlind: config.bigBlind });
-                    this.handlePlayerAction(action.action, action.amount);
-                }
-            }
-            handlePlayerAction(action, amount = 0) {
-                const player = this.players[this.currentPlayerIndex]; const callAmount = this.currentBet - player.betThisRound;
-                switch(action) {
-                    case 'fold': player.isFolded = true; logMessage(`${player.name} folds.`); break;
-                    case 'call': const actualCallAmount = player.bet(callAmount); this.pot += actualCallAmount; logMessage(`${player.name} calls ${formatChips(actualCallAmount)}.`); break;
-                    case 'check': logMessage(`${player.name} checks.`); break;
-                    case 'raise': const totalBetThisAction = Math.min(player.chips + player.betThisRound, callAmount + amount); const actualBet = player.bet(totalBetThisAction); this.pot += actualBet; this.minRaise = totalBetThisAction - callAmount; this.currentBet = player.betThisRound; this.lastRaiser = this.currentPlayerIndex; logMessage(`${player.name} raises to ${formatChips(this.currentBet)}.`); break;
-                }
-                this.updateUI(); this.nextTurn();
-            }
-            async nextTurn() {
-                this.disablePlayerControls();
-                const activePlayers = this.players.filter(p => !p.isFolded); if(activePlayers.length <= 1) { await this.doShowdown(); return; }
-                const nextPlayerIndex = this.getNextPlayerIndex(this.currentPlayerIndex);
-                if (nextPlayerIndex === -1) { this.endBettingRound(); await this.proceedToNextStage(); return; }
-                const playersYetToAct = this.players.filter(p => !p.isFolded && !p.isAllIn); const allBetsMatched = playersYetToAct.every(p => p.betThisRound === this.currentBet || p.chips === 0);
-                if (nextPlayerIndex === this.lastRaiser || (playersYetToAct.length > 0 && allBetsMatched && this.currentBet > 0)) { this.endBettingRound(); await this.proceedToNextStage(); }
-                else { this.currentPlayerIndex = nextPlayerIndex; this.handleTurn(); }
-            }
-            endBettingRound() { this.players.forEach(p => p.betThisRound = 0); this.currentBet = 0; this.minRaise = config.bigBlind; this.updateUI(); }
-            async proceedToNextStage() {
-                this.stage++; if(this.deck.cards.length > 0) this.deck.draw();
-                switch(this.stage) {
-                    case GAME_STAGES.FLOP: this.communityCards.push(...this.deck.draw(3)); logMessage("--- FLOP ---"); break;
-                    case GAME_STAGES.TURN: this.communityCards.push(this.deck.draw()); logMessage("--- TURN ---"); break;
-                    case GAME_STAGES.RIVER: this.communityCards.push(this.deck.draw()); logMessage("--- RIVER ---"); break;
-                    case GAME_STAGES.SHOWDOWN: await this.doShowdown(); return;
-                }
-                if(this.players.filter(p => !p.isFolded && !p.isAllIn).length > 1) await this.startBettingRound();
-                else { await sleep(AI_DELAY); await this.proceedToNextStage(); }
-            }
-            async doShowdown() {
-                this.stage = GAME_STAGES.SHOWDOWN; logMessage("--- SHOWDOWN ---"); this.updateUI(true);
-                const awardPot = (potAmount, eligiblePlayerIDs) => {
-                    const contenders = this.players.filter(p => !p.isFolded && eligiblePlayerIDs.includes(p.id)); if (contenders.length === 0) { this.pot += potAmount; return; }
-                    if(contenders.length === 1) { contenders[0].chips += potAmount; logMessage(`${contenders[0].name} memenangkan pot ${formatChips(potAmount)}`); this.showWinner(contenders[0], {rankName: ' uncontested'}); return; }
-                    contenders.forEach(p => { p.evaluatedHand = HandEvaluator.evaluate([...p.hand, ...this.communityCards]); });
-                    contenders.sort((a, b) => HandEvaluator.compareHands(b.evaluatedHand, a.evaluatedHand));
-                    const winners = contenders.filter(p => HandEvaluator.compareHands(p.evaluatedHand, contenders[0].evaluatedHand) === 0);
-                    const winAmount = Math.floor(potAmount / winners.length); winners.forEach(w => w.chips += winAmount);
-                    let remainder = potAmount % winners.length; if(remainder > 0) this.players[this.getNextPlayerIndex(this.dealerButton, true)].chips += remainder;
-                    const winnerNames = winners.map(w => w.name).join(', '); logMessage(`${winnerNames} menang pot ${formatChips(potAmount)} dengan ${winners[0].evaluatedHand.rankName}`);
-                    this.showWinner(winners[0], winners[0].evaluatedHand, winnerNames);
-                };
-                awardPot(this.pot, this.players.map(p => p.id)); this.pot = 0; saveGameData(this.allPlayers); this.updateUI(true);
-                
-                // --- Automatic Next Hand ---
-                this.allPlayers.forEach(p => {
-                    if (p.chips <= 0 && !p.isEliminated) {
-                        p.isEliminated = true;
-                        p.element.style.display = 'none';
-                        logMessage(`${p.name} telah tereliminasi!`);
-                    }
-                });
+           this.positionPlayersUI(); this.resetGameState(); this.deck.reset(); this.deck.shuffle(); this.players.forEach(p => p.resetForHand());
+           this.dealerButton = this.getNextPlayerIndex(this.dealerButton, true, false);
+           const sbPlayerIndex = this.getNextPlayerIndex(this.dealerButton, false, false); const bbPlayerIndex = this.getNextPlayerIndex(sbPlayerIndex, false, false);
+           const sbPlayer = this.players[sbPlayerIndex]; const bbPlayer = this.players[bbPlayerIndex];
+           sbPlayer.status = 'SB'; bbPlayer.status = 'BB'; this.players[this.dealerButton].status = 'D';
+           const sbAmount = sbPlayer.bet(config.smallBlind); this.pot += sbAmount; logMessage(`${sbPlayer.name} pasang small blind ${formatChips(sbAmount)}`);
+           const bbAmount = bbPlayer.bet(config.bigBlind); this.pot += bbAmount; logMessage(`${bbPlayer.name} pasang big blind ${formatChips(bbAmount)}`);
+           this.currentBet = config.bigBlind;
+           for (let i = 0; i < 2; i++) for (const player of this.players) if(player.chips > 0 || player.totalBetInHand > 0) player.hand.push(this.deck.draw());
+           this.stage = GAME_STAGES.PRE_FLOP; this.currentPlayerIndex = this.getNextPlayerIndex(bbPlayerIndex); this.lastRaiser = bbPlayerIndex;
+           this.updateUI(); await this.startBettingRound();
+         }
+         getNextPlayerIndex(currentIndex, includeBusted = false, checkActive = true) {
+           let nextIndex = (currentIndex + 1) % this.players.length; let attempts = 0;
+           while(attempts < this.players.length * 2) {
+             const player = this.players[nextIndex];
+             if (player && (player.chips > 0 || includeBusted || player.totalBetInHand > 0)) {
+               if (!checkActive || (!player.isFolded && !player.isAllIn)) return nextIndex;
+             }
+             nextIndex = (nextIndex + 1) % this.players.length; attempts++;
+           }
+           return -1;
+         }
+         async startBettingRound() {
+           if(this.players.filter(p => !p.isFolded && !p.isAllIn).length < 2) { while(this.stage < GAME_STAGES.SHOWDOWN) await this.proceedToNextStage(); return; }
+           if (this.stage !== GAME_STAGES.PRE_FLOP) {
+              this.currentPlayerIndex = this.getNextPlayerIndex(this.dealerButton, false, false);
+              if(this.players[this.currentPlayerIndex].isFolded || this.players[this.currentPlayerIndex].isAllIn) this.currentPlayerIndex = this.getNextPlayerIndex(this.currentPlayerIndex);
+              this.lastRaiser = this.currentPlayerIndex;
+           }
+           this.updateUI(); this.handleTurn();
+         }
+         async handleTurn() {
+           const player = this.players[this.currentPlayerIndex]; if(!player || player.isFolded || player.isAllIn || player.chips === 0) { this.nextTurn(); return; }
+           this.updateUI();
+           if (player.isHuman) this.enablePlayerControls();
+           else {
+             await sleep(AI_DELAY);
+             const action = AI.getAction(player, { pot: this.pot, currentBet: this.currentBet, communityCards: this.communityCards, bigBlind: config.bigBlind });
+             this.handlePlayerAction(action.action, action.amount);
+           }
+         }
+         handlePlayerAction(action, amount = 0) {
+           const player = this.players[this.currentPlayerIndex]; const callAmount = this.currentBet - player.betThisRound;
+           switch(action) {
+             case 'fold': player.isFolded = true; logMessage(`${player.name} folds.`); break;
+             case 'call': const actualCallAmount = player.bet(callAmount); this.pot += actualCallAmount; logMessage(`${player.name} calls ${formatChips(actualCallAmount)}.`); break;
+             case 'check': logMessage(`${player.name} checks.`); break;
+             case 'raise': const totalBetThisAction = Math.min(player.chips + player.betThisRound, callAmount + amount); const actualBet = player.bet(totalBetThisAction); this.pot += actualBet; this.minRaise = totalBetThisAction - callAmount; this.currentBet = player.betThisRound; this.lastRaiser = this.currentPlayerIndex; logMessage(`${player.name} raises to ${formatChips(this.currentBet)}.`); break;
+           }
+           this.updateUI(); this.nextTurn();
+         }
+         async nextTurn() {
+           this.disablePlayerControls();
+           const activePlayers = this.players.filter(p => !p.isFolded); if(activePlayers.length <= 1) { await this.doShowdown(); return; }
+           const nextPlayerIndex = this.getNextPlayerIndex(this.currentPlayerIndex);
+           if (nextPlayerIndex === -1) { this.endBettingRound(); await this.proceedToNextStage(); return; }
+           const playersYetToAct = this.players.filter(p => !p.isFolded && !p.isAllIn); const allBetsMatched = playersYetToAct.every(p => p.betThisRound === this.currentBet || p.chips === 0);
+           if (nextPlayerIndex === this.lastRaiser || (playersYetToAct.length > 0 && allBetsMatched && this.currentBet > 0)) { this.endBettingRound(); await this.proceedToNextStage(); }
+           else { this.currentPlayerIndex = nextPlayerIndex; this.handleTurn(); }
+         }
+         endBettingRound() { this.players.forEach(p => p.betThisRound = 0); this.currentBet = 0; this.minRaise = config.bigBlind; this.updateUI(); }
+         async proceedToNextStage() {
+           this.stage++; if(this.deck.cards.length > 0) this.deck.draw();
+           switch(this.stage) {
+             case GAME_STAGES.FLOP: this.communityCards.push(...this.deck.draw(3)); logMessage("--- FLOP ---"); break;
+             case GAME_STAGES.TURN: this.communityCards.push(this.deck.draw()); logMessage("--- TURN ---"); break;
+             case GAME_STAGES.RIVER: this.communityCards.push(this.deck.draw()); logMessage("--- RIVER ---"); break;
+             case GAME_STAGES.SHOWDOWN: await this.doShowdown(); return;
+           }
+           if(this.players.filter(p => !p.isFolded && !p.isAllIn).length > 1) await this.startBettingRound();
+           else { await sleep(AI_DELAY); await this.proceedToNextStage(); }
+         }
+         async doShowdown() {
+           this.stage = GAME_STAGES.SHOWDOWN; logMessage("--- SHOWDOWN ---"); this.updateUI(true);
+           const awardPot = (potAmount, eligiblePlayerIDs) => {
+             const contenders = this.players.filter(p => !p.isFolded && eligiblePlayerIDs.includes(p.id)); if (contenders.length === 0) { this.pot += potAmount; return; }
+             if(contenders.length === 1) { contenders[0].chips += potAmount; logMessage(`${contenders[0].name} memenangkan pot ${formatChips(potAmount)}`); this.showWinner(contenders[0], {rankName: ' uncontested'}); return; }
+             contenders.forEach(p => { p.evaluatedHand = HandEvaluator.evaluate([...p.hand, ...this.communityCards]); });
+             contenders.sort((a, b) => HandEvaluator.compareHands(b.evaluatedHand, a.evaluatedHand));
+             const winners = contenders.filter(p => HandEvaluator.compareHands(p.evaluatedHand, contenders[0].evaluatedHand) === 0);
+             const winAmount = Math.floor(potAmount / winners.length); winners.forEach(w => w.chips += winAmount);
+             let remainder = potAmount % winners.length; if(remainder > 0) this.players[this.getNextPlayerIndex(this.dealerButton, true)].chips += remainder;
+             const winnerNames = winners.map(w => w.name).join(', '); logMessage(`${winnerNames} menang pot ${formatChips(potAmount)} dengan ${winners[0].evaluatedHand.rankName}`);
+             this.showWinner(winners[0], winners[0].evaluatedHand, winnerNames);
+           };
+           awardPot(this.pot, this.players.map(p => p.id)); this.pot = 0; saveGameData(this.allPlayers); this.updateUI(true);
+           
+           // --- Automatic Next Hand ---
+           this.allPlayers.forEach(p => {
+             if (p.chips <= 0 && !p.isEliminated) {
+               p.isEliminated = true;
+               p.element.style.display = 'none';
+               logMessage(`${p.name} telah tereliminasi!`);
+             }
+           });
 
-                this.stage = GAME_STAGES.HAND_OVER;
-                await sleep(END_OF_HAND_DELAY);
-                winnerDisplay.classList.add('hidden');
-                this.startNewHand();
-            }
-            showWinner(winner, handInfo, names = winner.name) {
-                winnerDisplay.classList.remove('hidden'); winnerDisplay.querySelector('#winner-name').textContent = `${names} Menang!`;
-                winnerDisplay.querySelector('#winner-hand').textContent = handInfo.rankName;
-                if (!tournamentOver) { // Only auto-hide if it's not the final winner announcement
-                    setTimeout(() => { winnerDisplay.classList.add('hidden'); }, END_OF_HAND_DELAY - 500);
-                }
-            }
-            updateUI(revealAllCards = false) {
-                this.allPlayers.forEach((p, i) => { 
-                    p.setActive(this.players[this.currentPlayerIndex] && p.id === this.players[this.currentPlayerIndex].id && this.stage < GAME_STAGES.SHOWDOWN); 
-                    p.updateUI(revealAllCards); 
-                });
-                communityContainer.innerHTML = ''; this.communityCards.forEach(card => communityContainer.appendChild(card.toElement(false, true, true)));
-                potTotalEl.textContent = `Pot: ${formatChips(this.pot)}`;
-                const humanPlayer = this.allPlayers.find(p => p.isHuman); if(humanPlayer) humanChipsEl.textContent = formatChips(humanPlayer.chips);
-                table.querySelector('.dealer-button')?.remove();
-                if(this.players[this.dealerButton]) {
-                    const dealerPlayerEl = this.players[this.dealerButton].element;
-                    if(dealerPlayerEl) { const dealerBtnEl = document.createElement('div'); dealerBtnEl.className = tailwindClasses.dealerButton; dealerBtnEl.textContent = 'D'; dealerPlayerEl.appendChild(dealerBtnEl); }
-                }
-            }
-            enablePlayerControls() {
-                const player = this.players[this.currentPlayerIndex]; if (!player) return; const callAmount = this.currentBet - player.betThisRound;
-                foldBtn.forEach(b => b.classList.remove('hidden')); callBtn.forEach(b => b.classList.remove('hidden')); raiseBtn.forEach(b => b.classList.remove('hidden'));
-                callBtn.forEach(b => b.textContent = callAmount > 0 ? `Call ${formatChips(Math.min(callAmount, player.chips))}` : 'Check');
-                raiseBtn.forEach(b => b.textContent = this.currentBet > 0 ? 'Raise' : 'Bet');
-                const minRaiseAmount = this.minRaise; const maxBet = player.chips - callAmount;
-                if (maxBet >= minRaiseAmount) {
-                    betSliderContainer.classList.remove('invisible', 'opacity-0'); betSlider.forEach(s => { s.min = minRaiseAmount; s.max = maxBet; s.step = config.smallBlind; s.value = Math.min(minRaiseAmount, maxBet); });
-                    betDisplay.forEach(d => d.textContent = `${raiseBtn[0].textContent}: ${formatChips(parseInt(betSlider[0].value))}`); raiseBtn.forEach(b => b.disabled = false);
-                } else {
-                    betSlider.forEach(s => { s.min = maxBet; s.max = maxBet; s.value = maxBet; });
-                    betDisplay.forEach(d => d.textContent = `All-In: ${formatChips(maxBet)}`); betSliderContainer.classList.remove('invisible', 'opacity-0');
-                    raiseBtn.forEach(b => b.disabled = maxBet <= 0);
-                }
-            }
-            disablePlayerControls() {
-                foldBtn.forEach(b => b.classList.add('hidden')); callBtn.forEach(b => b.classList.add('hidden')); raiseBtn.forEach(b => b.classList.add('hidden')); raiseBtn.forEach(b => b.disabled = false);
-                betSliderContainer.classList.add('invisible', 'opacity-0');
-            }
-        }
+           this.stage = GAME_STAGES.HAND_OVER;
+           await sleep(END_OF_HAND_DELAY);
+           winnerDisplay.classList.add('hidden');
+           this.startNewHand();
+         }
+         showWinner(winner, handInfo, names = winner.name) {
+           winnerDisplay.classList.remove('hidden'); winnerDisplay.querySelector('#winner-name').textContent = `${names} Menang!`;
+           winnerDisplay.querySelector('#winner-hand').textContent = handInfo.rankName;
+           if (!tournamentOver) { // Only auto-hide if it's not the final winner announcement
+             setTimeout(() => { winnerDisplay.classList.add('hidden'); }, END_OF_HAND_DELAY - 500);
+           }
+         }
+         updateUI(revealAllCards = false) {
+           this.allPlayers.forEach((p, i) => { 
+             p.setActive(this.players[this.currentPlayerIndex] && p.id === this.players[this.currentPlayerIndex].id && this.stage < GAME_STAGES.SHOWDOWN); 
+             p.updateUI(revealAllCards); 
+           });
+           communityContainer.innerHTML = ''; this.communityCards.forEach(card => communityContainer.appendChild(card.toElement(false, true, true)));
+           potTotalEl.textContent = `Pot: ${formatChips(this.pot)}`;
+           const humanPlayer = this.allPlayers.find(p => p.isHuman); if(humanPlayer) humanChipsEl.textContent = formatChips(humanPlayer.chips);
+           table.querySelector('.dealer-button')?.remove();
+           if(this.players[this.dealerButton]) {
+             const dealerPlayerEl = this.players[this.dealerButton].element;
+             if(dealerPlayerEl) { const dealerBtnEl = document.createElement('div'); dealerBtnEl.className = tailwindClasses.dealerButton; dealerBtnEl.textContent = 'D'; dealerPlayerEl.appendChild(dealerBtnEl); }
+           }
+         }
+         enablePlayerControls() {
+           const player = this.players[this.currentPlayerIndex]; if (!player) return; const callAmount = this.currentBet - player.betThisRound;
+           foldBtn.forEach(b => b.classList.remove('hidden')); callBtn.forEach(b => b.classList.remove('hidden')); raiseBtn.forEach(b => b.classList.remove('hidden'));
+           callBtn.forEach(b => b.textContent = callAmount > 0 ? `Call ${formatChips(Math.min(callAmount, player.chips))}` : 'Check');
+           raiseBtn.forEach(b => b.textContent = this.currentBet > 0 ? 'Raise' : 'Bet');
+           const minRaiseAmount = this.minRaise; const maxBet = player.chips - callAmount;
+           if (maxBet >= minRaiseAmount) {
+             betSliderContainer.classList.remove('invisible', 'opacity-0'); betSlider.forEach(s => { s.min = minRaiseAmount; s.max = maxBet; s.step = config.smallBlind; s.value = Math.min(minRaiseAmount, maxBet); });
+             betDisplay.forEach(d => d.textContent = `${raiseBtn[0].textContent}: ${formatChips(parseInt(betSlider[0].value))}`); raiseBtn.forEach(b => b.disabled = false);
+           } else {
+             betSlider.forEach(s => { s.min = maxBet; s.max = maxBet; s.value = maxBet; });
+             betDisplay.forEach(d => d.textContent = `All-In: ${formatChips(maxBet)}`); betSliderContainer.classList.remove('invisible', 'opacity-0');
+             raiseBtn.forEach(b => b.disabled = maxBet <= 0);
+           }
+         }
+         disablePlayerControls() {
+           foldBtn.forEach(b => b.classList.add('hidden')); callBtn.forEach(b => b.classList.add('hidden')); raiseBtn.forEach(b => b.classList.add('hidden')); raiseBtn.forEach(b => b.disabled = false);
+           betSliderContainer.classList.add('invisible', 'opacity-0');
+         }
+       }
 
-        // ========================================================================
-        // EVENT LISTENERS & GAME INITIALIZATION
-        // ========================================================================
+       // ========================================================================
+       // EVENT LISTENERS & GAME INITIALIZATION
+       // ========================================================================
 
-        let game;
-        
-        startGameBtn.addEventListener('click', () => {
-            startScreen.classList.add('opacity-0', 'pointer-events-none');
-            setTimeout(() => startScreen.classList.add('hidden'), 300);
-            pokerWrapper.querySelector('#deal-btn').click();
-        });
+       let game;
+       
+       startGameBtn.addEventListener('click', () => {
+         startScreen.classList.add('opacity-0', 'pointer-events-none');
+         setTimeout(() => startScreen.classList.add('hidden'), 300);
+         pokerWrapper.querySelector('#deal-btn').click();
+       });
 
-        // Modal Listeners
-        function showModal(modal, content) {
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            setTimeout(() => {
-                content.classList.remove('scale-95', 'opacity-0');
-            }, 10);
-        }
+       // Modal Listeners
+       function showModal(modal, content) {
+         modal.classList.remove('hidden');
+         modal.classList.add('flex');
+         setTimeout(() => {
+           content.classList.remove('scale-95', 'opacity-0');
+         }, 10);
+       }
 
-        function hideModal(modal, content) {
-            content.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }, 300);
-        }
+       function hideModal(modal, content) {
+         content.classList.add('scale-95', 'opacity-0');
+         setTimeout(() => {
+           modal.classList.add('hidden');
+           modal.classList.remove('flex');
+         }, 300);
+       }
 
-        settingsBtn.addEventListener('click', () => showModal(settingsModal, settingsModalContent));
-        closeModalBtn.addEventListener('click', () => hideModal(settingsModal, settingsModalContent));
-        settingsModal.addEventListener('click', (event) => { if (event.target === settingsModal) hideModal(settingsModal, settingsModalContent); });
-        
-        saveSettingsBtn.addEventListener('click', () => {
-            config.playerName = playerNameInput.value || "Pemain"; config.numPlayers = parseInt(numPlayersSelect.value); config.smallBlind = parseInt(sbInput.value) || 10000; config.bigBlind = parseInt(bbInput.value) || 20000;
-            const humanPlayer = game.allPlayers.find(p => p.isHuman);
-            if (humanPlayer) {
-                humanPlayer.name = config.playerName;
-            }
-            
-            const currentData = JSON.parse(localStorage.getItem('pokerGameData') || '{}');
-            const playerData = currentData.playerData || [];
-            
-            const savedHuman = playerData.find(p => p.id === 0);
-            if (savedHuman) {
-                savedHuman.name = config.playerName;
-            }
+       settingsBtn.addEventListener('click', () => showModal(settingsModal, settingsModalContent));
+       closeModalBtn.addEventListener('click', () => hideModal(settingsModal, settingsModalContent));
+       settingsModal.addEventListener('click', (event) => { if (event.target === settingsModal) hideModal(settingsModal, settingsModalContent); });
+       
+       saveSettingsBtn.addEventListener('click', () => {
+         config.playerName = playerNameInput.value || "Pemain"; config.numPlayers = parseInt(numPlayersSelect.value); config.smallBlind = parseInt(sbInput.value) || 10000; config.bigBlind = parseInt(bbInput.value) || 20000;
+         const humanPlayer = game.allPlayers.find(p => p.isHuman);
+         if (humanPlayer) {
+           humanPlayer.name = config.playerName;
+         }
+         
+         const currentData = JSON.parse(localStorage.getItem('pokerGameData') || '{}');
+         const playerData = currentData.playerData || [];
+         
+         const savedHuman = playerData.find(p => p.id === 0);
+         if (savedHuman) {
+           savedHuman.name = config.playerName;
+         }
 
-            saveGameData(game.allPlayers);
+         saveGameData(game.allPlayers);
 
-            hideModal(settingsModal, settingsModalContent); 
-            showConfirmation("Pengaturan Disimpan", "Game akan dimulai ulang dengan pengaturan baru.", () => location.reload(), false);
-        });
+         hideModal(settingsModal, settingsModalContent); 
+         showConfirmation("Pengaturan Disimpan", "Game akan dimulai ulang dengan pengaturan baru.", () => location.reload(), false);
+       });
 
-        resetDataBtn.addEventListener('click', resetGameData);
+       resetDataBtn.addEventListener('click', resetGameData);
 
-        // Avatar Picker Logic
-        uploadAvatarBtn.addEventListener('click', () => avatarFileInput.click());
-        avatarFileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    const dataUrl = event.target.result;
-                    const humanPlayer = game.allPlayers.find(p => p.isHuman);
-                    if (humanPlayer) {
-                        humanPlayer.setAvatar(dataUrl);
-                        profilePreview.src = dataUrl;
-                        saveGameData(game.allPlayers);
-                    }
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-        
-        pickFromGalleryBtn.addEventListener('click', () => {
-             galleryPickerGrid.innerHTML = ''; // Clear previous
-             galleryImageUrls.forEach(url => {
-                 const imgContainer = document.createElement('div');
-                 imgContainer.className = "aspect-square rounded-lg overflow-hidden";
-                 const img = document.createElement('img');
-                 img.src = url;
-                 img.className = "w-full h-full object-cover gallery-thumb";
-                 img.addEventListener('click', () => {
-                     const humanPlayer = game.allPlayers.find(p => p.isHuman);
-                     if (humanPlayer) {
-                         humanPlayer.setAvatar(url);
-                         profilePreview.src = url;
-                         saveGameData(game.allPlayers);
-                     }
-                     hideModal(galleryPickerModal, galleryPickerModalContent);
-                 });
-                 imgContainer.appendChild(img);
-                 galleryPickerGrid.appendChild(imgContainer);
+       // Avatar Picker Logic
+       uploadAvatarBtn.addEventListener('click', () => avatarFileInput.click());
+       avatarFileInput.addEventListener('change', (e) => {
+         const file = e.target.files[0];
+         if (file) {
+           const reader = new FileReader();
+           reader.onload = (event) => {
+             const dataUrl = event.target.result;
+             const humanPlayer = game.allPlayers.find(p => p.isHuman);
+             if (humanPlayer) {
+               humanPlayer.setAvatar(dataUrl);
+               profilePreview.src = dataUrl;
+               saveGameData(game.allPlayers);
+             }
+           };
+           reader.readAsDataURL(file);
+         }
+       });
+       
+       pickFromGalleryBtn.addEventListener('click', () => {
+           galleryPickerGrid.innerHTML = ''; // Clear previous
+           galleryImageUrls.forEach(url => {
+             const imgContainer = document.createElement('div');
+             imgContainer.className = "aspect-square rounded-lg overflow-hidden";
+             const img = document.createElement('img');
+             img.src = url;
+             img.className = "w-full h-full object-cover gallery-thumb";
+             img.addEventListener('click', () => {
+               const humanPlayer = game.allPlayers.find(p => p.isHuman);
+               if (humanPlayer) {
+                 humanPlayer.setAvatar(url);
+                 profilePreview.src = url;
+                 saveGameData(game.allPlayers);
+               }
+               hideModal(galleryPickerModal, galleryPickerModalContent);
              });
-            showModal(galleryPickerModal, galleryPickerModalContent);
-        });
+             imgContainer.appendChild(img);
+             galleryPickerGrid.appendChild(imgContainer);
+           });
+         showModal(galleryPickerModal, galleryPickerModalContent);
+       });
 
-        closeGalleryPickerBtn.addEventListener('click', () => hideModal(galleryPickerModal, galleryPickerModalContent));
-        galleryPickerModal.addEventListener('click', (e) => { if(e.target === galleryPickerModal) hideModal(galleryPickerModal, galleryPickerModalContent) });
+       closeGalleryPickerBtn.addEventListener('click', () => hideModal(galleryPickerModal, galleryPickerModalContent));
+       galleryPickerModal.addEventListener('click', (e) => { if(e.target === galleryPickerModal) hideModal(galleryPickerModal, galleryPickerModalContent) });
 
-        window.addEventListener('resize', () => {
-            if (game && !pokerWrapper.classList.contains('hidden')) {
-                game.positionPlayersUI();
-            }
-        });
+       window.addEventListener('resize', () => {
+         if (game && !pokerWrapper.classList.contains('hidden')) {
+           game.positionPlayersUI();
+         }
+       });
 
-        game = new Game();
-      });
+       game = new Game();
+     });
     </script>
     
     <!-- Integration Script -->
@@ -2738,6 +2930,45 @@
             }
         });
     </script>
+
+    <!-- [NEW] Ad System Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const adOverlay = document.getElementById('interstitial-ad-overlay');
+            const closeBtn = document.getElementById('interstitial-close-btn');
+            const sessionKey = 'interstitialAdShown';
+
+            // Fungsi untuk menampilkan iklan
+            function showInterstitialAd() {
+                if (sessionStorage.getItem(sessionKey)) {
+                    console.log('Iklan interstisial sudah ditampilkan pada sesi ini.');
+                    return;
+                }
+                
+                adOverlay.classList.add('visible');
+                sessionStorage.setItem(sessionKey, 'true');
+            }
+
+            // Fungsi untuk menutup iklan
+            function closeInterstitialAd() {
+                adOverlay.classList.add('closing');
+                adOverlay.addEventListener('animationend', () => {
+                    adOverlay.classList.remove('visible', 'closing');
+                }, { once: true });
+            }
+
+            // Tampilkan iklan setelah 1 detik
+            setTimeout(showInterstitialAd, 1000);
+
+            // Event listener untuk tombol tutup
+            closeBtn.addEventListener('click', closeInterstitialAd);
+        });
+    </script>
+    
+    <!-- [NEW] Popunder and Social Bar Scripts -->
+    <script type='text/javascript' src='//librarysituation.com/5d/b2/5e/5db25ed6cc96feea0d13c779ecda8449.js'></script>
+    <script type='text/javascript' src='//librarysituation.com/20/73/e7/2073e79a1acd64802a5754fc7b68462c.js'></script>
+    
 
 </body>
 </html>
